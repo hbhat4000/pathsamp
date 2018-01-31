@@ -15,4 +15,4 @@
 # run. For more info on this script, cat /usr/local/bin/merced_node_print.
 #
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/hbhat/lib64:/home/hbhat/lib
-Rscript nem_par.R
+/home/hbhat/bin/Rscript nem_par.R
