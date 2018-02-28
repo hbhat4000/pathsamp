@@ -37,7 +37,7 @@ def mcmc(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof):
             xcur = prop
             oldlik = proplik
             arburn[jj] = 1
-    print("Acceptance rate during burn-in:", np.mean(arburn))
+    meanBurnin = np.mean(arburn)
     
     # for each path being sampled (r = 0 to r = R)
     arsamp = np.zeros(numpaths)
@@ -53,9 +53,9 @@ def mcmc(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof):
         pp = nb.mypoly(samples[:(-1)], dof)
         mmat = mmat + h * np.matmul(pp.T, pp) / numpaths
         rvec = rvec + np.matmul((np.diff(samples)).T, pp) / numpaths    
-    print("Acceptance rate post burn-in:", np.mean(arsamp))
+    meanSample = np.mean(arsamp)
     
-    return mmat, rvec
+    return (mmat, rvec, meanBurnin, meanSample)
 
 done = False
 mytol = 1e-3
@@ -70,10 +70,14 @@ while (done == False):
     for wp in range(allx.shape[1]):
         x = allx[:,wp]
         t = allt[:,wp]
-        with Parallel(n_jobs=2) as parallel:
-            M, r = parallel(mcmc(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof) for i in range(x.shape[0] - 1))
-            mmat += M
-            rvec += r
+        with Parallel(n_jobs=-1) as parallel:
+            results = parallel(delayed(mcmc)(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof) 
+                            for i in range(x.shape[0] - 1))
+            for res in results:
+                mmat += res[0]
+                rvec += res[1]
+                print("Acceptance rate during burn-in:", res[2])
+                print("Acceptance rate post burn-in:", res[3])
 
     newtheta = np.linalg.solve(mmat, rvec)
     check = np.sum(np.abs(newtheta - theta))
@@ -85,4 +89,3 @@ while (done == False):
     theta = newtheta
     print(check)
     print(theta)
-
