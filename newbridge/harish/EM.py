@@ -1,6 +1,6 @@
 import numpy as np
 import newbridge as nb
-from joblib import Parallel
+from joblib import Parallel, delayed
 
 # load data
 import pickle
@@ -22,9 +22,12 @@ h = (allt[1,0] - allt[0,0])/numsubintervals
 numpaths = 1000
 burninpaths = 10
 
-def mcmc(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof):
+def mcmc(burninpaths, numpaths, g, allx, allt, numsubintervals, i, j, h, theta, dof):
     mmat = np.zeros((dof, dof))
     rvec = np.zeros(dof)
+    x = allx[:,j]
+    t = allt[:,j]
+    
     samples = np.zeros(numsubintervals)
     _, xcur = nb.brownianbridge(g,x,t,numsubintervals,i)
     oldlik = nb.girsanov(g=g, path=xcur, dt=h, theta=theta)
@@ -82,13 +85,12 @@ while (done == False):
 
     ## this paralleization is for all time series observations in 1 go
     with Parallel(n_jobs=-1) as parallel:
-    results = parallel(delayed(mcmc)(burninpaths, numpaths, g, allx, allt, numsubintervals, i, j, h, theta, dof) 
-                    for (i, j) in zip(range(allx.shape[0] - 1), range(allx.shape[1])))
-    for res in results:
-        mmat += res[0]
-        rvec += res[1]
-        print("Acceptance rate during burn-in:", res[2])
-        print("Acceptance rate post burn-in:", res[3])
+        results = parallel(delayed(mcmc)(burninpaths, numpaths, g, allx, allt, numsubintervals, i, j, h, theta, dof) for (i, j) in zip(range(allx.shape[0] - 1), range(allx.shape[1])))
+        for res in results:
+            mmat += res[0]
+            rvec += res[1]
+            print("Acceptance rate during burn-in:", res[2])
+            print("Acceptance rate post burn-in:", res[3])
 
     newtheta = np.linalg.solve(mmat, rvec)
     check = np.sum(np.abs(newtheta - theta))
