@@ -1,5 +1,6 @@
 import numpy as np
 import newbridge as nb
+from joblib import Parallel
 
 # load data
 import pickle
@@ -21,6 +22,41 @@ h = (allt[1,0] - allt[0,0])/numsubintervals
 numpaths = 1000
 burninpaths = 10
 
+def mcmc(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof):
+    mmat = np.zeros((dof, dof))
+    rvec = np.zeros(dof)
+    samples = np.zeros(numsubintervals)
+    _, xcur = nb.brownianbridge(g,x,t,numsubintervals,i)
+    oldlik = nb.girsanov(g=g, path=xcur, dt=h, theta=theta)
+    arburn = np.zeros(burninpaths)
+    for jj in range(burninpaths):
+        _, prop = nb.brownianbridge(g,x,t,numsubintervals,i)
+        proplik = nb.girsanov(g=g, path=prop, dt=h, theta=theta)
+        rho = np.exp(proplik - oldlik)
+        if (rho > np.random.uniform()):
+            xcur = prop
+            oldlik = proplik
+            arburn[jj] = 1
+    print("Acceptance rate during burn-in:", np.mean(arburn))
+    
+    # for each path being sampled (r = 0 to r = R)
+    arsamp = np.zeros(numpaths)
+    for jj in range(numpaths):
+        _, prop = nb.brownianbridge(g,x,t,numsubintervals,i)
+        proplik = nb.girsanov(g=g, path=prop, dt=h, theta=theta)
+        rho = np.exp(proplik - oldlik)
+        if (rho > np.random.uniform()):
+            xcur = prop
+            oldlik = proplik
+            arsamp[jj] = 1
+        samples = xcur
+        pp = nb.mypoly(samples[:(-1)], dof)
+        mmat = mmat + h * np.matmul(pp.T, pp) / numpaths
+        rvec = rvec + np.matmul((np.diff(samples)).T, pp) / numpaths    
+    print("Acceptance rate post burn-in:", np.mean(arsamp))
+    
+    return mmat, rvec
+
 done = False
 mytol = 1e-3
 numiter = 0
@@ -34,36 +70,10 @@ while (done == False):
     for wp in range(allx.shape[1]):
         x = allx[:,wp]
         t = allt[:,wp]
-        for i in range(x.shape[0]-1):
-            samples = np.zeros(numsubintervals)
-            _, xcur = nb.brownianbridge(g,x,t,numsubintervals,i)
-            oldlik = nb.girsanov(g=g, path=xcur, dt=h, theta=theta)
-            arburn = np.zeros(burninpaths)
-            for jj in range(burninpaths):
-                _, prop = nb.brownianbridge(g,x,t,numsubintervals,i)
-                proplik = nb.girsanov(g=g, path=prop, dt=h, theta=theta)
-                rho = np.exp(proplik - oldlik)
-                if (rho > np.random.uniform()):
-                    xcur = prop
-                    oldlik = proplik
-                    arburn[jj] = 1
-            print("Acceptance rate during burn-in:", np.mean(arburn))
-
-            # for each path being sampled (r = 0 to r = R)
-            arsamp = np.zeros(numpaths)
-            for jj in range(numpaths):
-                _, prop = nb.brownianbridge(g,x,t,numsubintervals,i)
-                proplik = nb.girsanov(g=g, path=prop, dt=h, theta=theta)
-                rho = np.exp(proplik - oldlik)
-                if (rho > np.random.uniform()):
-                    xcur = prop
-                    oldlik = proplik
-                    arsamp[jj] = 1
-                samples = xcur
-                pp = nb.mypoly(samples[:(-1)], dof)
-                mmat = mmat + h * np.matmul(pp.T, pp) / numpaths
-                rvec = rvec + np.matmul((np.diff(samples)).T, pp) / numpaths    
-            print("Acceptance rate post burn-in:", np.mean(arsamp))
+        with Parallel(n_jobs=2) as parallel:
+            M, r = parallel(mcmc(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof) for i in range(x.shape[0] - 1))
+            mmat += M
+            rvec += r
 
     newtheta = np.linalg.solve(mmat, rvec)
     check = np.sum(np.abs(newtheta - theta))
@@ -75,7 +85,4 @@ while (done == False):
     theta = newtheta
     print(check)
     print(theta)
-
-
-
 
