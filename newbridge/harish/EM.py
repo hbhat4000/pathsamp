@@ -66,18 +66,29 @@ while (done == False):
     mmat = np.zeros((dof, dof))
     rvec = np.zeros(dof)
     
-    # for each interval of observed value (x_0 to x_n)
-    for wp in range(allx.shape[1]):
-        x = allx[:,wp]
-        t = allt[:,wp]
-        with Parallel(n_jobs=-1) as parallel:
-            results = parallel(delayed(mcmc)(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof) 
-                            for i in range(x.shape[0] - 1))
-            for res in results:
-                mmat += res[0]
-                rvec += res[1]
-                print("Acceptance rate during burn-in:", res[2])
-                print("Acceptance rate post burn-in:", res[3])
+    ## each column of x and t forms a time series observation
+    ## this parallelization is for each time series
+    # for wp in range(allx.shape[1]):
+    #     x = allx[:,wp]
+    #     t = allt[:,wp]
+    #     with Parallel(n_jobs=-1) as parallel:
+    #         results = parallel(delayed(mcmc)(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof) 
+    #                         for i in range(x.shape[0] - 1))
+    #         for res in results:
+    #             mmat += res[0]
+    #             rvec += res[1]
+    #             print("Acceptance rate during burn-in:", res[2])
+    #             print("Acceptance rate post burn-in:", res[3])
+
+    ## this paralleization is for all time series observations in 1 go
+    with Parallel(n_jobs=-1) as parallel:
+    results = parallel(delayed(mcmc)(burninpaths, numpaths, g, allx, allt, numsubintervals, i, j, h, theta, dof) 
+                    for (i, j) in zip(range(allx.shape[0] - 1), range(allx.shape[1])))
+    for res in results:
+        mmat += res[0]
+        rvec += res[1]
+        print("Acceptance rate during burn-in:", res[2])
+        print("Acceptance rate post burn-in:", res[3])
 
     newtheta = np.linalg.solve(mmat, rvec)
     check = np.sum(np.abs(newtheta - theta))
