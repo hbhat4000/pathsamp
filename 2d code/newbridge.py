@@ -15,33 +15,61 @@ def mypoly(x, dof):
     return y
 """
 
+def H0():
+    return 0.63161878
+
+def H1(x):
+    return 0.63161878 * x
+
+def H2(x):
+    return 0.44662192 * (np.power(x, 2) - 1)
+
+def H3(x):
+    return -0.77357185 * x + 0.25785728 * np.power(x, 3)
+
 # this function defines our hermite basis functions
 # x must be a numpy array, a column vector of points
 # (x = vector of points at which we seek to evaluate the basis functions)
 # dof is the number of degrees of freedom, i.e., the number of basis functions
-def hermite_basis(x, dof, dim_x):
-    savesteps = x.shape[0]
-    print(savesteps)
-    print(dof)
-    y = np.zeros((savesteps, dof, dim_x))
+def hermite_basis(x, dof, dim):
+    y = np.zeros((dim, dof))
 
-    for i in range(dim_x):
-        y[:, 0, i] = 0.63161878
-        y[:, 1, i] = 0.63161878 * x[:, i]
-        y[:, 2, i] = 0.44662192 * (np.power(x[:, i], 2) - 1)
-        y[:, 3, i] = -0.77357185 * x[:, i] + 0.25785728 * np.power(x[:, i], 3)
+    y[:, 0] = H0()
+
+    index = 1
+    for i in range(dim):
+        y[:, index] = H1(x[i])
+        y[:, index + 1] = H2(x[i])
+        y[:, index + 2] = H3(x[i])
+        index = 4
     
+    index = 7
+    for i in range(4):
+        for j in range(3):
+            y[:, index] = np.dot(y[:, i], y[:, (4 + j)])
+            index += 1
+
     return y
 
-# defines polynomial basis functions
+# defines polynomial basis functions {1, x, x^2, x^3}
 def polynomial_basis(x, dof):
-    y = np.zeros((x.shape[1], dof))
+    y = np.zeros((dim, dof))
 
     y[:, 0] = 1
-    y[:, 1] = x
-    y[:, 2] = np.power(x, 2)
-    y[:, 3] = np.power(x, 3)
-        
+
+    index = 1
+    for i in range(dim):
+        y[:, index] = x[i]
+        y[:, index + 1] = np.power(x[i], 2)
+        y[:, index + 2] = np.power(x[i], 3)
+        index = 4
+    
+    index = 7
+    for i in range(4):
+        for j in range(3):
+            y[:, index] = np.dot(y[:, i], y[:, (4 + j)])
+            index += 1
+
     return y
 
 # drift function using "basis" functions defined by mypoly
@@ -49,22 +77,26 @@ def polynomial_basis(x, dof):
 # theta must also be a numpy array, the coefficients of each "basis" function
 # dof is implicitly calculated based on the first dimension of theta
 def drift(x, theta):
-    dof = theta.shape[1]
-    dim_x = theta.shape[0]
-    basis_x = hermite_basis(x, dof, dim_x)
-    out = np.array(dim_x)
-    out[0] = np.dot(basis_x[:, :, 0], theta[:, 0])
-    out[1] = np.dot(basis_x[:, :, 1], theta[:, 1])
+    dof = theta.shape[0]
+    dim = theta.shape[1]
+
+    evaluated_basis = hermite_basis(x, dof, dim)
+    out = np.zeros(dim)
+    out[0] = np.sum(np.dot(evaluated_basis[0, :], theta[:, 0]))
+    out[1] = np.sum(np.dot(evaluated_basis[1, :], theta[:, 1]))
     return out
+
+def diffusion(g):
+    return np.dot(g, np.random.standard_normal(2))
 
 # create sample paths! 
 
 # this function creates a bunch of Euler-Maruyama paths from an array
 # of initial conditions
 
-# coef = coefficients of drift function in "mypoly" basis
+# coef = coefficients of drift function in the hermite basis
 # g = diffusion coefficient
-# numsteps = total number of interal time steps to take
+# numsteps = total number of internal time steps to take
 # h = size of each internal time step
 # savesteps = number of times to save the solution
 # ic = vector of initial conditions
@@ -72,24 +104,27 @@ def drift(x, theta):
 def createpaths(coef, g, numsteps, savesteps, h, ic, it):
     h12 = np.sqrt(h)
     numpaths = ic.shape[0]
-    dim_x = ic.shape[1]
+    dim = ic.shape[1]
 
-    x = np.zeros(( numpaths, (savesteps + 1), dim_x))
-    t = np.zeros(( numpaths, (savesteps + 1), dim_x))
+    x = np.zeros(( numpaths, (savesteps + 1), dim))
+    t = np.zeros(( numpaths, (savesteps + 1), dim))
 
     x[:, 0, :] = ic
     t[:, 0, :] = it
-    curx = x[:, 0, :].copy()
-    curt = t[:, 0, :].copy()
-    j = 1
 
-    for k in range(ic.shape[0]):
+    # for each time series, generate the matrix of size savesteps * dim
+    # corresponding to one 2D time series
+    for k in range(numpaths):
+        # k-th initial condition to start off current x and t
+        curx = ic[k, :]
+        curt = it[k, :]
+        j = 1
         for i in range(1, numsteps + 1):
-            curx += drift(curx, coef)*h + g*h12*np.random.standard_normal(numpaths)
+            curx += drift(curx, coef) * h + diffusion(g) * h12
             curt += h
             if (i % (numsteps // savesteps) == 0):
-                x[:, j, :] = curx
-                t[:, j, :] = curt
+                x[k, j, :] = curx
+                t[k, j, :] = curt
                 j += 1
 
     return x, t
@@ -127,9 +162,9 @@ def girsanov(g, path, dt, theta):
 # likelihood function. First burnin steps are rejected and the next numsteps
 # are used to compute the mmat and rvec (E step) which are used to solve the system of 
 # equations producing the next iteration of theta (M step).
-def mcmc(burninpaths, numpaths, g, allx, allt, numsubintervals, i, j, h, theta, dof):
-    mmat = np.zeros((dof, dof))
-    rvec = np.zeros(dof)
+def mcmc2D(allx, allt, em_param, d_param, path_index, step_index, dim_index):
+    mmat = np.zeros((d_param.dim, d_param.dof, d_param.dof))
+    rvec = np.zeros((d_param.dim, d_param.dof))
 
     # one time series at a time
     x = allx[:, j]
@@ -165,43 +200,30 @@ def mcmc(burninpaths, numpaths, g, allx, allt, numsubintervals, i, j, h, theta, 
         rvec = rvec + np.matmul((np.diff(samples)).T, pp) / numpaths    
     meanSample = np.mean(arsamp)
     
-    return (mmat, rvec, meanBurnin, meanSample, i, j)
+    return (mmat, rvec, meanBurnin, meanSample, path_index, step_index, dim_index)
 
 # this function computes the E-step for all intervals in all time series parallely.
 # the accummulated mmat and rvec are then used to solve the system, theta = mmat * rvec,
 # to get the next iteration of theta (M-step). The function returns successfully if the
 # absolute error goes below specified tolerance. The function returns unsuccessfully if the
 # number of M-step iterations go beyond a threshold without reducing the error below tolerance.
-def em(mytol, niter, burninpaths, numpaths, g, allx, allt, numsubintervals, h, theta, dof):
+def em(allx, allt, em_param, d_param):
     done = False
     numiter = 0
 
     while (done == False):
         numiter = numiter + 1
         print(numiter)
-        mmat = np.zeros((dof, dof))
-        rvec = np.zeros(dof)
+        mmat = np.zeros((d_param.dim, d_param.dof, d_param.dof))
+        rvec = np.zeros((d_param.dim, d_param.dof))
         
-        ## each column of x and t forms a time series observation
-        ## this parallelization is for each time series
-        # for wp in range(allx.shape[1]):
-        #     x = allx[:,wp]
-        #     t = allt[:,wp]
-        #     with Parallel(n_jobs=-1) as parallel:
-        #         results = parallel(delayed(mcmc)(burninpaths, numpaths, g, x, t, numsubintervals, i, h, theta, dof) for i in range(x.shape[0] - 1))
-        #         for res in results:
-        #             mmat += res[0]
-        #             rvec += res[1]
-        #             print("Acceptance rate during burn-in:", res[2])
-        #             print("Acceptance rate post burn-in:", res[3])
-
         ## this parallelization is for all time series observations in 1 go
         with Parallel(n_jobs=-1) as parallel:
-            results = parallel(delayed(mcmc)(burninpaths, numpaths, g, allx, allt, numsubintervals, i, j, h, theta, dof) for i in range(allx.shape[0] - 1) for j in range(allx.shape[1]))
+            results = parallel(delayed(mcmc2D)(allx, allt, em_param, d_param, path_index, step_index, dim_index) for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1) for dim_index in range(allx.shape[2]))
             for res in results:
                 mmat += res[0]
                 rvec += res[1]
-                print("i:", res[4], ", j:", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
+                print(", path index:", res[4], "step index: ", res[5] ", dim index: ", res[6] ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec)
         error = np.sum(np.abs(newtheta - theta))
