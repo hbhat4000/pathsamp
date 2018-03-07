@@ -1,19 +1,6 @@
 import numpy as np
+import parameters as prm
 from joblib import Parallel, delayed
-
-# this function defines our basis functions
-# x must be a numpy array, a column vector of points
-# (x = vector of points at which we seek to evaluate the basis functions)
-# dof is the number of degrees of freedom, i.e., the number of basis functions
-"""
-def mypoly(x, dof):
-    y = np.zeros((x.shape[0], dof))
-    for i in range(x.shape[0]):
-        for j in range(dof):
-            H = poly.hermitenorm(j, monic = True)
-            y[i,j] = H(x[i]) / np.sqrt(np.sqrt(2 * np.pi) * factorial(j))
-    return y
-"""
 
 def H0():
     return 0.63161878
@@ -31,42 +18,42 @@ def H3(x):
 # x must be a numpy array, a column vector of points
 # (x = vector of points at which we seek to evaluate the basis functions)
 # dof is the number of degrees of freedom, i.e., the number of basis functions
-def hermite_basis(x, dof, dim):
-    y = np.zeros((dim, dof))
+def hermite_basis(x):
+    y = np.zeros((prm.dim, prm.dof))
 
     y[:, 0] = H0()
 
     index = 1
-    for i in range(dim):
+    for i in range(prm.dim):
         y[:, index] = H1(x[i])
         y[:, index + 1] = H2(x[i])
         y[:, index + 2] = H3(x[i])
         index = 4
     
     index = 7
-    for i in range(4):
-        for j in range(3):
+    for i in range(prm.polynomial_degree):
+        for j in range(prm.polynomial_degree - 1):
             y[:, index] = np.dot(y[:, i], y[:, (4 + j)])
             index += 1
 
     return y
 
 # defines polynomial basis functions {1, x, x^2, x^3}
-def polynomial_basis(x, dof):
-    y = np.zeros((dim, dof))
+def polynomial_basis(x):
+    y = np.zeros((prm.dim, prm.dof))
 
     y[:, 0] = 1
 
     index = 1
-    for i in range(dim):
+    for i in range(prm.dim):
         y[:, index] = x[i]
         y[:, index + 1] = np.power(x[i], 2)
         y[:, index + 2] = np.power(x[i], 3)
         index = 4
     
     index = 7
-    for i in range(4):
-        for j in range(3):
+    for i in range(prm.polynomial_degree):
+        for j in range(prm.polynomial_degree - 1):
             y[:, index] = np.dot(y[:, i], y[:, (4 + j)])
             index += 1
 
@@ -76,18 +63,15 @@ def polynomial_basis(x, dof):
 # x must be a numpy array, the points at which the drift is to be evaluated
 # theta must also be a numpy array, the coefficients of each "basis" function
 # dof is implicitly calculated based on the first dimension of theta
-def drift(x, theta):
-    dof = theta.shape[0]
-    dim = theta.shape[1]
-
-    evaluated_basis = hermite_basis(x, dof, dim)
-    out = np.zeros(dim)
-    out[0] = np.sum(np.dot(evaluated_basis[0, :], theta[:, 0]))
-    out[1] = np.sum(np.dot(evaluated_basis[1, :], theta[:, 1]))
+def drift(x, d_param):
+    evaluated_basis = hermite_basis(x)
+    out = np.zeros(prm.dim)
+    out[0] = np.sum(np.dot(evaluated_basis[0, :], d_param.theta[:, 0]))
+    out[1] = np.sum(np.dot(evaluated_basis[1, :], d_param.theta[:, 1]))
     return out
 
-def diffusion(g):
-    return np.dot(g, np.random.standard_normal(2))
+def diffusion(d_param):
+    return np.dot(d_param.gvec, np.random.standard_normal(prm.dim))
 
 # create sample paths! 
 
@@ -101,28 +85,27 @@ def diffusion(g):
 # savesteps = number of times to save the solution
 # ic = vector of initial conditions
 # it = corresponding vector of initial times
-def createpaths(coef, g, numsteps, savesteps, h, ic, it):
-    h12 = np.sqrt(h)
-    numpaths = ic.shape[0]
-    dim = ic.shape[1]
+def createpaths(d_param, euler_param):
+    h12 = np.sqrt(euler_param.h)
+    numpaths = euler_param.ic.shape[0]
 
-    x = np.zeros(( numpaths, (savesteps + 1), dim))
-    t = np.zeros(( numpaths, (savesteps + 1), dim))
+    x = np.zeros(( numpaths, (euler_param.savesteps + 1), prm.dim))
+    t = np.zeros(( numpaths, (euler_param.savesteps + 1), prm.dim))
 
-    x[:, 0, :] = ic
-    t[:, 0, :] = it
+    x[:, 0, :] = euler_param.ic
+    t[:, 0, :] = euler_param.it
 
     # for each time series, generate the matrix of size savesteps * dim
     # corresponding to one 2D time series
     for k in range(numpaths):
         # k-th initial condition to start off current x and t
-        curx = ic[k, :]
-        curt = it[k, :]
+        curx = euler_param.ic[k, :]
+        curt = euler_param.it[k, :]
         j = 1
-        for i in range(1, numsteps + 1):
-            curx += drift(curx, coef) * h + diffusion(g) * h12
-            curt += h
-            if (i % (numsteps // savesteps) == 0):
+        for i in range(1, euler_param.numsteps + 1):
+            curx += drift(curx, d_param) * euler_param.h + diffusion(d_param) * h12
+            curt += euler_param.h
+            if (i % (euler_param.numsteps // euler_param.savesteps) == 0):
                 x[k, j, :] = curx
                 t[k, j, :] = curt
                 j += 1
@@ -131,21 +114,23 @@ def createpaths(coef, g, numsteps, savesteps, h, ic, it):
 
 # creates brownian bridge interpolations for given start and end
 # time point t and value x.
-def brownianbridge(g, xin, tin, n, index):
-    h = (tin[index + 1] - tin[index]) / n
-    tvec = tin[index] + (1+np.arange(n))*h
+def brownianbridge(gvec, xin, tin, n):
+    h = (tin[1] - tin[0]) / n
+    tvec = tin[0] + (1 + np.arange(n))*h
     h12 = np.sqrt(h)
 
     # W ~ N(0, sqrt(h)*g)
-    wincs = np.random.normal(scale=h12*g, size=n)
-    w = np.cumsum(wincs)
+    wincs = np.random.multivariate_normal(mean = np.zeros(prm.dim), 
+        cov = h * np.diag(np.square(gvec)), 
+        size = n)
+    w = np.cumsum(wincs, axis = 0).T
 
-    # TODO: insert brownian bridge formula
-    bridge = xin[index] + w - ((tvec - tin[index])/(tin[index + 1]-tin[index]))*(w[n-1] + xin[index] - xin[index + 1])
+    bridge = xin[0, :, None] + w
+    bridge -= ((tvec - tin[0])/(tin[1]-tin[0]))*(w[:,n-1,None] + xin[0,:,None] - xin[1,:,None])
     
     # concatenate the starting point to the bridge
     tvec = np.concatenate((tin[[index]], tvec))
-    bridge = np.concatenate((xin[[index]],bridge))
+    bridge = np.concatenate((xin[[index]], bridge))
     return tvec, bridge
 
 # Girsanov likelihood is computed using # TODO: insert reference to the paper
@@ -163,20 +148,20 @@ def girsanov(g, path, dt, theta):
 # are used to compute the mmat and rvec (E step) which are used to solve the system of 
 # equations producing the next iteration of theta (M step).
 def mcmc2D(allx, allt, em_param, d_param, path_index, step_index, dim_index):
-    mmat = np.zeros((d_param.dim, d_param.dof, d_param.dof))
-    rvec = np.zeros((d_param.dim, d_param.dof))
+    mmat = np.zeros((prm.dim, prm.dof, prm.dof))
+    rvec = np.zeros((prm.dim, prm.dof))
 
-    # one time series at a time
-    x = allx[:, j]
-    t = allt[:, j]
+    # one time series, one interval, one dimension at a time
+    x = allx[path_index, step_index:(step_index + 2), dim_index]
+    t = allt[path_index, step_index:(step_index + 2), dim_index]
     
-    samples = np.zeros(numsubintervals)
-    _, xcur = brownianbridge(g,x,t,numsubintervals,i)
-    oldlik = girsanov(g=g, path=xcur, dt=h, theta=theta)
-    arburn = np.zeros(burninpaths)
-    for jj in range(burninpaths):
-        _, prop = brownianbridge(g,x,t,numsubintervals,i)
-        proplik = girsanov(g=g, path=prop, dt=h, theta=theta)
+    samples = np.zeros(em_param.numsubintervals)
+    _, xcur = brownianbridge(d_param.gvec, x, t, em_param.numsubintervals)
+    oldlik = girsanov(d_param.gvec, path = xcur, dt = em_param.h, theta = d_param.theta)
+    arburn = np.zeros(em_param.burninpaths)
+    for jj in range(em_param.burninpaths):
+        _, prop = brownianbridge(d_param.gvec, x, t, em_param.numsubintervals)
+        proplik = girsanov(d_param.gvec, path = prop, dt = em_param.h, theta = d_param.theta)
         rho = np.exp(proplik - oldlik)
         if (rho > np.random.uniform()):
             xcur = prop
@@ -185,19 +170,19 @@ def mcmc2D(allx, allt, em_param, d_param, path_index, step_index, dim_index):
     meanBurnin = np.mean(arburn)
     
     # for each path being sampled (r = 0 to r = R)
-    arsamp = np.zeros(numpaths)
-    for jj in range(numpaths):
-        _, prop = brownianbridge(g,x,t,numsubintervals,i)
-        proplik = girsanov(g=g, path=prop, dt=h, theta=theta)
+    arsamp = np.zeros(em_param.mcmcpaths)
+    for jj in range(em_param.mcmcpaths):
+        _, prop = brownianbridge(d_param.gvec, x, t, em_param.numsubintervals)
+        proplik = girsanov(d_param.gvec, path = prop, dt = em_param.h, theta = d_param.theta)
         rho = np.exp(proplik - oldlik)
         if (rho > np.random.uniform()):
             xcur = prop
             oldlik = proplik
             arsamp[jj] = 1
         samples = xcur
-        pp = hermite_basis(samples[:(-1)], dof)
-        mmat = mmat + h * np.matmul(pp.T, pp) / numpaths
-        rvec = rvec + np.matmul((np.diff(samples)).T, pp) / numpaths    
+        pp = hermite_basis(samples[:(-1)])
+        mmat = mmat + em_param.h * np.matmul(pp.T, pp) / em_param.mcmcpaths
+        rvec = rvec + np.matmul((np.diff(samples)).T, pp) / em_param.mcmcpaths   
     meanSample = np.mean(arsamp)
     
     return (mmat, rvec, meanBurnin, meanSample, path_index, step_index, dim_index)
@@ -214,8 +199,8 @@ def em(allx, allt, em_param, d_param):
     while (done == False):
         numiter = numiter + 1
         print(numiter)
-        mmat = np.zeros((d_param.dim, d_param.dof, d_param.dof))
-        rvec = np.zeros((d_param.dim, d_param.dof))
+        mmat = np.zeros((prm.dim, prm.dof, prm.dof))
+        rvec = np.zeros((prm.dim, prm.dof))
         
         ## this parallelization is for all time series observations in 1 go
         with Parallel(n_jobs=-1) as parallel:
@@ -223,24 +208,24 @@ def em(allx, allt, em_param, d_param):
             for res in results:
                 mmat += res[0]
                 rvec += res[1]
-                print(", path index:", res[4], "step index: ", res[5] ", dim index: ", res[6] ", AR burin:", res[2], ", AR sampling:", res[3])
+                print(", path index:", res[4], ", step index: ", res[5], ", dim index: ", res[6], ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec)
         error = np.sum(np.abs(newtheta - theta))
 
         # if error is below tolerance, EM has converged
-        if (error < mytol):
+        if (error < em_param.tol):
             print("Finished successfully!")
             done = True
 
         # if number of iterations has crossed an iteration threshold, without
         # successfully redcuing the error below the error tolerance, then 
         # return unsuccessfully
-        if (numiter > niter):
+        if (numiter > em_param.niter):
             print("Finished without reaching the tolerance")
             done = True
 
-        theta = newtheta
+        d_param.theta = newtheta
         print(error)
         print(theta)
 

@@ -1,40 +1,30 @@
 import numpy as np
 import newbridge as nb
+import parameters as prm
 
 # load data
 import pickle
 with open('nem_2D.pkl','rb') as f:
-    allx, allt, true_theta, true_g = pickle.load(f)
+    allx, allt, d_param, euler_param = pickle.load(f)
 
+"""
+dimension = 2
+degree of freedom for 3rd order hermite polynomial = 19
+"""
 # to check if x and t array are of correct shapes
-print(allx.shape)
-print(allt.shape)
+print("Data shape:", allx.shape)
+print("Theta shape:", d_param.theta.shape)
 
-# initial guess for theta
-dof = true_theta.shape[0]
-dim = true_theta.shape[1]
-theta = np.zeros((dof, dim))
+theta = np.zeros((prm.dof, prm.dim))
+data_param = prm.data(theta = theta, gvec = d_param.gvec)
+
+"""
+Default parameters for Expectation-Maximization
+em_param = param.em(tol = 1e-3, burninpaths = 10, mcmcpaths = 100, numsubintervals = 10, niter = 100, dt = (allt[0, 1, 0] - allt[0, 0, 0]))
+"""
+em_param = prm.em(dt = allt[0, 1, 0] - allt[0, 0, 0])
 
 # call to EM which returns the final error and estimated theta value
-class em_parameters:
-	def __init__(self, mytol, burninpaths, numpaths, numsubintervals, niter, dt):
-		self.mytol = mytol	# tolerance for error in the theta value
-		self.burninpaths = burninpaths 	# burnin paths for mcmc
-		self.numpaths = numpaths	# sampled paths for mcmc
-		self.numsubintervals = numsubintervals	# number of sub intervals in each interval [x_i, x_{i+1}] for the Brownian bridge
-		self.niter = niter	# threshold for number of EM iterations, after which EM returns unsuccessfully
-		self.h = dt / numsubintervals	# time step for EM
-
-class data_parameters:
-	def __init__(self, g, theta):
-		self.g = g
-		self.theta = theta
-		self.dof = theta.shape[0]
-		self.dim = theta.shape[1]
-
-em_param = em_parameters(1e-3, 10, 100, 20, 100, (allt[0, 1, 0] - allt[0, 0, 0]))
-data_param = data_parameters(true_g, theta)
-
 error, theta = nb.em(allx, allt, em_param, data_param)
 
 print("Error", error)
