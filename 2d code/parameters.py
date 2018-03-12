@@ -45,4 +45,4 @@ class euler_maruyama:
 		self.ft = 10.0			# final time step
 		self.h = self.ft / self.numsteps	# Euler Maruyama time step
 		self.ic = np.array([[1., 1.], [0., 0.], [-1., -1.]])	# 2D array of initial conditions for x
-		self.it = np.zeros(self.ic.shape)	# 2D array of initial time points for t
+		self.it = np.zeros(self.ic.shape[0])	# 2D array of initial time points for t

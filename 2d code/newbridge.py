@@ -90,24 +90,24 @@ def createpaths(d_param, euler_param):
     numpaths = euler_param.ic.shape[0]
 
     x = np.zeros(( numpaths, (euler_param.savesteps + 1), prm.dim))
-    t = np.zeros(( numpaths, (euler_param.savesteps + 1), prm.dim))
+    t = np.zeros(( numpaths, (euler_param.savesteps + 1) ))
 
     x[:, 0, :] = euler_param.ic
-    t[:, 0, :] = euler_param.it
+    t[:, 0] = euler_param.it
 
     # for each time series, generate the matrix of size savesteps * dim
     # corresponding to one 2D time series
     for k in range(numpaths):
         # k-th initial condition to start off current x and t
         curx = euler_param.ic[k, :]
-        curt = euler_param.it[k, :]
+        curt = euler_param.it[k]
         j = 1
         for i in range(1, euler_param.numsteps + 1):
             curx += drift(curx, d_param) * euler_param.h + diffusion(d_param) * h12
             curt += euler_param.h
             if (i % (euler_param.numsteps // euler_param.savesteps) == 0):
                 x[k, j, :] = curx
-                t[k, j, :] = curt
+                t[k, j] = curt
                 j += 1
 
     return x, t
@@ -129,8 +129,8 @@ def brownianbridge(gvec, xin, tin, n):
     bridge -= ((tvec - tin[0])/(tin[1]-tin[0]))*(w[:,n-1,None] + xin[0,:,None] - xin[1,:,None])
     
     # concatenate the starting point to the bridge
-    tvec = np.concatenate((tin[[index]], tvec))
-    bridge = np.concatenate((xin[[index]], bridge))
+    tvec = np.concatenate((tin[[0]], tvec))
+    bridge = np.concatenate((xin[0,:,None],bridge),axis=1)
     return tvec, bridge
 
 # Girsanov likelihood is computed using # TODO: insert reference to the paper
@@ -152,8 +152,8 @@ def mcmc2D(allx, allt, em_param, d_param, path_index, step_index, dim_index):
     rvec = np.zeros((prm.dim, prm.dof))
 
     # one time series, one interval, one dimension at a time
-    x = allx[path_index, step_index:(step_index + 2), dim_index]
-    t = allt[path_index, step_index:(step_index + 2), dim_index]
+    x = allx[path_index, step_index:(step_index + 2), :]
+    t = allt[path_index, step_index:(step_index + 2)]
     
     samples = np.zeros(em_param.numsubintervals)
     _, xcur = brownianbridge(d_param.gvec, x, t, em_param.numsubintervals)
