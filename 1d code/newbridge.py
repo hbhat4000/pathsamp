@@ -50,12 +50,8 @@ def hermite_basis(x):
         y[:, index + 2] = H3(x[:, i])
         index = 4
     
-    index = 7
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)]
-            index += 1
-
+    # NOTE : index depends on the dim, so for general multidimensional code
+    # check the value
     return y
 
 # drift function using "basis" functions defined by mypoly

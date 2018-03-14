@@ -4,7 +4,7 @@ import parameters as prm
 
 # load data
 import pickle
-with open('nem_2D.pkl','rb') as f:
+with open('nem_1D.pkl','rb') as f:
     allx, allt, d_param, euler_param = pickle.load(f)
 
 """

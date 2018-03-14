@@ -4,19 +4,18 @@ import parameters as prm
 
 """
 Sample equation is the Duffing oscillator
-dx = y dt + g_1 dWt
-dy = (-x -x^3)dt + g_2 dWt
+dx = (1 + x- x^2) dt + g_1 dWt
 
 dimension = 2
 degree of freedom for 3rd order hermite polynomial = 19
 """
 theta = np.zeros((prm.dof, prm.dim))
-gvec = np.array([0.25, 0.25])
+gvec = np.array([0.50])
 
 d_param = prm.data(theta, gvec)
-d_param.theta[4, 0] = 1
-d_param.theta[1, 1] = -1
-d_param.theta[3, 1] = -1
+d_param.theta[0] = 1
+d_param.theta[1] = 1
+d_param.theta[2] = -1
 
 # create paths
 """
@@ -30,5 +29,5 @@ xout, tout = nb.createpaths(d_param, euler_param)
 
 # save to file
 import pickle
-with open('nem_2D.pkl','wb') as f:
+with open('nem_1D.pkl','wb') as f:
     pickle.dump([xout, tout, d_param, euler_param], f)

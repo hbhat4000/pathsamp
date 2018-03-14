@@ -3,10 +3,10 @@ import numpy as np
 # these parameters define the model
 # true_theta defines the basis coefficients in thedrift function
 polynomial_degree = 4
-dim = 2
+dim = 1
 
-# last term is dof choose dim_x = (dof!) / ((dof - dim)! (dim)!)
-dof = 1 + (polynomial_degree - 1) * (dim) + np.power(polynomial_degree - 1, 2)
+# NOTE : the dof depends on polynomial degree
+dof = 1 + (polynomial_degree - 1) * (dim)
 
 class em:
 	def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):
@@ -45,6 +45,6 @@ class euler_maruyama:
 		self.savesteps = 100	# number of time steps saved in the synthetic data
 		self.ft = 10.0			# final time step
 		self.h = self.ft / self.numsteps	# Euler Maruyama time step
-		self.ic = np.array([[1., 1.], [0.8, 0.8], [0.4, 0.4], [0.2, 0.2], [-0.2, -0.2]])	# 2D array of initial conditions for x
+		self.ic = np.array([[1.], [0.8], [0.4], [0.2], [-0.2]])	# 2D array of initial conditions for x
 		self.numpaths = self.ic.shape[0]		# number of time series paths with different initial conditions
 		self.it = np.zeros(self.numpaths)	# 2D array of initial time points for t
