@@ -4,12 +4,12 @@ import parameters as prm
 
 # load data
 import pickle
-with open('nem_2D.pkl','rb') as f:
+with open('nem_3D.pkl','rb') as f:
     allx, allt, d_param, euler_param = pickle.load(f)
 
 """
-dimension = 2
-degree of freedom for 3rd order hermite polynomial = 19
+dimension = 3
+degree of freedom for 3rd order hermite polynomial = 64
 """
 # to check if x and t array are of correct shapes
 print("Data shape:", allx.shape)

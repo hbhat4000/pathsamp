@@ -21,11 +21,11 @@ d_param.theta[3, 1] = -1
 # create paths
 """
 The default parameters for Euler-Maruyama are:
-ic = np.array([[1., 1.], [0., 0.], [-1., -1.]]);
-it = np.zeros(ic.shape);
-euler_param = prm.euler_maruyama(numsteps = 25000, savesteps = 100, ft = 10., ic, it)
+euler_param = prm.euler_maruyama(numsteps = 25000, savesteps = 100, ft = 10., ic, it, numpaths)
 """
-euler_param = prm.euler_maruyama()
+ic = np.array([[1., 1.], [0.8, 0.8], [0.4, 0.4], [0.2, 0.2]])
+it = np.zeros((ic.shape[0]))
+euler_param = prm.euler_maruyama(ic, it)
 xout, tout = nb.createpaths(d_param, euler_param)
 
 # save to file

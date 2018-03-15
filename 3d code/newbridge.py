@@ -4,36 +4,56 @@ from joblib import Parallel, delayed
 
 # defines polynomial basis functions {1, x, x^2, x^3}
 def polynomial_basis(x):
-    y = np.zeros((prm.dim, prm.dof))
+    y = np.zeros((x.shape[0], prm.dof))
 
-    y[:, 0] = 1
+    index = 0
+    y[:, index] = 1
 
-    index = 1
     for i in range(prm.dim):
-        y[:, index] = x[i]
-        y[:, index + 1] = np.power(x[i], 2)
-        y[:, index + 2] = np.power(x[i], 3)
-        index = 4
-    
-    index = 7
+        for j in range(1, prm.polynomial_degree):
+            index += 1
+            y[:, index] = np.power(x[:, i], j)
+
+    if (index == (prm.dof - 1)):
+        return y
+
     for i in range(1, prm.polynomial_degree):
         for j in range(1, prm.polynomial_degree):
-            y[:, index] = np.dot(y[:, i], y[:, (prm.polynomial_degree - 1 + j)])
             index += 1
+            y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)]
 
-    return y
+    if (index == (prm.dof - 1)):
+        return y
 
-def H0():
-    return 0.63161878
+    for i in range(1, prm.polynomial_degree):
+        for j in range(1, prm.polynomial_degree):
+            index += 1
+            y[:, index] = y[:, i] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
 
-def H1(x):
-    return 0.63161878 * x
+    for i in range(1, prm.polynomial_degree):
+        for j in range(1, prm.polynomial_degree):
+            index += 1
+            y[:, index] = y[:, (prm.polynomial_degree - 1 + i)] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
 
-def H2(x):
-    return 0.44662192 * (np.power(x, 2) - 1)
+    for i in range(1, prm.polynomial_degree):
+        for j in range(1, prm.polynomial_degree):
+            for k in range(1, prm.polynomial_degree):
+                index += 1
+                y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)] * y[:, (2 * (prm.polynomial_degree - 1) + k)]
 
-def H3(x):
-    return -0.77357185 * x + 0.25785728 * np.power(x, 3)
+    if (index == (prm.dof - 1)):
+        return y
+
+def H(degree, x):
+    switcher = {
+        0: 0.63161878,
+        1: 0.63161878 * x,
+        2: 0.44662192 * (np.power(x, 2) - 1),
+        3: 0.25785728 * (np.power(x, 3) - 3 * x),
+        4: 0.12892864 * (np.power(x, 4) - 6 * np.power(x, 2) + 3),
+        5: 0.05765864 * (np.power(x, 5) - 10 * np.power(x, 3) + 15 * x)
+    }
+    return switcher.get(degree, "Polynomial degree exceeded")
 
 # this function defines our hermite basis functions
 # x must be a numpy array, a column vector of points
@@ -41,22 +61,44 @@ def H3(x):
 # dof is the number of degrees of freedom, i.e., the number of basis functions
 def hermite_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
-    y[:, 0] = H0()
 
-    index = 1
+    index = 0
+    y[:, index] = H(index, x)
+
     for i in range(prm.dim):
-        y[:, index] = H1(x[:, i])
-        y[:, index + 1] = H2(x[:, i])
-        y[:, index + 2] = H3(x[:, i])
-        index = 4
-    
-    index = 7
+        for j in range(1, prm.polynomial_degree):
+            index += 1
+            y[:, index] = H(j, x[:, i])
+
+    if (index == (prm.dof - 1)):
+        return y
+
     for i in range(1, prm.polynomial_degree):
         for j in range(1, prm.polynomial_degree):
-            y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)]
             index += 1
+            y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)]
 
-    return y
+    if (index == (prm.dof - 1)):
+        return y
+
+    for i in range(1, prm.polynomial_degree):
+        for j in range(1, prm.polynomial_degree):
+            index += 1
+            y[:, index] = y[:, i] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
+
+    for i in range(1, prm.polynomial_degree):
+        for j in range(1, prm.polynomial_degree):
+            index += 1
+            y[:, index] = y[:, (prm.polynomial_degree - 1 + i)] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
+
+    for i in range(1, prm.polynomial_degree):
+        for j in range(1, prm.polynomial_degree):
+            for k in range(1, prm.polynomial_degree):
+                index += 1
+                y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)] * y[:, (2 * (prm.polynomial_degree - 1) + k)]
+
+    if (index == (prm.dof - 1)):
+        return y
 
 # drift function using "basis" functions defined by mypoly
 # x must be a numpy array, the points at which the drift is to be evaluated
