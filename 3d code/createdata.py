@@ -13,7 +13,7 @@ dimension = 3
 degree of freedom for 3rd order hermite polynomial = 64
 """
 theta = np.zeros((prm.dof, prm.dim))
-gvec = np.array([0.25, 0.25, 0.25])
+gvec = 0.*np.array([0.25, 0.25, 0.25])
 
 sigma = 10
 rho = 28
