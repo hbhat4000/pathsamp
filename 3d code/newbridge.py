@@ -62,9 +62,11 @@ def H(degree, x):
 def hermite_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
 
+    # constant polynomial
     index = 0
     y[:, index] = H(index, x)
 
+    # 1st order polynomial: dim * (degree - 1)
     for i in range(prm.dim):
         for j in range(1, prm.polynomial_degree):
             index += 1
@@ -73,6 +75,7 @@ def hermite_basis(x):
     if (index == (prm.dof - 1)):
         return y
 
+    # 2nd order polynomial: dim * (degree - 1)^2
     for i in range(1, prm.polynomial_degree):
         for j in range(1, prm.polynomial_degree):
             index += 1
@@ -91,6 +94,7 @@ def hermite_basis(x):
             index += 1
             y[:, index] = y[:, (prm.polynomial_degree - 1 + i)] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
 
+    # 3rd polynomial: degree^3
     for i in range(1, prm.polynomial_degree):
         for j in range(1, prm.polynomial_degree):
             for k in range(1, prm.polynomial_degree):
@@ -128,9 +132,11 @@ def createpaths(d_param, euler_param):
     h12 = np.sqrt(euler_param.h)
 
     x = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1), prm.dim))
+    x_without_noise = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1), prm.dim ))
     t = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1) ))
 
     x[:, 0, :] = euler_param.ic
+    x_without_noise[:, 0, :] = euler_param.ic
     t[:, 0] = euler_param.it
 
     # for each time series, generate the matrix of size savesteps * dim
@@ -138,17 +144,20 @@ def createpaths(d_param, euler_param):
     for k in range(euler_param.numpaths):
         # k-th initial condition to start off current x and t;''
         curx = euler_param.ic[[k]]
+        curx_without_noise = euler_param.ic[[k]]
         curt = euler_param.it[k]
         j = 1
         for i in range(1, euler_param.numsteps + 1):
-        	curx += drift(d_param, curx) * euler_param.h + diffusion(d_param) * h12
-        	curt += euler_param.h
-        	if (i % (euler_param.numsteps // euler_param.savesteps) == 0):
-        		x[k, j, :] = curx
-        		t[k, j] = curt
-        		j += 1
+            curx += drift(d_param, curx) * euler_param.h + diffusion(d_param) * h12
+            curx_without_noise += drift(d_param, curx_without_noise) * euler_param.h
+            curt += euler_param.h
+            if (i % (euler_param.numsteps // euler_param.savesteps) == 0):
+                x[k, j, :] = curx
+                x_without_noise[k, j, :] = curx_without_noise
+                t[k, j] = curt
+                j += 1
 
-    return x, t
+    return x, t, x_without_noise
 
 # creates brownian bridge interpolations for given start and end
 # time point t and value x.
@@ -190,7 +199,7 @@ def girsanov(d_param, em_param, path):
 # likelihood function. First burnin steps are rejected and the next numsteps
 # are used to compute the mmat and rvec (E step) which are used to solve the system of 
 # equations producing the next iteration of theta (M step).
-def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
+def mcmc(allx, allt, d_param, em_param, path_index, step_index):
     mmat = np.zeros((prm.dim, prm.dof, prm.dof))
     rvec = np.zeros((prm.dim, prm.dof))
 
@@ -205,8 +214,8 @@ def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
     for jj in range(em_param.burninpaths):
         _, prop = brownianbridge(d_param, em_param, x, t)
         proplik = girsanov(d_param, em_param, prop)
-        rho = np.exp(proplik - oldlik)
-        if (rho > np.random.uniform()):
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
             xcur = prop
             oldlik = proplik
             arburn[jj] = 1
@@ -217,8 +226,8 @@ def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
     for jj in range(em_param.mcmcpaths):
         _, prop = brownianbridge(d_param, em_param, x, t)
         proplik = girsanov(d_param, em_param, prop)
-        rho = np.exp(proplik - oldlik)
-        if (rho > np.random.uniform()):
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
             xcur = prop
             oldlik = proplik
             arsamp[jj] = 1
@@ -247,17 +256,18 @@ def em(allx, allt, em_param, d_param):
         
         ## this parallelization is for all time series observations in 1 go
         with Parallel(n_jobs=-1) as parallel:
-            results = parallel(delayed(mcmc2D)(allx, allt, d_param, em_param, path_index, step_index) for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1))
+            results = parallel(delayed(mcmc)(allx, allt, d_param, em_param, path_index, step_index) 
+                for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1))
             for res in results:
                 mmat += res[0]
                 rvec += res[1]
-                # print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
+                print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec).T
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 
         # if a threshold is applied to theta
-        # newtheta[np.abs(newtheta) < 0.1] = 0.
+        # newtheta[np.abs(newtheta) < 0.5] = 0.
 
         # if error is below tolerance, EM has converged
         if (error < em_param.tol):

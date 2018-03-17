@@ -144,7 +144,7 @@ def girsanov(d_param, em_param, path):
 # likelihood function. First burnin steps are rejected and the next numsteps
 # are used to compute the mmat and rvec (E step) which are used to solve the system of 
 # equations producing the next iteration of theta (M step).
-def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
+def mcmc(allx, allt, d_param, em_param, path_index, step_index):
     mmat = np.zeros((prm.dim, prm.dof, prm.dof))
     rvec = np.zeros((prm.dim, prm.dof))
 
@@ -159,8 +159,8 @@ def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
     for jj in range(em_param.burninpaths):
         _, prop = brownianbridge(d_param, em_param, x, t)
         proplik = girsanov(d_param, em_param, prop)
-        rho = np.exp(proplik - oldlik)
-        if (rho > np.random.uniform()):
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
             xcur = prop
             oldlik = proplik
             arburn[jj] = 1
@@ -171,8 +171,8 @@ def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
     for jj in range(em_param.mcmcpaths):
         _, prop = brownianbridge(d_param, em_param, x, t)
         proplik = girsanov(d_param, em_param, prop)
-        rho = np.exp(proplik - oldlik)
-        if (rho > np.random.uniform()):
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
             xcur = prop
             oldlik = proplik
             arsamp[jj] = 1
@@ -201,7 +201,8 @@ def em(allx, allt, em_param, d_param):
         
         ## this parallelization is for all time series observations in 1 go
         with Parallel(n_jobs=-1) as parallel:
-            results = parallel(delayed(mcmc2D)(allx, allt, d_param, em_param, path_index, step_index) for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1))
+            results = parallel(delayed(mcmc)(allx, allt, d_param, em_param, path_index, step_index) 
+                for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1))
             for res in results:
                 mmat += res[0]
                 rvec += res[1]

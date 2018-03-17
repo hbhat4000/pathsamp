@@ -4,7 +4,7 @@ import parameters as prm
 
 """
 Sample equation is the Duffing oscillator
-dx = (1 + x- x^2) dt + g_1 dWt
+dx = (1 + x - x^2) dt + g_1 dWt
 
 dimension = 2
 degree of freedom for 3rd order hermite polynomial = 19
@@ -13,15 +13,13 @@ theta = np.zeros((prm.dof, prm.dim))
 gvec = np.array([0.50])
 
 d_param = prm.data(theta, gvec)
-d_param.theta[0] = 1
+# d_param.theta[0] = 1
 d_param.theta[1] = 1
-d_param.theta[2] = -1
+# d_param.theta[2] = -1
 
 # create paths
 """
 The default parameters for Euler-Maruyama are:
-ic = np.array([[1., 1.], [0., 0.], [-1., -1.]]);
-it = np.zeros(ic.shape);
 euler_param = prm.euler_maruyama(numsteps = 25000, savesteps = 100, ft = 10., ic, it)
 """
 euler_param = prm.euler_maruyama()

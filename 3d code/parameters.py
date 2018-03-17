@@ -3,10 +3,13 @@ import operator as op
 
 # these parameters define the model
 # true_theta defines the basis coefficients in thedrift function
-polynomial_degree = 4
+polynomial_degree = 3
 dim = 3
+dof = 1 + dim * (polynomial_degree - 1) + dim * np.power((polynomial_degree - 1), 2) + np.power(polynomial_degree - 1, dim)
 
-dof = 1 + 9 + 9*3 + 3*3*3
+# dof = 64 	# for dim = 3, polynomial_degree = 4
+# dof = 27 	# for dim = 3, polynomial_degree = 3
+# dof = 8  	# for dim = 3, polynomial_degree = 2
 
 class em:
 	def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):
@@ -20,7 +23,7 @@ class em:
 	def __init__(self, dt):
 		self.tol = 1e-3
 		self.burninpaths = 10
-		self.mcmcpaths = 100
+		self.mcmcpaths = 50
 		self.numsubintervals = 10
 		self.niter = 100
 		self.h = dt / self.numsubintervals
