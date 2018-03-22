@@ -6,9 +6,11 @@ from joblib import Parallel, delayed
 def polynomial_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
 
+    # constant polynomial
     index = 0
-    y[:, index] = 1
+    y[:, index] = 1.
 
+    # 1st order polynomial: dim * (degree - 1)
     for i in range(prm.dim):
         for j in range(1, prm.polynomial_degree):
             index += 1
@@ -17,6 +19,7 @@ def polynomial_basis(x):
     if (index == (prm.dof - 1)):
         return y
 
+    # 2nd order polynomial: dim * (degree - 1)^2
     for i in range(1, prm.polynomial_degree):
         for j in range(1, prm.polynomial_degree):
             index += 1
@@ -35,6 +38,7 @@ def polynomial_basis(x):
             index += 1
             y[:, index] = y[:, (prm.polynomial_degree - 1 + i)] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
 
+    # 3rd polynomial: degree^3
     for i in range(1, prm.polynomial_degree):
         for j in range(1, prm.polynomial_degree):
             for k in range(1, prm.polynomial_degree):
@@ -109,17 +113,17 @@ def hermite_basis(x):
 # theta must also be a numpy array, the coefficients of each "basis" function
 # dof is implicitly calculated based on the first dimension of theta
 def drift(d_param, x):
-	evaluated_basis = np.zeros((prm.dim, x.shape[0], prm.dof))
-	out = np.zeros((x.shape[0], prm.dim))
+    evaluated_basis = np.zeros((prm.dim, x.shape[0], prm.dof))
+    out = np.zeros((x.shape[0], prm.dim))
 
-	# one dimension at a time, each row of x gets mapped to the hermite basis.
-	# both dimensions of x are passed to the hermite function since the hermite
-	# functions depend on all dimensions of x.
-	for i in range(prm.dim):
-		evaluated_basis[i, :, :] = hermite_basis(x)
-		out[:, i] = np.sum(np.dot(evaluated_basis[i, :, :], d_param.theta[:, i]))
+    # one dimension at a time, each row of x gets mapped to the hermite basis.
+    # both dimensions of x are passed to the hermite function since the hermite
+    # functions depend on all dimensions of x.
+    for i in range(prm.dim):
+        evaluated_basis[i, :, :] = polynomial_basis(x)
+        out[:, i] = np.sum(np.dot(evaluated_basis[i, :, :], d_param.theta[:, i]))
 
-	return out
+    return out
 
 def diffusion(d_param):
     return np.dot(d_param.gvec, np.random.standard_normal(prm.dim))
@@ -232,7 +236,8 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
             oldlik = proplik
             arsamp[jj] = 1
         samples = xcur
-        pp = hermite_basis(samples[:(-1)])
+        # pp = hermite_basis(samples[:(-1)])
+        pp = polynomial_basis(samples[:(-1)])
         mmat = mmat + em_param.h * np.matmul(pp.T, pp) / em_param.mcmcpaths
         rvec = rvec + np.matmul((np.diff(samples, axis = 0)).T, pp) / em_param.mcmcpaths   
     meanSample = np.mean(arsamp)
