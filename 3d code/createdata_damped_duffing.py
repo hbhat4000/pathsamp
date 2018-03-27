@@ -15,15 +15,15 @@ Standard parameter values:
 alpha = -1, beta = +1, gamma = 0.2 to 0.65, delta = 0.3, omega = 1.2
 """
 theta = np.zeros((prm.dof, prm.dim))
-gvec = 0.*np.array([0.1, 0.1, 0.1])
+gvec = np.array([0.1, 0.1, 0.1])
 
 alpha = 1.
 beta = 5.
 gamma = 8.
 delta = 0.02
 omega = 0.5
-# norm_constant = np.power(2. * np.pi, -0.25) 
-norm_constant = 1.
+norm_constant = np.power(2. * np.pi, -0.25) 
+# norm_constant = 1.
 
 d_param = prm.data(theta, gvec)
 d_param.theta[4, 0] = 1. / norm_constant 		# y 			in f0
@@ -47,5 +47,5 @@ xout, tout, xout_without_noise = nb.createpaths(d_param, euler_param)
 
 # save to file
 import pickle
-with open('nem_3D_duffing.pkl','wb') as f:
+with open('nem_3D_duffing_hermite.pkl','wb') as f:
     pickle.dump([xout, tout, xout_without_noise, d_param, euler_param], f)

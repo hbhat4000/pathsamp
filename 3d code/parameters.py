@@ -2,8 +2,8 @@ import numpy as np
 import operator as op
 
 # these parameters define the model
-# true_theta defines the basis coefficients in thedrift function
-polynomial_degree = 3
+# true_theta defines the basis coefficients in the drift function
+polynomial_degree = 4
 dim = 3
 dof = 1 + dim * (polynomial_degree - 1) + dim * np.power((polynomial_degree - 1), 2) + np.power(polynomial_degree - 1, dim)
 

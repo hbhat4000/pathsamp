@@ -4,7 +4,7 @@ import parameters as prm
 
 # load data
 import pickle
-with open('nem_3D_duffing.pkl','rb') as f:
+with open('nem_3D_duffing_polynomial.pkl','rb') as f:
     allx, allt, x_without_noise, d_param, euler_param = pickle.load(f)
 
 """

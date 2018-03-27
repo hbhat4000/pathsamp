@@ -120,7 +120,7 @@ def drift(d_param, x):
     # both dimensions of x are passed to the hermite function since the hermite
     # functions depend on all dimensions of x.
     for i in range(prm.dim):
-        evaluated_basis[i, :, :] = polynomial_basis(x)
+        evaluated_basis[i, :, :] = hermite_basis(x)
         out[:, i] = np.sum(np.dot(evaluated_basis[i, :, :], d_param.theta[:, i]))
 
     return out
@@ -237,7 +237,7 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
             arsamp[jj] = 1
         samples = xcur
         # pp = hermite_basis(samples[:(-1)])
-        pp = polynomial_basis(samples[:(-1)])
+        pp = hermite_basis(samples[:(-1)])
         mmat = mmat + em_param.h * np.matmul(pp.T, pp) / em_param.mcmcpaths
         rvec = rvec + np.matmul((np.diff(samples, axis = 0)).T, pp) / em_param.mcmcpaths   
     meanSample = np.mean(arsamp)
