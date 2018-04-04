@@ -5,7 +5,7 @@ import parameters as prm
 # load data
 import pickle
 with open('nem_3D_duffing.pkl','rb') as f:
-    allx, allt, x_without_noise, d_param, euler_param = pickle.load(f)
+    allx, allt, x_without_noise, d_param, euler_param, sim_param = pickle.load(f)
 
 """
 dimension = 3

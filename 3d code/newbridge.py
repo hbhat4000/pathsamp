@@ -50,12 +50,11 @@ def polynomial_basis(x):
 
 def H(degree, x):
     switcher = {
-        0: 0.63161878,
-        1: 0.63161878 * x,
-        2: 0.44662192 * (np.power(x, 2) - 1),
-        3: 0.25785728 * (np.power(x, 3) - 3 * x),
-        4: 0.12892864 * (np.power(x, 4) - 6 * np.power(x, 2) + 3),
-        5: 0.05765864 * (np.power(x, 5) - 10 * np.power(x, 3) + 15 * x)
+        0: 0.63161877774606470129,
+        1: 0.63161877774606470129 * x,
+        2: 0.44662192086900116570 * (np.power(x, 2) - 1),
+        3: 0.25785728623970555997 * (np.power(x, 3) - 3 * x),
+        4: 0.12892864311985277998 * (np.power(x, 4) - 6 * np.power(x, 2) + 3),
     }
     return switcher.get(degree, "Polynomial degree exceeded")
 
@@ -65,48 +64,22 @@ def H(degree, x):
 # dof is the number of degrees of freedom, i.e., the number of basis functions
 def hermite_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
-
-    # constant polynomial
+    print(x.shape)
+    print(y.shape)
+    print(prm.dof)
     index = 0
-    y[:, index] = H(index, x)
 
-    # 1st order polynomial: dim * (degree - 1)
-    for i in range(prm.dim):
-        for j in range(1, prm.polynomial_degree):
-            index += 1
-            y[:, index] = H(j, x[:, i])
+    for d in range(0, prm.polynomial_degree):
+        for i in range(0, d + 1):
+            for j in range(0, d + 1):
+                for k in range(0, d + 1):
+                    if (i + j + k == d):
+                        print("d", d, "i", i, "j", j, "k", k, "index", index)
+                        y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2])
+                        index += 1
 
-    if (index == (prm.dof - 1)):
-        return y
+    return y
 
-    # 2nd order polynomial: dim * (degree - 1)^2
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            index += 1
-            y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)]
-
-    if (index == (prm.dof - 1)):
-        return y
-
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            index += 1
-            y[:, index] = y[:, i] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
-
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            index += 1
-            y[:, index] = y[:, (prm.polynomial_degree - 1 + i)] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
-
-    # 3rd polynomial: degree^3
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            for k in range(1, prm.polynomial_degree):
-                index += 1
-                y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)] * y[:, (2 * (prm.polynomial_degree - 1) + k)]
-
-    if (index == (prm.dof - 1)):
-        return y
 
 # drift function using "basis" functions defined by mypoly
 # x must be a numpy array, the points at which the drift is to be evaluated
@@ -120,48 +93,10 @@ def drift(d_param, x):
     # both dimensions of x are passed to the hermite function since the hermite
     # functions depend on all dimensions of x.
     for i in range(prm.dim):
-        evaluated_basis[i, :, :] = polynomial_basis(x)
+        evaluated_basis[i, :, :] = hermite_basis(x)
         out[:, i] = np.sum(np.dot(evaluated_basis[i, :, :], d_param.theta[:, i]))
 
     return out
-
-def diffusion(d_param):
-    return np.dot(d_param.gvec, np.random.standard_normal(prm.dim))
-
-# create sample paths! 
-
-# this function creates a bunch of Euler-Maruyama paths from an array
-# of initial conditions
-def createpaths(d_param, euler_param):
-    h12 = np.sqrt(euler_param.h)
-
-    x = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1), prm.dim))
-    x_without_noise = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1), prm.dim ))
-    t = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1) ))
-
-    x[:, 0, :] = euler_param.ic
-    x_without_noise[:, 0, :] = euler_param.ic
-    t[:, 0] = euler_param.it
-
-    # for each time series, generate the matrix of size savesteps * dim
-    # corresponding to one 2D time series
-    for k in range(euler_param.numpaths):
-        # k-th initial condition to start off current x and t;''
-        curx = euler_param.ic[[k]]
-        curx_without_noise = euler_param.ic[[k]]
-        curt = euler_param.it[k]
-        j = 1
-        for i in range(1, euler_param.numsteps + 1):
-            curx += drift(d_param, curx) * euler_param.h + diffusion(d_param) * h12
-            curx_without_noise += drift(d_param, curx_without_noise) * euler_param.h
-            curt += euler_param.h
-            if (i % (euler_param.numsteps // euler_param.savesteps) == 0):
-                x[k, j, :] = curx
-                x_without_noise[k, j, :] = curx_without_noise
-                t[k, j] = curt
-                j += 1
-
-    return x, t, x_without_noise
 
 # creates brownian bridge interpolations for given start and end
 # time point t and value x.
@@ -236,8 +171,7 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
             oldlik = proplik
             arsamp[jj] = 1
         samples = xcur
-        # pp = hermite_basis(samples[:(-1)])
-        pp = polynomial_basis(samples[:(-1)])
+        pp = hermite_basis(samples[:(-1)])
         mmat = mmat + em_param.h * np.matmul(pp.T, pp) / em_param.mcmcpaths
         rvec = rvec + np.matmul((np.diff(samples, axis = 0)).T, pp) / em_param.mcmcpaths   
     meanSample = np.mean(arsamp)
