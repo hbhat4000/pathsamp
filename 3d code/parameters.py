@@ -1,15 +1,17 @@
 import numpy as np
 import operator as op
 
+def find_dof(degree):
+	if (degree <= 1):
+		return 1
+
+	return int(degree * (degree + 1) / 2) + find_dof(degree - 1)
+
 # these parameters define the model
-# true_theta defines the basis coefficients in the drift function
+# true_theta defines the basis coefficients in thedrift function
 polynomial_degree = 4
 dim = 3
-dof = 1 + dim * (polynomial_degree - 1) + dim * np.power((polynomial_degree - 1), 2) + np.power(polynomial_degree - 1, dim)
-
-# dof = 64 	# for dim = 3, polynomial_degree = 4
-# dof = 27 	# for dim = 3, polynomial_degree = 3
-# dof = 8  	# for dim = 3, polynomial_degree = 2
+dof = find_dof(polynomial_degree)
 
 class em:
 	def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):
@@ -35,19 +37,34 @@ class data:
 
 class euler_maruyama:
 	def __init__(self, numsteps, savesteps, ft, ic, it, numpaths):
-		self.numsteps = numsteps;
-		self.savesteps = savesteps;
-		self.ft = ft;
-		self.h = ft / numsteps;
-		self.ic = ic;
-		self.it = it;
-		self.numpaths = numpaths;
+		self.numsteps = numsteps
+		self.savesteps = savesteps
+		self.ft = ft
+		self.h = ft / numsteps
+		self.ic = ic
+		self.it = it
+		self.numpaths = numpaths
 
 	def __init__(self, ic, it):
-		self.numsteps = 25000
-		self.savesteps = 100
-		self.ft = 10.0
+		self.numsteps = 25000 * 3
+		self.savesteps = 300
+		self.ft = 30.0
 		self.h = self.ft / self.numsteps
 		self.ic = ic
 		self.it = it
 		self.numpaths = ic.shape[0]
+
+class damped_duffing:
+	def __init__(self, alpha, beta, gamma, delta, omega):
+		self.alpha = alpha
+		self.beta = beta
+		self.gamma = gamma
+		self.delta = delta
+		self.omega = omega
+
+	def __init__(self):
+		self.alpha = -1.
+		self.beta = 1.
+		self.gamma = 0.2 # varying between 0.20 to 0.65
+		self.delta = 0.3
+		self.omega = 1.2
