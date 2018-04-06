@@ -5,48 +5,18 @@ from joblib import Parallel, delayed
 # defines polynomial basis functions {1, x, x^2, x^3}
 def polynomial_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
-
-    # constant polynomial
     index = 0
-    y[:, index] = 1.
 
-    # 1st order polynomial: dim * (degree - 1)
-    for i in range(prm.dim):
-        for j in range(1, prm.polynomial_degree):
-            index += 1
-            y[:, index] = np.power(x[:, i], j)
+    for d in range(0, prm.polynomial_degree):
+        for i in range(0, d + 1):
+            for j in range(0, d + 1):
+                for k in range(0, d + 1):
+                    if (i + j + k == d):
+                        # print("d", d, "i", i, "j", j, "k", k, "index", index)
+                        y[:, index] = np.power(x[:, 0], i) * np.power(x[:, 1], j) * np.power(x[:, 2], k)
+                        index += 1
 
-    if (index == (prm.dof - 1)):
-        return y
-
-    # 2nd order polynomial: dim * (degree - 1)^2
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            index += 1
-            y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)]
-
-    if (index == (prm.dof - 1)):
-        return y
-
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            index += 1
-            y[:, index] = y[:, i] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
-
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            index += 1
-            y[:, index] = y[:, (prm.polynomial_degree - 1 + i)] * y[:, (2 * (prm.polynomial_degree - 1) + j)]
-
-    # 3rd polynomial: degree^3
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            for k in range(1, prm.polynomial_degree):
-                index += 1
-                y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)] * y[:, (2 * (prm.polynomial_degree - 1) + k)]
-
-    if (index == (prm.dof - 1)):
-        return y
+    return y
 
 def H(degree, x):
     switcher = {
@@ -64,9 +34,6 @@ def H(degree, x):
 # dof is the number of degrees of freedom, i.e., the number of basis functions
 def hermite_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
-    print(x.shape)
-    print(y.shape)
-    print(prm.dof)
     index = 0
 
     for d in range(0, prm.polynomial_degree):
@@ -74,7 +41,7 @@ def hermite_basis(x):
             for j in range(0, d + 1):
                 for k in range(0, d + 1):
                     if (i + j + k == d):
-                        print("d", d, "i", i, "j", j, "k", k, "index", index)
+                        # print("d", d, "i", i, "j", j, "k", k, "index", index)
                         y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2])
                         index += 1
 
@@ -206,7 +173,7 @@ def em(allx, allt, em_param, d_param):
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 
         # if a threshold is applied to theta
-        # newtheta[np.abs(newtheta) < 0.5] = 0.
+        newtheta[np.abs(newtheta) < 0.1] = 0.
 
         # if error is below tolerance, EM has converged
         if (error < em_param.tol):

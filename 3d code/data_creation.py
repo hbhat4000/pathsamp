@@ -8,13 +8,13 @@ def system_drift(sim_param, x):
     derivatives[:, 2] = 1
     return derivatives 
 
-def system_diffusion(d_param):
-    return np.dot(d_param.gvec, np.random.standard_normal(prm.dim))
+def system_diffusion(sim_param):
+    return np.dot(sim_param.gvec, np.random.standard_normal(prm.dim))
 
 # create sample paths! 
 # this function creates a bunch of Euler-Maruyama paths from an array
 # of initial conditions
-def createpaths(d_param, euler_param, sim_param):
+def createpaths(euler_param, sim_param):
     h12 = np.sqrt(euler_param.h)
 
     x = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1), prm.dim))
@@ -34,7 +34,7 @@ def createpaths(d_param, euler_param, sim_param):
         curt = euler_param.it[k]
         j = 1
         for i in range(1, euler_param.numsteps + 1):
-            curx += system_drift(sim_param, curx) * euler_param.h + system_diffusion(d_param) * h12
+            curx += system_drift(sim_param, curx) * euler_param.h + system_diffusion(sim_param) * h12
             curx_without_noise += system_drift(sim_param, curx_without_noise) * euler_param.h
             curt += euler_param.h
             if (i % (euler_param.numsteps // euler_param.savesteps) == 0):
