@@ -167,13 +167,13 @@ def em(allx, allt, em_param, d_param):
             for res in results:
                 mmat += res[0]
                 rvec += res[1]
-                print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
+                # print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec).T
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 
         # if a threshold is applied to theta
-        newtheta[np.abs(newtheta) < 0.1] = 0.
+        newtheta[np.abs(newtheta) < 0.05] = 0.
 
         # if error is below tolerance, EM has converged
         if (error < em_param.tol):

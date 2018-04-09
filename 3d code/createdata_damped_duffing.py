@@ -22,7 +22,7 @@ sim_param = prm.damped_duffing()
 The default parameters for Euler-Maruyama are:
 euler_param = prm.euler_maruyama(numsteps = 25000, savesteps = 100, ft = 10., ic, it, numpaths)
 """
-ic = np.array([[0.8, 0.5, 0.], [0.4, 0.2, 0.], [-0.25, 0.1, 0.], [1.0, 0.5, 0.], [-2., -1., 0.]])
+ic = np.array([[2., -1.3, 0.], [1.2, 1.7, 0.], [1., 0., 0.], [0.6, 0.9, 0.], [0.1, 2., 0.], [0.8, 0.5, 0.], [0.4, 0.2, 0.], [-0.25, 0.1, 0.], [1.0, 0.5, 0.], [-2., -1., 0.], [-3., -2.3, 0.], [-1., -0.23, 0.], [-0.5, 2.,0.]])
 it = np.zeros((ic.shape[0]))
 euler_param = prm.euler_maruyama(ic, it)
 xout, tout, xout_without_noise = dc.createpaths(euler_param, sim_param)
