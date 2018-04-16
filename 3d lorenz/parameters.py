@@ -23,7 +23,7 @@ class em:
 		self.tol = 1e-3
 		self.burninpaths = 10
 		self.mcmcpaths = 100
-		self.numsubintervals = 10
+		self.numsubintervals = 20
 		self.niter = 100
 		self.h = dt / self.numsubintervals
 
@@ -43,9 +43,9 @@ class euler_maruyama:
 		self.numpaths = numpaths
 
 	def __init__(self, ic, it):
-		self.numsteps = 25000
-		self.savesteps = 100
-		self.ft = 10.0
+		self.numsteps = 25000 * 40
+		self.savesteps = 400
+		self.ft = 40.0
 		self.h = self.ft / self.numsteps
 		self.ic = ic
 		self.it = it
@@ -59,7 +59,7 @@ class lorenz:
 		self.gvec = gvec
 
 	def __init__(self):
-		self.sigma = 10.
-		self.rho = 28.
-		self.beta = 8/3
-		self.gvec = np.array([1e-2, 1e-2, 1e-2])
+		self.sigma = 10.0
+		self.rho = 28.0
+		self.beta = 8.0 / 3.0
+		self.gvec = np.array([1e-6, 1e-6, 1e-6])

@@ -13,8 +13,7 @@ degree of freedom for 3rd order hermite polynomial = 64
 """
 
 theta = 0.5 * np.random.rand(prm.dof, prm.dim)
-gvec = np.array([0.01, 0.01, 1e-7])
-d_param = prm.data(theta, gvec)
+d_param = prm.data(theta, sim_param.gvec)
 
 print("Data shape:", allx.shape)
 print("Theta shape:", d_param.theta.shape)

@@ -4,16 +4,11 @@ import parameters as prm
 
 # load data
 import pickle
-with open('3D_lorenz.pkl','rb') as f:
+with open('3D_lorenz_2.pkl','rb') as f:
     allx, allt, x_without_noise, euler_param, sim_param = pickle.load(f)
 
-"""
-dimension = 3
-degree of freedom for 3rd order hermite polynomial = 64
-"""
-
 theta = 0.5 * np.random.rand(prm.dof, prm.dim)
-gvec = np.array([0.01, 0.01, 1e-7])
+gvec = sim_param.gvec
 d_param = prm.data(theta, gvec)
 
 print("Data shape:", allx.shape)
