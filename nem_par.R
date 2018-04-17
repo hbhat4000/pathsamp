@@ -41,7 +41,7 @@ g = 1/2
 mytol = 1e-3
 theta = rnorm(n=numdof)
 done = 0
-numpaths = 10
+numpaths = 1000
 sigmafn = expression(g)
 sigmaxfn = expression(0.0)
 numiter = 0
