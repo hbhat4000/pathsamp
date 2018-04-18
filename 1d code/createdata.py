@@ -1,31 +1,28 @@
 import numpy as np
-import newbridge as nb
+import data_creation as dc
 import parameters as prm
 
 """
 Sample equation is the Duffing oscillator
-dx = (1 + x - x^2) dt + g_1 dWt
+dx = (gamma + alpha x + beta x^2) dt + g_1 dWt
 
-dimension = 2
-degree of freedom for 3rd order hermite polynomial = 19
+Standard parameter values:
+alpha = +1, beta = -1, gamma = 1
+g_1 = 0.50
 """
-theta = np.zeros((prm.dof, prm.dim))
-gvec = np.array([0.50])
-
-d_param = prm.data(theta, gvec)
-# d_param.theta[0] = 1
-d_param.theta[1] = 1
-# d_param.theta[2] = -1
+sim_param = prm.system()
 
 # create paths
 """
 The default parameters for Euler-Maruyama are:
-euler_param = prm.euler_maruyama(numsteps = 25000, savesteps = 100, ft = 10., ic, it)
+euler_param = prm.euler_maruyama(numsteps = 25000, savesteps = 100, ft = 10., ic, it, numpaths)
 """
-euler_param = prm.euler_maruyama()
-xout, tout = nb.createpaths(d_param, euler_param)
+ic = np.array([[1.], [1.2], [0.8], [0.6], [0.4], [2.5], [3.], [1.7], [2.1], [-0.25], [-0.5], [-0.6]])
+it = np.zeros((ic.shape[0]))
+euler_param = prm.euler_maruyama(ic, it)
+xout, tout, xout_without_noise = dc.createpaths(euler_param, sim_param)
 
 # save to file
 import pickle
-with open('nem_1D.pkl','wb') as f:
-    pickle.dump([xout, tout, d_param, euler_param], f)
+with open('nem_1D_noise1.pkl','wb') as f:
+    pickle.dump([xout, tout, xout_without_noise, euler_param, sim_param], f)

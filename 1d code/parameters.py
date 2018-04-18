@@ -1,12 +1,19 @@
 import numpy as np
 
-# these parameters define the model
-# true_theta defines the basis coefficients in thedrift function
+def choose(degree, dim):
+	np.math.factorial(degree) / (np.math.factorial(dim) * np.math.factorial(degree - dim))
+
+def find_dof(degree, dim):
+	if (degree <= 1):
+		return 1
+
+	return int(choose(degree + 1, dim)) + find_dof(degree - 1)
+
 polynomial_degree = 4
 dim = 1
-
-# NOTE : the dof depends on polynomial degree
-dof = 1 + (polynomial_degree - 1) * (dim)
+# dof = find_dof(polynomial_degree, dim)
+# TODO : the dof formula needs to be modified to accommodate varying dimensions
+dof = 4
 
 class em:
 	def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):
@@ -21,7 +28,7 @@ class em:
 		self.tol = 1e-3
 		self.burninpaths = 100
 		self.mcmcpaths = 1000
-		self.numsubintervals = 20
+		self.numsubintervals = 10
 		self.niter = 100
 		self.h = dt / self.numsubintervals
 
@@ -31,20 +38,33 @@ class data:
 		self.gvec = gvec
 
 class euler_maruyama:
-	def __init__(self, numsteps, savesteps, numpaths, ft, ic, it):
-		self.numsteps = numsteps;
-		self.savesteps = savesteps;
-		self.numpaths = numpaths;
-		self.ft = ft;
-		self.h = ft / numsteps;
-		self.ic = ic;
-		self.it = it;
+	def __init__(self, numsteps, savesteps, ft, ic, it, numpaths):
+		self.numsteps = numsteps
+		self.savesteps = savesteps
+		self.ft = ft
+		self.h = ft / numsteps
+		self.ic = ic
+		self.it = it
+		self.numpaths = numpaths
+
+	def __init__(self, ic, it):
+		self.numsteps = 25000
+		self.savesteps = 100
+		self.ft = 10.0
+		self.h = self.ft / self.numsteps
+		self.ic = ic
+		self.it = it
+		self.numpaths = ic.shape[0]
+
+class system:
+	def __init__(self, alpha, beta, gamma, gvec):
+		self.alpha = alpha
+		self.beta = beta
+		self.gamma = gamma
+		self.gvec = gvec
 
 	def __init__(self):
-		self.numsteps = 25000	# number of intermediate Euler Maruyama steps
-		self.savesteps = 100	# number of time steps saved in the synthetic data
-		self.ft = 10.0			# final time step
-		self.h = self.ft / self.numsteps	# Euler Maruyama time step
-		self.ic = np.array([[1.], [0.8], [0.4], [0.2], [-0.2]])	# 2D array of initial conditions for x
-		self.numpaths = self.ic.shape[0]		# number of time series paths with different initial conditions
-		self.it = np.zeros(self.numpaths)	# 2D array of initial time points for t
+		self.alpha = 1.
+		self.beta = -1.
+		self.gamma = 1.
+		self.gvec = np.array([0.0001])
