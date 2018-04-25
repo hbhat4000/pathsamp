@@ -12,7 +12,7 @@ dz = (xy - beta z) dt + g_3 dWt
 sigma = 10, rho = 28, beta = 8/3
 g_1 = 1e-2, g_2 = 1e-2, g_3 = 1e-2
 """
-sim_param = prm.lorenz()
+sim_param = prm.system()
 
 # create paths
 """

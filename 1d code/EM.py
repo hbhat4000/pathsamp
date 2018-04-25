@@ -22,10 +22,14 @@ em_param = prm.em(dt = allt[0, 1] - allt[0, 0])
 # call to EM which returns the final error and estimated theta value
 error_list, theta_list = nb.em(allx, allt, em_param, data_param)
 
-print("Error", error_list)
+# convert the hermite polynomial to simplified polynomial expression
+final_parameters = nb.hermite_to_polynomial(theta_list[-1])
+
+print("Error: ", error_list)
 print("Theta: ", theta_list)
+print("Final parameters: ", final_parameters)
 
 # save to file
 import pickle
 with open('1D_result_noise9.pkl','wb') as f:
-    pickle.dump([error_list, theta_list, em_param, data_param], f)
+    pickle.dump([error_list, theta_list, final_parameters, em_param, data_param], f)

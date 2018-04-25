@@ -47,6 +47,8 @@ def hermite_basis(x):
 
     return y
 
+def hermite_to_polynomial(theta):
+
 
 # drift function using "basis" functions defined by mypoly
 # x must be a numpy array, the points at which the drift is to be evaluated

@@ -4,22 +4,17 @@ import parameters as prm
 
 # load data
 import pickle
-with open('nem_3D_duffing_trueDrift.pkl','rb') as f:
+with open('nem_3D.pkl','rb') as f:
     allx, allt, x_without_noise, euler_param, sim_param = pickle.load(f)
 
 """
 dimension = 3
 degree of freedom for 3rd order hermite polynomial = 64
 """
-
-theta = 0.5 * np.random.rand(prm.dof, prm.dim)
-d_param = prm.data(theta, sim_param.gvec)
-
+data_param = prm.data(theta = 0.5 * np.random.rand(prm.dof, prm.dim), gvec = sim_param.gvec)
 print("Data shape:", allx.shape)
-print("Theta shape:", d_param.theta.shape)
-print("Theta:", d_param.theta)
-# theta = 0.1 * np.random.randn(prm.dof, prm.dim)
-data_param = prm.data(theta = d_param.theta, gvec = d_param.gvec)
+print("Theta shape:", data_param.theta.shape)
+print("Theta:", data_param.theta)
 
 """
 Default parameters for Expectation-Maximization

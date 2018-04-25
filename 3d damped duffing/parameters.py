@@ -21,8 +21,8 @@ class em:
 
 	def __init__(self, dt):
 		self.tol = 1e-3
-		self.burninpaths = 10
-		self.mcmcpaths = 100
+		self.burninpaths = 50
+		self.mcmcpaths = 500
 		self.numsubintervals = 10
 		self.niter = 100
 		self.h = dt / self.numsubintervals
@@ -43,15 +43,15 @@ class euler_maruyama:
 		self.numpaths = numpaths
 
 	def __init__(self, ic, it):
-		self.numsteps = 25000 * 5
-		self.savesteps = 500
-		self.ft = 50.0
+		self.numsteps = 25000 
+		self.savesteps = 100
+		self.ft = 10.0
 		self.h = self.ft / self.numsteps
 		self.ic = ic
 		self.it = it
 		self.numpaths = ic.shape[0]
 
-class damped_duffing:
+class system:
 	def __init__(self, alpha, beta, gamma, delta, omega, gvec):
 		self.alpha = alpha
 		self.beta = beta
@@ -63,7 +63,7 @@ class damped_duffing:
 	def __init__(self):
 		self.alpha = -1.
 		self.beta = 1.
-		self.gamma = 0.25 # varying between 0.20 to 0.65
+		self.gamma = 0.5 # varying between 0.20 to 0.65
 		self.delta = 0.3
 		self.omega = 1.2
-		self.gvec = np.array([1e-4, 1e-4, 1e-7])
+		self.gvec = np.array([0.01, 0.01, 0.01])

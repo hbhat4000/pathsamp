@@ -4,8 +4,8 @@ import parameters as prm
 def system_drift(sim_param, x):
     derivatives = np.zeros((x.shape[0], x.shape[1]))
     derivatives[:, 0] = x[:, 1]
-    derivatives[:, 1] = -sim_param.delta * x[:, 1] - sim_param.alpha * x[:, 0] - sim_param.beta * np.power(x[:, 0], 3) + sim_param.gamma * np.cos(sim_param.omega * x[:, 2])
-    derivatives[:, 2] = 1
+    derivatives[:, 1] = -sim_param.delta * x[:, 1] - sim_param.alpha * x[:, 0] - sim_param.beta * np.power(x[:, 0], 3) + sim_param.gamma * np.cos(x[:, 2])
+    derivatives[:, 2] = sim_param.omega
     return derivatives 
 
 def system_diffusion(sim_param):

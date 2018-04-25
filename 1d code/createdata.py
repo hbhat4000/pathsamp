@@ -3,7 +3,7 @@ import data_creation as dc
 import parameters as prm
 
 """
-Sample equation is the Duffing oscillator
+Sample equation is the ? oscillator
 dx = (gamma + alpha x + beta x^2) dt + g_1 dWt
 
 Standard parameter values:
