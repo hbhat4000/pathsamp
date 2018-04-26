@@ -13,7 +13,8 @@ polynomial_degree = 4
 dim = 1
 # dof = find_dof(polynomial_degree, dim)
 # TODO : the dof formula needs to be modified to accommodate varying dimensions
-dof = 4
+# dimension = 4 => 1 (d=0) + 4 (d=1) + 10 (d=2) + 20 (d=3)
+dof = 35 
 
 class em:
 	def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):
@@ -26,8 +27,8 @@ class em:
 
 	def __init__(self, dt):
 		self.tol = 1e-2
-		self.burninpaths = 100
-		self.mcmcpaths = 1000
+		self.burninpaths = 10
+		self.mcmcpaths = 100
 		self.numsubintervals = 10
 		self.niter = 100
 		self.h = dt / self.numsubintervals
@@ -57,14 +58,16 @@ class euler_maruyama:
 		self.numpaths = ic.shape[0]
 
 class system:
-	def __init__(self, alpha, beta, gamma, gvec):
-		self.alpha = alpha
-		self.beta = beta
-		self.gamma = gamma
-		self.gvec = gvec
+	def __init__(self, g, l, k, m, gvec):
+		self.g = g
+		self.l = l
+		self.k = k
+		self.m = m
+                self.gvec = gvec
 
 	def __init__(self):
-		self.alpha = 1.
-		self.beta = -1.
-		self.gamma = 1.
-		self.gvec = np.array([0.1])
+		self.g = 9.81
+		self.l = 3.
+		self.k = 2.
+                self.m = 1.
+		self.gvec = np.array([0.01, 0.01, 0.01, 0.01])

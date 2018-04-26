@@ -9,10 +9,13 @@ def polynomial_basis(x):
 
     for d in range(0, prm.polynomial_degree):
         for i in range(0, d + 1):
-            if (i == d):
-                # print("d", d, "i", i, "index", index)
-                y[:, index] = H(i, x[:, 0])
-                index += 1
+            for j in range(0, d + 1):
+                for k in range(0, d + 1):
+                    for l in range(0, d + 1):
+                        if (i + j + k + l == d):
+                            # print("d", d, "i", i, "j", j, "k", k, "l", l, "index", index)
+                            y[:, index] = H(i, x[:, 0]) * H(j, x[:, 0]) * H(k, x[:, 0]) * H(l, x[:, 0])
+                            index += 1
 
     return y
 
@@ -38,10 +41,13 @@ def hermite_basis(x):
 
     for d in range(0, prm.polynomial_degree):
         for i in range(0, d + 1):
-            if (i == d):
-                # print("d", d, "i", i, "index", index)
-                y[:, index] = H(i, x[:, 0])
-                index += 1
+            for j in range(0, d + 1):
+                for k in range(0, d + 1):
+                    for l in range(0, d + 1):
+                        if (i + j + k + l == d):
+                            # print("d", d, "i", i, "j", j, "k", k, "l", l, "index", index)
+                            y[:, index] = H(i, x[:, 0]) * H(j, x[:, 0]) * H(k, x[:, 0]) * H(l, x[:, 0])
+                            index += 1
 
     return y
 
@@ -172,7 +178,7 @@ def em(allx, allt, em_param, d_param):
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 
         # if a threshold is applied to theta
-        newtheta[np.abs(newtheta) < 0.05] = 0.
+        # newtheta[np.abs(newtheta) < 0.05] = 0.
         d_param.theta = newtheta
 
         error_list.append(error)

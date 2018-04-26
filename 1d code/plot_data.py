@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 
 # load data
 import pickle
-with open('nem_3D_duffing_trueDrift.pkl','rb') as f:
+with open('nem_1D_noise1.pkl','rb') as f:
     xout, tout, x_without_noise, euler_param, sim_param = pickle.load(f)
 
 p0, = plt.plot(tout[0, :], xout[0, :, 0], label='time series 0')
