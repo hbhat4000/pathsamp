@@ -12,10 +12,12 @@ def polynomial_basis(x):
             for j in range(0, d + 1):
                 for k in range(0, d + 1):
                     for l in range(0, d + 1):
-                        if (i + j + k + l == d):
-                            # print("d", d, "i", i, "j", j, "k", k, "l", l, "index", index)
-                            y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2]) * H(l, x[:, 3])
-                            index += 1
+                    	for m in range(0, d + 1):
+                    		for n in range(0, d + 1):
+		                        if (i + j + k + l + m + n == d):
+		                            # print("d", d, "i", i, "j", j, "k", k, "l", l, "index", index)
+		                            y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2]) * H(l, x[:, 3]) * H(m, x[:, 4]) * H(n, x[:, 5])
+		                            index += 1
 
     return y
 
@@ -44,10 +46,12 @@ def hermite_basis(x):
             for j in range(0, d + 1):
                 for k in range(0, d + 1):
                     for l in range(0, d + 1):
-                        if (i + j + k + l == d):
-                            # print("d", d, "i", i, "j", j, "k", k, "l", l, "index", index)
-                            y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2]) * H(l, x[:, 3])
-                            index += 1
+                    	for m in range(0, d + 1):
+                    		for n in range(0, d + 1):
+		                        if (i + j + k + l + m + n == d):
+		                            # print("d", d, "i", i, "j", j, "k", k, "l", l, "index", index)
+		                            y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2]) * H(l, x[:, 3]) * H(m, x[:, 4]) * H(n, x[:, 5])
+		                            index += 1
 
     return y
 
