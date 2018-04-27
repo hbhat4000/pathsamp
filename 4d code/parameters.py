@@ -10,7 +10,7 @@ def find_dof(degree, dim):
 	return int(choose(degree + 1, dim)) + find_dof(degree - 1)
 
 polynomial_degree = 4
-dim = 1
+dim = 4
 # dof = find_dof(polynomial_degree, dim)
 # TODO : the dof formula needs to be modified to accommodate varying dimensions
 # dimension = 4 => 1 (d=0) + 4 (d=1) + 10 (d=2) + 20 (d=3)
@@ -63,11 +63,11 @@ class system:
 		self.l = l
 		self.k = k
 		self.m = m
-                self.gvec = gvec
+		self.gvec = gvec
 
 	def __init__(self):
 		self.g = 9.81
 		self.l = 3.
 		self.k = 2.
-                self.m = 1.
+		self.m = 1.
 		self.gvec = np.array([0.01, 0.01, 0.01, 0.01])

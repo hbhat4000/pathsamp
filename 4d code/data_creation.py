@@ -8,7 +8,7 @@ def system_drift(sim_param, x):
     derivatives[:, 0] = x[:, 1]
     derivatives[:, 1] = -const1 * np.sin(x[:, 0]) - const2*(x[:, 0] - x[:, 2])
     derivatives[:, 2] = x[:, 3]
-    derivatives[:, 3] = -const1 * np.sin(x[:, 2]) - const2*(x[:, 0] - x[:, 2])
+    derivatives[:, 3] = -const1 * np.sin(x[:, 2]) + const2*(x[:, 0] - x[:, 2])
     return derivatives 
 
 def system_diffusion(sim_param):
