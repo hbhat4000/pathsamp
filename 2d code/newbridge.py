@@ -4,57 +4,46 @@ from joblib import Parallel, delayed
 
 # defines polynomial basis functions {1, x, x^2, x^3}
 def polynomial_basis(x):
-    y = np.zeros((prm.dim, prm.dof))
+    y = np.zeros((x.shape[0], prm.dof))
+    index = 0
 
-    y[:, 0] = 1
-
-    index = 1
-    for i in range(prm.dim):
-        y[:, index] = x[i]
-        y[:, index + 1] = np.power(x[i], 2)
-        y[:, index + 2] = np.power(x[i], 3)
-        index = 4
-    
-    index = 7
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            y[:, index] = np.dot(y[:, i], y[:, (prm.polynomial_degree - 1 + j)])
-            index += 1
+    for d in range(0, prm.num_hermite_terms):
+        for j in range(0, d + 1):
+            for i in range(0, d + 1):
+                if (i + j == d):
+                    # print("d", d, "i", i, "j", j, "index", index)
+                    y[:, index] = np.power(x[:, 0], i) * np.power(x[:, 1], j)
+                    index += 1
 
     return y
 
-def H0():
-    return 0.63161878
-
-def H1(x):
-    return 0.63161878 * x
-
-def H2(x):
-    return 0.44662192 * (np.power(x, 2) - 1)
-
-def H3(x):
-    return -0.77357185 * x + 0.25785728 * np.power(x, 3)
+def H(degree, x):
+    switcher = {
+        0: 0.63161877774606470129,
+        1: 0.63161877774606470129 * x,
+        2: 0.44662192086900116570 * (np.power(x, 2) - 1),
+        3: 0.25785728623970555997 * (np.power(x, 3) - 3 * x),
+        4: 0.12892864311985277998 * (np.power(x, 4) - 6 * np.power(x, 2) + 3),
+    }
+    return switcher.get(degree, "Polynomial degree exceeded")
 
 # this function defines our hermite basis functions
 # x must be a numpy array, a column vector of points
 # (x = vector of points at which we seek to evaluate the basis functions)
-# dof is the number of degrees of freedom, i.e., the number of basis functions
+# dof is the number of degrees of freedom, i.e., the number of basis functions.
+
+# TODO : currently this loop has to be written separately for varying dimensions.
 def hermite_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
-    y[:, 0] = H0()
+    index = 0
 
-    index = 1
-    for i in range(prm.dim):
-        y[:, index] = H1(x[:, i])
-        y[:, index + 1] = H2(x[:, i])
-        y[:, index + 2] = H3(x[:, i])
-        index = 4
-    
-    index = 7
-    for i in range(1, prm.polynomial_degree):
-        for j in range(1, prm.polynomial_degree):
-            y[:, index] = y[:, i] * y[:, (prm.polynomial_degree - 1 + j)]
-            index += 1
+    for d in range(0, prm.num_hermite_terms):
+        for j in range(0, d + 1):
+            for i in range(0, d + 1):
+                if (i + j == d):
+                    # print("d", d, "i", i, "j", j, "index", index)
+                    y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1])
+                    index += 1
 
     return y
 
@@ -63,50 +52,17 @@ def hermite_basis(x):
 # theta must also be a numpy array, the coefficients of each "basis" function
 # dof is implicitly calculated based on the first dimension of theta
 def drift(d_param, x):
-	evaluated_basis = np.zeros((prm.dim, x.shape[0], prm.dof))
-	out = np.zeros((x.shape[0], prm.dim))
+    evaluated_basis = np.zeros((prm.dim, x.shape[0], prm.dof))
+    out = np.zeros((x.shape[0], prm.dim))
 
-	# one dimension at a time, each row of x gets mapped to the hermite basis.
-	# both dimensions of x are passed to the hermite function since the hermite
-	# functions depend on all dimensions of x.
-	for i in range(prm.dim):
-		evaluated_basis[i, :, :] = hermite_basis(x)
-		out[:, i] = np.sum(np.dot(evaluated_basis[i, :, :], d_param.theta[:, i]))
+    # one dimension at a time, each row of x gets mapped to the hermite basis.
+    # both dimensions of x are passed to the hermite function since the hermite
+    # functions depend on all dimensions of x.
+    for i in range(prm.dim):
+        evaluated_basis[i, :, :] = hermite_basis(x)
+        out[:, i] = np.sum(np.dot(evaluated_basis[i, :, :], d_param.theta[:, i]))
 
-	return out
-
-def diffusion(d_param):
-    return np.dot(d_param.gvec, np.random.standard_normal(prm.dim))
-
-# create sample paths! 
-
-# this function creates a bunch of Euler-Maruyama paths from an array
-# of initial conditions
-def createpaths(d_param, euler_param):
-    h12 = np.sqrt(euler_param.h)
-
-    x = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1), prm.dim))
-    t = np.zeros(( euler_param.numpaths, (euler_param.savesteps + 1) ))
-
-    x[:, 0, :] = euler_param.ic
-    t[:, 0] = euler_param.it
-
-    # for each time series, generate the matrix of size savesteps * dim
-    # corresponding to one 2D time series
-    for k in range(euler_param.numpaths):
-        # k-th initial condition to start off current x and t;''
-        curx = euler_param.ic[[k]]
-        curt = euler_param.it[k]
-        j = 1
-        for i in range(1, euler_param.numsteps + 1):
-        	curx += drift(d_param, curx) * euler_param.h + diffusion(d_param) * h12
-        	curt += euler_param.h
-        	if (i % (euler_param.numsteps // euler_param.savesteps) == 0):
-        		x[k, j, :] = curx
-        		t[k, j] = curt
-        		j += 1
-
-    return x, t
+    return out
 
 # creates brownian bridge interpolations for given start and end
 # time point t and value x.
@@ -133,22 +89,22 @@ def brownianbridge(d_param, em_param, xin, tin):
 
 # Girsanov likelihood is computed using # TODO: insert reference to the paper
 def girsanov(d_param, em_param, path):
-	# path is of size (numsubintervals + 1, dim)
-	# b is of size (numsubintervals + 1, dim)
-	b = drift(d_param, path)
-	u = np.dot(np.diag(np.power(d_param.gvec, -2)), b.T).T
-	int1 = np.tensordot(u[:-1, :], np.diff(path, axis = 0))
-	u2 = np.einsum('ij,ji->i', u.T, b)
-	int2 = np.sum(0.5 * (u2[1:] + u2[:-1])) * em_param.h
-	r = int1 - 0.5 * int2
-	return r
+    # path is of size (numsubintervals + 1, dim)
+    # b is of size (numsubintervals + 1, dim)
+    b = drift(d_param, path)
+    u = np.dot(np.diag(np.power(d_param.gvec, -2)), b.T).T
+    int1 = np.tensordot(u[:-1, :], np.diff(path, axis = 0))
+    u2 = np.einsum('ij,ji->i', u.T, b)
+    int2 = np.sum(0.5 * (u2[1:] + u2[:-1])) * em_param.h
+    r = int1 - 0.5 * int2
+    return r
 
 # this function computes MCMC steps for i-th interval of the j-th time series
 # using Brownian bridge. The accept-reject step is computed using the Girsanov
 # likelihood function. First burnin steps are rejected and the next numsteps
 # are used to compute the mmat and rvec (E step) which are used to solve the system of 
 # equations producing the next iteration of theta (M step).
-def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
+def mcmc(allx, allt, d_param, em_param, path_index, step_index):
     mmat = np.zeros((prm.dim, prm.dof, prm.dof))
     rvec = np.zeros((prm.dim, prm.dof))
 
@@ -163,8 +119,8 @@ def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
     for jj in range(em_param.burninpaths):
         _, prop = brownianbridge(d_param, em_param, x, t)
         proplik = girsanov(d_param, em_param, prop)
-        rho = np.exp(proplik - oldlik)
-        if (rho > np.random.uniform()):
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
             xcur = prop
             oldlik = proplik
             arburn[jj] = 1
@@ -175,8 +131,8 @@ def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
     for jj in range(em_param.mcmcpaths):
         _, prop = brownianbridge(d_param, em_param, x, t)
         proplik = girsanov(d_param, em_param, prop)
-        rho = np.exp(proplik - oldlik)
-        if (rho > np.random.uniform()):
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
             xcur = prop
             oldlik = proplik
             arsamp[jj] = 1
@@ -188,6 +144,53 @@ def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
     
     return (mmat, rvec, meanBurnin, meanSample, path_index, step_index)
 
+def index_mapping():
+    index = 0
+    index_map = {}
+
+    for d in range(0, prm.num_hermite_terms):
+        for j in range(0, d + 1):
+            for i in range(0, d + 1):
+                if (i + j == d):
+                    index_set = (i, j)
+                    index_map[index_set] = index
+                    index += 1
+
+    return index_map
+
+def hermite_to_ordinary(theta):
+    transformation = np.zeros((prm.dof, prm.dof))
+    index_map = index_mapping()
+    index = 0
+    
+    mat = np.zeros((prm.num_hermite_terms, prm.num_hermite_terms))
+    mat[0, 0] = 0.63161877774606470129
+    mat[1, 1] = 0.63161877774606470129
+    mat[2, 2] = 0.44662192086900116570
+    mat[0, 2] = -mat[2, 2]
+    mat[3, 3] = 0.25785728623970555997
+    mat[1, 3] = -3 * mat[3, 3]
+
+    for d in range(0, prm.num_hermite_terms):
+        for j in range(0, d + 1):
+            for i in range(0, d + 1):
+                if (i + j == d):
+                    if (i >= 2):
+                        new_index_set = (i - 2, j)
+                        new_index = index_map[new_index_set]
+                        transformation[new_index, index] = mat[i - 2, i] * mat[j, j]
+                    if (j >= 2):
+                        new_index_set = (i, j - 2)
+                        new_index = index_map[new_index_set]
+                        transformation[new_index, index] = mat[i, i] * mat[j - 2, j]
+
+                    transformation[index, index] = mat[i, i] * mat[j, j]
+                    index += 1
+
+    print(transformation)                        
+    transformed_theta = np.matmul(transformation, theta)
+    return np.transpose(transformed_theta)
+
 # this function computes the E-step for all intervals in all time series parallely.
 # the accummulated mmat and rvec are then used to solve the system, theta = mmat * rvec,
 # to get the next iteration of theta (M-step). The function returns successfully if the
@@ -196,6 +199,8 @@ def mcmc2D(allx, allt, d_param, em_param, path_index, step_index):
 def em(allx, allt, em_param, d_param):
     done = False
     numiter = 0
+    error_list = []
+    theta_list = []
 
     while (done == False):
         numiter = numiter + 1
@@ -205,18 +210,22 @@ def em(allx, allt, em_param, d_param):
         
         ## this parallelization is for all time series observations in 1 go
         with Parallel(n_jobs=-1) as parallel:
-            results = parallel(delayed(mcmc2D)(allx, allt, d_param, em_param, path_index, step_index) for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1))
+            results = parallel(delayed(mcmc)(allx, allt, d_param, em_param, path_index, step_index) 
+                for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1))
             for res in results:
                 mmat += res[0]
                 rvec += res[1]
-                # print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
+                print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec).T
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 
         # if a threshold is applied to theta
-        # newtheta[np.abs(newtheta) < 0.1] = 0.
+        # newtheta[np.abs(newtheta) < 0.05] = 0.
+        d_param.theta = newtheta
 
+        error_list.append(error)
+        theta_list.append(d_param.theta)
         # if error is below tolerance, EM has converged
         if (error < em_param.tol):
             print("Finished successfully!")
@@ -229,8 +238,7 @@ def em(allx, allt, em_param, d_param):
             print("Finished without reaching the tolerance")
             done = True
 
-        d_param.theta = newtheta
         print(error)
         print(d_param.theta)
 
-    return error, d_param
+    return error_list, theta_list

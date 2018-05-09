@@ -1,20 +1,14 @@
 import numpy as np
 
 def choose(degree, dim):
-	np.math.factorial(degree) / (np.math.factorial(dim) * np.math.factorial(degree - dim))
+	return np.math.factorial(degree) / (np.math.factorial(dim) * np.math.factorial(degree - dim))
 
 def find_dof(degree, dim):
-	if (degree <= 1):
-		return 1
+	return int(choose(degree + dim - 1, dim))
 
-	return int(choose(degree + 1, dim)) + find_dof(degree - 1)
-
-polynomial_degree = 4
+num_hermite_terms = 4
 dim = 4
-# dof = find_dof(polynomial_degree, dim)
-# TODO : the dof formula needs to be modified to accommodate varying dimensions
-# dimension = 4 => 1 (d=0) + 4 (d=1) + 10 (d=2) + 20 (d=3)
-dof = 35 
+dof = find_dof(num_hermite_terms, dim) 
 
 class em:
 	def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):
@@ -53,21 +47,17 @@ class euler_maruyama:
 		self.savesteps = 100
 		self.ft = 10.0
 		self.h = self.ft / self.numsteps
-		self.ic = ic
+		self.ic = np.random.randn(10, dim)
 		self.it = it
 		self.numpaths = ic.shape[0]
 
 class system:
-	def __init__(self, g, l, k, m, gvec):
-		self.g = g
-		self.l = l
-		self.k = k
-		self.m = m
+	def __init__(self, kvec, mvec, gvec):
+		self.kvec = kvec
+		self.mvec = mvec
 		self.gvec = gvec
 
 	def __init__(self):
-		self.g = 9.81
-		self.l = 3.
-		self.k = 2.
-		self.m = 1.
-		self.gvec = np.array([0.01, 0.01, 0.01, 0.01])
+		self.kvec = np.array([1., 0.7, 0.6])
+		self.mvec = np.array([0.2, 0.3])
+		self.gvec = np.full(dim, 0.1)

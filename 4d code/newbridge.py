@@ -7,14 +7,14 @@ def polynomial_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
     index = 0
 
-    for d in range(0, prm.polynomial_degree):
-        for i in range(0, d + 1):
-            for j in range(0, d + 1):
-                for k in range(0, d + 1):
-                    for l in range(0, d + 1):
+    for d in range(0, prm.num_hermite_terms):
+        for l in range(0, d + 1):
+            for k in range(0, d + 1):
+                for j in range(0, d + 1):
+                    for i in range(0, d + 1):
                         if (i + j + k + l == d):
                             # print("d", d, "i", i, "j", j, "k", k, "l", l, "index", index)
-                            y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2]) * H(l, x[:, 3])
+                            y[:, index] = np.power(x[:, 0], i) * np.power(x[:, 1], j) * np.power(x[:, 2], k) * np.power(x[:, 3], l)
                             index += 1
 
     return y
@@ -39,11 +39,11 @@ def hermite_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
     index = 0
 
-    for d in range(0, prm.polynomial_degree):
-        for i in range(0, d + 1):
-            for j in range(0, d + 1):
-                for k in range(0, d + 1):
-                    for l in range(0, d + 1):
+    for d in range(0, prm.num_hermite_terms):
+        for l in range(0, d + 1):
+            for k in range(0, d + 1):
+                for j in range(0, d + 1):
+                    for i in range(0, d + 1):
                         if (i + j + k + l == d):
                             # print("d", d, "i", i, "j", j, "k", k, "l", l, "index", index)
                             y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2]) * H(l, x[:, 3])
@@ -148,6 +148,69 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
     
     return (mmat, rvec, meanBurnin, meanSample, path_index, step_index)
 
+def index_mapping():
+    index = 0
+    index_map = {}
+
+    for d in range(0, prm.num_hermite_terms):
+        for l in range(0, d + 1):
+            for k in range(0, d + 1):
+                for j in range(0, d + 1):
+                    for i in range(0, d + 1):
+                        if (i + j + k + l == d):
+                            index_set = (i, j, k, l)
+                            index_map[index_set] = index
+                            index += 1
+
+    return index_map
+
+def hermite_to_ordinary(theta):
+    transformation = np.zeros((prm.dof, prm.dof))
+    index_map = index_mapping()
+    index = 0
+    
+    mat = np.zeros((prm.num_hermite_terms, prm.num_hermite_terms))
+    mat[0, 0] = 0.63161877774606470129
+    mat[1, 1] = 0.63161877774606470129
+    mat[2, 2] = 0.44662192086900116570
+    mat[0, 2] = -mat[2, 2]
+    mat[3, 3] = 0.25785728623970555997
+    mat[1, 3] = -3 * mat[3, 3]
+
+    for d in range(0, prm.num_hermite_terms):
+        for l in range(0, d + 1):
+            for k in range(0, d + 1):
+                for j in range(0, d + 1):
+                    for i in range(0, d + 1):
+                        if (i + j + k + l == d):
+                            if (i >= 2):
+                                new_index_set = (i - 2, j, k, l)
+                                new_index = index_map[new_index_set]
+                                transformation[new_index, index] = mat[i - 2, i] * mat[j, j] * mat[k, k] * mat[l, l]
+                            if (j >= 2):
+                                new_index_set = (i, j - 2, k, l)
+                                new_index = index_map[new_index_set]
+                                transformation[new_index, index] = mat[i, i] * mat[j - 2, j] * mat[k, k] * mat[l, l]
+                            if (k >= 2):
+                                new_index_set = (i, j, k - 2, l)
+                                new_index = index_map[new_index_set]
+                                transformation[new_index, index] = mat[i, i] * mat[j, j] * mat[k - 2, k] * mat[l, l]
+                            if (l >= 2):
+                                new_index_set = (i, j, k, l - 2)
+                                new_index = index_map[new_index_set]
+                                transformation[new_index, index] = mat[i, i] * mat[j, j] * mat[k, k] * mat[l - 2, l]
+                            
+                            # assuming max polynomial degree = 3, then cases would be 
+                            # (3, 0, 0, 0) or (2, 1, 0, 0) or (1, 1, 1, 0) or (0, 0, 0, 0)
+                            # i.e., at max 1 component has 2 parts
+                            # Note: degree 4 is much more complicated because it has 
+                            # (4, 0, 0, 0), (2, 2, 0, 0) and (3, 1, 0, 0)
+                            transformation[index, index] = mat[i, i] * mat[j, j] * mat[k, k] * mat[l, l]
+                            index += 1
+                            
+    transformed_theta = np.matmul(transformation, theta)
+    return np.transpose(transformed_theta)
+
 # this function computes the E-step for all intervals in all time series parallely.
 # the accummulated mmat and rvec are then used to solve the system, theta = mmat * rvec,
 # to get the next iteration of theta (M-step). The function returns successfully if the
@@ -174,7 +237,6 @@ def em(allx, allt, em_param, d_param):
                 rvec += res[1]
                 print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
 
-        print(mmat)
         newtheta = np.linalg.solve(mmat, rvec).T
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 

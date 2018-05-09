@@ -1,9 +1,13 @@
 import numpy as np
 import parameters as prm
 
+"""
+Sample equation is the simple oscillator
+dx = (alpha + beta x + gamma x^2) dt + g_1 dWt
+"""
 def system_drift(sim_param, x):
     derivatives = np.zeros((x.shape[0], x.shape[1]))
-    derivatives[:, 0] = sim_param.gamma + sim_param.alpha * x[:, 0] + sim_param.beta * np.power(x[:, 0], 2)
+    derivatives[:, 0] = sim_param.alpha + sim_param.beta * x[:, 0] + sim_param.gamma * np.power(x[:, 0], 2)
     return derivatives 
 
 def system_diffusion(sim_param):
@@ -26,7 +30,7 @@ def createpaths(euler_param, sim_param):
     # for each time series, generate the matrix of size savesteps * dim
     # corresponding to one 2D time series
     for k in range(euler_param.numpaths):
-        # k-th initial condition to start off current x and t;''
+        # k-th initial condition to start off current x and t
         curx = euler_param.ic[[k]]
         curx_without_noise = euler_param.ic[[k]]
         curt = euler_param.it[k]

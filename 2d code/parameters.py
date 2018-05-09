@@ -1,12 +1,14 @@
 import numpy as np
 
-# these parameters define the model
-# true_theta defines the basis coefficients in thedrift function
-polynomial_degree = 4
-dim = 2
+def choose(degree, dim):
+	return np.math.factorial(degree) / (np.math.factorial(dim) * np.math.factorial(degree - dim))
 
-# last term is dof choose dim_x = (dof!) / ((dof - dim)! (dim)!)
-dof = 1 + (polynomial_degree - 1) * (dim) + np.power(polynomial_degree - 1, 2)
+def find_dof(degree, dim):
+	return int(choose(degree + dim - 1, dim))
+
+num_hermite_terms = 4
+dim = 2
+dof = find_dof(num_hermite_terms, dim) 
 
 class em:
 	def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):
@@ -18,9 +20,9 @@ class em:
 		self.h = dt / numsubintervals	# time step for EM
 
 	def __init__(self, dt):
-		self.tol = 1e-3
-		self.burninpaths = 10
-		self.mcmcpaths = 100
+		self.tol = 1e-2
+		self.burninpaths = 100
+		self.mcmcpaths = 1000
 		self.numsubintervals = 10
 		self.niter = 100
 		self.h = dt / self.numsubintervals
@@ -32,28 +34,32 @@ class data:
 
 class euler_maruyama:
 	def __init__(self, numsteps, savesteps, ft, ic, it, numpaths):
-		self.numsteps = numsteps;
-		self.savesteps = savesteps;
-		self.ft = ft;
-		self.h = ft / numsteps;
-		self.ic = ic;
-		self.it = it;
-		self.numpaths = numpaths;
-
-	def __init__(self):
-		self.numsteps = 25000	# number of intermediate Euler Maruyama steps
-		self.savesteps = 100	# number of time steps saved in the synthetic data
-		self.ft = 10.0			# final time step
-		self.h = self.ft / self.numsteps	# Euler Maruyama time step
-		self.ic = np.array([[1., 0.], [0.8, 0.], [0.4, 0.], [0.2, 0.], [-0.2, 0.]])	# 2D array of initial conditions for x
-		self.it = np.zeros(self.ic.shape[0])	# 2D array of initial time points for t
-		self.numpaths = self.ic.shape[0]		# number of time series paths with different initial conditions
+		self.numsteps = numsteps
+		self.savesteps = savesteps
+		self.ft = ft
+		self.h = ft / numsteps
+		self.ic = ic
+		self.it = it
+		self.numpaths = numpaths
 
 	def __init__(self, ic, it):
 		self.numsteps = 25000
 		self.savesteps = 100
 		self.ft = 10.0
 		self.h = self.ft / self.numsteps
-		self.ic = ic
+		self.ic = np.random.randn(10, dim)
 		self.it = it
 		self.numpaths = ic.shape[0]
+
+class system:
+	def __init__(self, alpha, beta, gamma, gvec):
+		self.alpha = alpha
+		self.beta = beta
+		self.gamma = gamma
+		self.gvec = gvec
+
+	def __init__(self):
+		self.alpha = 1.
+		self.beta = -1.
+		self.gamma = -1.
+		self.gvec = np.full(dim, 0.1)

@@ -1,14 +1,14 @@
 import numpy as np
 
-def find_dof(degree):
-	if (degree <= 1):
-		return 1
+def choose(degree, dim):
+	return np.math.factorial(degree) / (np.math.factorial(dim) * np.math.factorial(degree - dim))
 
-	return int(degree * (degree + 1) / 2) + find_dof(degree - 1)
+def find_dof(degree, dim):
+	return int(choose(degree + dim - 1, dim))
 
-polynomial_degree = 4
+num_hermite_terms = 4
 dim = 3
-dof = find_dof(polynomial_degree)
+dof = find_dof(num_hermite_terms, dim) 
 
 class em:
 	def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):
@@ -47,11 +47,11 @@ class euler_maruyama:
 		self.savesteps = 400
 		self.ft = 40.0
 		self.h = self.ft / self.numsteps
-		self.ic = ic
+		self.ic = np.random.randn(10, dim)
 		self.it = it
 		self.numpaths = ic.shape[0]
 
-class lorenz:
+class system:
 	def __init__(self, sigma, rho, beta, gvec):
 		self.sigma = sigma
 		self.rho = rho
@@ -62,4 +62,4 @@ class lorenz:
 		self.sigma = 10.0
 		self.rho = 28.0
 		self.beta = 8.0 / 3.0
-		self.gvec = np.array([1e-6, 1e-6, 1e-6])
+		self.gvec = np.array([1e-1, 1e-1, 1e-1])

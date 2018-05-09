@@ -4,7 +4,7 @@ import parameters as prm
 
 # load data
 import pickle
-with open('nem_1D_noise1.pkl','rb') as f:
+with open('./data/nem_1D_noise1.pkl','rb') as f:
     allx, allt, x_without_noise, euler_param, sim_param = pickle.load(f)
 
 data_param = prm.data(theta = 0.5 * np.random.rand(prm.dof, prm.dim), gvec = sim_param.gvec)
@@ -23,12 +23,12 @@ em_param = prm.em(dt = allt[0, 1] - allt[0, 0])
 error_list, theta_list = nb.em(allx, allt, em_param, data_param)
 
 # convert the hermite polynomial to simplified polynomial expression
-# final_parameters = nb.hermite_to_polynomial(theta_list[-1])
+transformed_theta = nb.hermite_to_ordinary(theta_list[-1])
 
 print("Error: ", error_list)
 print("Theta: ", theta_list)
-# print("Final parameters: ", final_parameters)
+print("Transformed theta: ", transformed_theta)
 
 # save to file
-with open('1D_result_noise1.pkl','wb') as f:
-    pickle.dump([error_list, theta_list, em_param, data_param], f)
+with open('./results/1D_result_noise1.pkl','wb') as f:
+    pickle.dump([error_list, theta_list, transformed_theta, em_param, data_param], f)

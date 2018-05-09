@@ -1,14 +1,19 @@
 import numpy as np
 import parameters as prm
 
+"""
+System of equations:
+x_0' = x_1 dt + g_0 dW_0
+x_1' = [-k_0/m_0 (x_0) - k_1/m_0 (x_0 - x_2)]dt + g_1 dW_1
+x_2' = x_3 dt + g_2 dW_2
+x_3' = [-k_1/m_1 (x_2 - x_0) - k_2/m_1 (x_2)]dt + g_3 dW_3
+"""
 def system_drift(sim_param, x):
     derivatives = np.zeros((x.shape[0], x.shape[1]))
-    const1 = sim_param.g / sim_param.l
-    const2 = sim_param.k / sim_param.m
     derivatives[:, 0] = x[:, 1]
-    derivatives[:, 1] = -const1 * np.sin(x[:, 0]) - const2*(x[:, 0] - x[:, 2])
+    derivatives[:, 1] = -(sim_param.kvec[0] / sim_param.mvec[0]) * (x[:, 0]) -(sim_param.kvec[1] / sim_param.mvec[0]) * (x[:, 0] - x[:, 2])
     derivatives[:, 2] = x[:, 3]
-    derivatives[:, 3] = -const1 * np.sin(x[:, 2]) + const2*(x[:, 0] - x[:, 2])
+    derivatives[:, 3] = -(sim_param.kvec[1] / sim_param.mvec[1]) * (x[:, 2] - x[:, 0]) - (sim_param.kvec[2] / sim_param.mvec[1]) * (x[:, 2])
     return derivatives 
 
 def system_diffusion(sim_param):
@@ -31,7 +36,7 @@ def createpaths(euler_param, sim_param):
     # for each time series, generate the matrix of size savesteps * dim
     # corresponding to one 2D time series
     for k in range(euler_param.numpaths):
-        # k-th initial condition to start off current x and t;''
+        # k-th initial condition to start off current x and t
         curx = euler_param.ic[[k]]
         curx_without_noise = euler_param.ic[[k]]
         curt = euler_param.it[k]

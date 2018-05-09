@@ -7,10 +7,10 @@ def polynomial_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
     index = 0
 
-    for d in range(0, prm.polynomial_degree):
-        for i in range(0, d + 1):
+    for d in range(0, prm.num_hermite_terms):
+        for k in range(0, d + 1):
             for j in range(0, d + 1):
-                for k in range(0, d + 1):
+                for i in range(0, d + 1):
                     if (i + j + k == d):
                         # print("d", d, "i", i, "j", j, "k", k, "index", index)
                         y[:, index] = np.power(x[:, 0], i) * np.power(x[:, 1], j) * np.power(x[:, 2], k)
@@ -36,10 +36,10 @@ def hermite_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
     index = 0
 
-    for d in range(0, prm.polynomial_degree):
-        for i in range(0, d + 1):
+    for d in range(0, prm.num_hermite_terms):
+        for k in range(0, d + 1):
             for j in range(0, d + 1):
-                for k in range(0, d + 1):
+                for i in range(0, d + 1):
                     if (i + j + k == d):
                         # print("d", d, "i", i, "j", j, "k", k, "index", index)
                         y[:, index] = H(i, x[:, 0]) * H(j, x[:, 1]) * H(k, x[:, 2])
@@ -100,6 +100,63 @@ def girsanov(d_param, em_param, path):
 	r = int1 - 0.5 * int2
 	return r
 
+def index_mapping():
+    index = 0
+    index_map = {}
+
+    for d in range(0, prm.num_hermite_terms):
+        for k in range(0, d + 1):
+            for j in range(0, d + 1):
+                for i in range(0, d + 1):
+                    if (i + j + k == d):
+                        index_set = (i, j, k)
+                        index_map[index_set] = index
+                        index += 1
+
+    return index_map
+
+def hermite_to_ordinary(theta):
+    transformation = np.zeros((prm.dof, prm.dof))
+    index_map = index_mapping()
+    index = 0
+    
+    mat = np.zeros((prm.num_hermite_terms, prm.num_hermite_terms))
+    mat[0, 0] = 0.63161877774606470129
+    mat[1, 1] = 0.63161877774606470129
+    mat[2, 2] = 0.44662192086900116570
+    mat[0, 2] = -mat[2, 2]
+    mat[3, 3] = 0.25785728623970555997
+    mat[1, 3] = -3 * mat[3, 3]
+
+    for d in range(0, prm.num_hermite_terms):
+        for k in range(0, d + 1):
+            for j in range(0, d + 1):
+                for i in range(0, d + 1):
+                    if (i + j + k == d):
+                        if (i >= 2):
+                            new_index_set = (i - 2, j, k)
+                            new_index = index_map[new_index_set]
+                            transformation[new_index, index] = mat[i - 2, i] * mat[j, j] * mat[k, k]
+                        if (j >= 2):
+                            new_index_set = (i, j - 2, k)
+                            new_index = index_map[new_index_set]
+                            transformation[new_index, index] = mat[i, i] * mat[j - 2, j] * mat[k, k]
+                        if (k >= 2):
+                            new_index_set = (i, j, k - 2)
+                            new_index = index_map[new_index_set]
+                            transformation[new_index, index] = mat[i, i] * mat[j, j] * mat[k - 2, k]
+
+                        # assuming max polynomial degree = 3, then cases would be 
+                        # (3, 0, 0, 0) or (2, 1, 0, 0) or (1, 1, 1, 0) or (0, 0, 0, 0)
+                        # i.e., at max 1 component has 2 parts
+                        # Note: degree 4 is much more complicated because it has 
+                        # (4, 0, 0, 0), (2, 2, 0, 0) and (3, 1, 0, 0)
+                        transformation[index, index] = mat[i, i] * mat[j, j] * mat[k, k]
+                        index += 1
+                        
+    transformed_theta = np.matmul(transformation, theta)
+    return np.transpose(transformed_theta)
+
 # this function computes MCMC steps for i-th interval of the j-th time series
 # using Brownian bridge. The accept-reject step is computed using the Girsanov
 # likelihood function. First burnin steps are rejected and the next numsteps
@@ -153,6 +210,8 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
 def em(allx, allt, em_param, d_param):
     done = False
     numiter = 0
+    error_list = []
+    theta_list = []
 
     while (done == False):
         numiter = numiter + 1
@@ -167,14 +226,17 @@ def em(allx, allt, em_param, d_param):
             for res in results:
                 mmat += res[0]
                 rvec += res[1]
-                # print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
+                print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec).T
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 
         # if a threshold is applied to theta
-        newtheta[np.abs(newtheta) < 0.05] = 0.
+        # newtheta[np.abs(newtheta) < 0.05] = 0.
+        d_param.theta = newtheta
 
+        error_list.append(error)
+        theta_list.append(d_param.theta)
         # if error is below tolerance, EM has converged
         if (error < em_param.tol):
             print("Finished successfully!")
@@ -187,8 +249,7 @@ def em(allx, allt, em_param, d_param):
             print("Finished without reaching the tolerance")
             done = True
 
-        d_param.theta = newtheta
         print(error)
         print(d_param.theta)
 
-    return error, d_param
+    return error_list, theta_list
