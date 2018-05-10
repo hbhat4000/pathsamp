@@ -172,7 +172,6 @@ def index_mapping():
 
 def hermite_to_ordinary(theta):
     transformation = np.zeros((prm.dof, prm.dof))
-    y = np.zeros((x.shape[0], prm.dof))
     index_map = index_mapping()
     index = 0
     
@@ -255,10 +254,12 @@ def em(allx, allt, em_param, d_param):
                 print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec).T
+
+        # relative error
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 
-        # if a threshold is applied to theta
-        # newtheta[np.abs(newtheta) < 0.05] = 0.
+        # inducing sparsity in the Hermite space
+        newtheta[np.abs(newtheta) < 0.01] = 0.
         d_param.theta = newtheta
 
         error_list.append(error)

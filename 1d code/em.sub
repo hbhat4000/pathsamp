@@ -4,7 +4,7 @@
 #$ -cwd
 #$ -N EM
 #$ -j y
-#$ -o EM.qlog
+#$ -o em.qlog
 #$ -l mem_free=64G
 #
 # This submission file will run a simple set of commands. All stdout will

@@ -5,6 +5,8 @@ import parameters as prm
 Sample equation is the Duffing oscillator
 dx = alpha y dt + g_1 dWt
 dy = (beta x + gamma x^3)dt + g_2 dWt
+
+Standard values: alpha = 1., beta = -1., gamma = -1.
 """
 def system_drift(sim_param, x):
     derivatives = np.zeros((x.shape[0], x.shape[1]))

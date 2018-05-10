@@ -6,7 +6,7 @@ def system_drift(sim_param, x):
     derivatives[:, 0] = sim_param.sigma * (x[:, 1] - x[:, 0])
     derivatives[:, 1] = x[:, 0] * (sim_param.rho - x[:, 2]) - x[:, 1]
     derivatives[:, 2] = x[:, 0] * x[:, 1] - sim_param.beta * x[:, 2]
-    # print(x.shape, derivatives.shape)
+
     return derivatives 
 
 def system_diffusion(sim_param):

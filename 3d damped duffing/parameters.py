@@ -20,10 +20,10 @@ class em:
 		self.h = dt / numsubintervals	# time step for EM
 
 	def __init__(self, dt):
-		self.tol = 1e-3
+		self.tol = 1e-2
 		self.burninpaths = 10
 		self.mcmcpaths = 100
-		self.numsubintervals = 10
+		self.numsubintervals = 9
 		self.niter = 100
 		self.h = dt / self.numsubintervals
 
@@ -66,4 +66,4 @@ class system:
 		self.gamma = 0.5 # varying between 0.20 to 0.65
 		self.delta = 0.3
 		self.omega = 1.2
-		self.gvec = np.array([0.1, 0.1, 0.1])
+		self.gvec = np.full(dim, 0.1)

@@ -21,9 +21,9 @@ class em:
 
 	def __init__(self, dt):
 		self.tol = 1e-2
-		self.burninpaths = 100
-		self.mcmcpaths = 1000
-		self.numsubintervals = 10
+		self.burninpaths = 10
+		self.mcmcpaths = 100
+		self.numsubintervals = 1
 		self.niter = 100
 		self.h = dt / self.numsubintervals
 

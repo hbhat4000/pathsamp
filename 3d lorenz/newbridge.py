@@ -7,7 +7,7 @@ def polynomial_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
     index = 0
 
-    for d in range(0, prm.polynomial_degree):
+    for d in range(0, prm.num_hermite_terms):
         for k in range(0, d + 1):
             for j in range(0, d + 1):
                 for i in range(0, d + 1):
@@ -36,7 +36,7 @@ def hermite_basis(x):
     y = np.zeros((x.shape[0], prm.dof))
     index = 0
 
-    for d in range(0, prm.polynomial_degree):
+    for d in range(0, prm.num_hermite_terms):
         for k in range(0, d + 1):
             for j in range(0, d + 1):
                 for i in range(0, d + 1):
@@ -225,10 +225,12 @@ def em(allx, allt, em_param, d_param):
                 print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec).T
+	
+        # relative error
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 
-        # if a threshold is applied to theta
-        # newtheta[np.abs(newtheta) < 0.05] = 0.
+        # inducing sparsity in the Hermite space
+        newtheta[np.abs(newtheta) < 0.01] = 0.
         d_param.theta = newtheta
 
         error_list.append(error)

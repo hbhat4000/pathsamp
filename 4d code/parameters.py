@@ -23,7 +23,7 @@ class em:
 		self.tol = 1e-2
 		self.burninpaths = 10
 		self.mcmcpaths = 100
-		self.numsubintervals = 2
+		self.numsubintervals = 10
 		self.niter = 100
 		self.h = dt / self.numsubintervals
 

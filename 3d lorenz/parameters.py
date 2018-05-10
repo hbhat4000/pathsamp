@@ -20,10 +20,10 @@ class em:
 		self.h = dt / numsubintervals	# time step for EM
 
 	def __init__(self, dt):
-		self.tol = 1e-3
+		self.tol = 1e-2
 		self.burninpaths = 10
 		self.mcmcpaths = 100
-		self.numsubintervals = 20
+		self.numsubintervals = 10
 		self.niter = 100
 		self.h = dt / self.numsubintervals
 
@@ -44,8 +44,8 @@ class euler_maruyama:
 
 	def __init__(self, ic, it):
 		self.numsteps = 25000 * 40
-		self.savesteps = 400
-		self.ft = 40.0
+		self.savesteps = 100
+		self.ft = 20.0
 		self.h = self.ft / self.numsteps
 		self.ic = np.random.randn(10, dim)
 		self.it = it
@@ -62,4 +62,4 @@ class system:
 		self.sigma = 10.0
 		self.rho = 28.0
 		self.beta = 8.0 / 3.0
-		self.gvec = np.array([1e-1, 1e-1, 1e-1])
+		self.gvec = np.full(dim, 0.1)

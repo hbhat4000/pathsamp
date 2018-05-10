@@ -17,5 +17,5 @@ xout, tout, xout_without_noise = dc.createpaths(euler_param, sim_param)
 
 # save to file
 import pickle
-with open('./data/nem_1D_noise1.pkl','wb') as f:
+with open('./varying_subintervals/data/common_data.pkl','wb') as f:
     pickle.dump([xout, tout, xout_without_noise, euler_param, sim_param], f)
