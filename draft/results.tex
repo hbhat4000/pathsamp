@@ -1,14 +1,51 @@
-\documentclass[12pt]{article}
-\usepackage{amsmath, amssymb, latexsym, fullpage, caption, subcaption, scrextend, float, url, amsmath, amsthm, verbatim, amsfonts, amscd, graphicx, bm, algorithm, algpseudocode, pifont}
-\newcommand{\btheta}{\ensuremath{\boldsymbol{\theta}}}
+\documentclass{article}
+
+\usepackage{nips_2018}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{latexsym, caption, subcaption, verbatim}
+\usepackage{graphicx, bm, algorithm, algpseudocode}
+
+\newcommand{\btheta}{\ensuremath{\bm{\theta}}}
 \newcommand{\opdiag}{\ensuremath{\operatorname{diag}}}
 \newcommand{\bx}{\ensuremath{\mathbf{x}}}
 \newcommand{\bz}{\ensuremath{\mathbf{z}}}
 
+\title{Learning Stochastic Differential Equations with Bridge Sampling}
+\author{
+ Harish~S. Bhat\\
+ Applied Mathematics Unit\\
+ University of California, Merced\\
+ Merced, CA 95343\\
+ \texttt{hbhat@ucmerced.edu} \\
+ \And
+ Shagun Rawat\\
+ Applied Mathematics Unit\\
+ University of California, Merced\\
+ Merced, CA 95343\\
+ \texttt{srawat2@ucmerced.edu}
+}
+
 \begin{document}
-\begin{center}
-\textbf{Expectation Maximization (EM) with Bridge Sampling}
-\end{center}
+\maketitle
+
+\begin{abstract}
+  The abstract paragraph should be indented \nicefrac{1}{2}~inch
+  (3~picas) on both the left- and right-hand margins. Use 10~point
+  type, with a vertical spacing (leading) of 11~points.  The word
+  \textbf{Abstract} must be centered, bold, and in point size 12. Two
+  line spaces precede the abstract. The abstract must be limited to
+  one paragraph.
+\end{abstract}
+
+
 Points to cover:
 \begin{itemize}
 \item data specification
@@ -94,4 +131,5 @@ The $\mathbb{R}^N$ dimensional Brownian bridge is defined by the integral:
 I(t) = \int_{0}^{t} \dfrac{1 - t}{1 -T} \: \mathrm{d} W(t)
 \end{equation}
 \subsection{Metropolis Algorithm}
+
 \end{document}
