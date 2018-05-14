@@ -45,6 +45,12 @@
   one paragraph.
 \end{abstract}
 
+The goal of this work is to enable automatic discovery of stochastic differential equations (SDE) from time series data.  
+
+\begin{enumerate}
+\item Literature review.
+\item What is new and interesting about this work.
+\end{enumerate}
 
 Points to cover:
 \begin{itemize}
@@ -60,27 +66,110 @@ Points to cover:
 \end{itemize}
 
 \section{Model Setup}
-Our goal here is to start with $\mathbb{R}^{d}$ dimensional time series data and a non-parametric model to infer the coefficients  of the Hermite basis functions which would result in a parametric equation. The general form of the governing equation is:
-\begin{equation}
-\mathrm{d} X(t) = f(X(t)) \: \mathrm{d} t + \Gamma \: \mathrm{d} W(t)
+Let $W_t$ denote Brownian motion in $\mathbb{R}^d$ and consider the SDE
+\begin{equation} \label{eqn:sde}
+d X_t = f( X_t) dt + \Gamma d W_t.
 \end{equation}
-where $\Gamma$ is a constant diagonal matrix of noise levels. For these experiments, we assume that the noise levels are known beforehand and are not inferred.
+Here $X_t$, the solution of the SDE, is an $\mathbb{R}^d$-valued stochastic process.  We refer to $f : \mathbb{R}^d \to \mathbb{R}^d$ as the drift function, and to $\Gamma$ as the diffusion matrix.  In this work, to reduce the number of parameters in the model, we assume $\Gamma = \opdiag \gamma$ is a constant, diagonal matrix.
 
-To model the general form of the drift function, we represent the drift function as an additive function of the Hermite basis polynomials of maximum degree $D$. The $\zeta$ parameters will be inferred. Through the combination of inferred parameters and the Hermite polynomial basis, the governing equation can be discovered.
+Our goal is to develop an algorithm that accurately estimates the functional form of $f$ and the vector $\gamma$ from time series data.  In this work, we parameterize $f$ using Hermite polynomials.  The $n$-th Hermite polynomial takes the form
 \begin{equation}
-f(x) = \sum_{i = 0}^{M} \zeta_i \: \psi_i(x)
+\label{eqn:hermdef}
+H_n(x) = (\sqrt{2 \pi} n!)^{-1/2} (-1)^n e^{x^2/2} \dfrac{\mathrm{d}^n}{\mathrm{d}x^n} e^{-x^2/2}
 \end{equation}
-The orthonormal Hermite basis functions have the general form
+Let $\langle f, g \rangle_w = \int_{\mathbb{R}} f(x) g(x) \exp(-x^2/2) \, dx$ denote a weighted $L^2$ inner product.  Then, $\langle H_i, H_j \rangle_w = \delta_{ij}$, i.e., the Hermite polynomials are orthonormal with respect to the weighted inner product.
+
+Now let $\alpha = (\alpha_1, \ldots, \alpha_d) \in \mathbb{Z}^d_+$ denote a multi-index.  We use the notation $|\alpha| = \sum_j \alpha_j$ and $x^\alpha = \prod_j (x_j)^{\alpha_j}$ for $x = (x_1, \ldots, x_d) \in \mathbb{R}^d$.  For $x \in \mathbb{R}^d$ and a multi-index $\alpha$, we also define
 \begin{equation}
-H_n(x) = (-1)^n e^{x^2/2} \dfrac{\mathrm{d}^n}{\mathrm{d}x^n} e^{-x^2/2}
+\label{eqn:hermmultiindex}
+H_\alpha(x) = \prod_{j=1}^d H_{\alpha_j}(x_j).
 \end{equation}
-which results in the following set of polynomials:
+We write $f(x) = (f_1(x), \ldots f_d(x))$ and then parameterize each component:
+\begin{equation}
+\label{eqn:param1}
+f_j(x) = \sum_{m=0}^M \sum_{|\alpha|=m} \beta^j_\alpha H_\alpha(x).
+\end{equation}
+We see that the maximum degree of $H_\alpha(x)$ is $|\alpha|$.  Hence we think of the double sum in (\ref{eqn:param1}) as first summing over degrees and then summing over all terms with a fixed maximum degree.  We say maximum degree because, for instance, $H_2(z) = (z^2-1)/(\sqrt{2 \pi} 2)^{1/2}$ contains both degree $2$ and degree $0$ terms.
+
+There are $\binom{m + d - 1}{d-1}$ possibilities for a $d$-dimensional multi-index $\alpha$ such that $|\alpha| = m$.  Summing this from $m=0$ to $M$, there are $\widetilde{M} = \binom{M+d}{d}$ total multi-indices in the double sum in (\ref{eqn:param1}).  Let $(i)$ denote the $i$-th multi-index according to some ordering.  Then we can write
+\begin{equation}
+\label{eqn:param1}
+f_j(x) = \sum_{i=1}^{\widetilde{M}} \beta^j_{(i)} H_{(i)}(x).
+\end{equation}
+
+Suppose we have data in the form of a time series, $\mathbf{x}$, considered to be direct observations of $X(t)$ at discrete time points.  For simplicity, let us assume the observations are collected at equispaced times, $j \Delta t$ for $0 \leq j \leq L$. Thus the observed data is $\mathbf{x} = x_0, x_1, \cdots, x_L$.  Each $x_j \in \mathbb{R}^d$.
+
+\textbf{Our goal is to use the data to estimate the functional form of $f$ and the constant vector $\gamma$.}
+
+To achieve this goal, we propose to use EM.  Here we regard $\mathbf{x}$ as the incomplete data.  The missing data $\mathbf{z}$ is thought of as data collected at a time scale $h \ll \Delta t$ that is fine enough such that the transition density of (\ref{eqn:sde}) is approximately Gaussian.  That is, if we discretize (\ref{eqn:sde}) in time via Euler-Maruyama method, we obtain
+\begin{equation} \label{eqn:euler}
+\widetilde{X}_{n+1} = \widetilde{X}_n + f(\widetilde{X}_n; \beta) h + \gamma h^{1/2} Z_{n+1}
+\end{equation}
+where $Z_{n+1}$ is a standard normal, independent of $X_n$.  Note that $\widetilde{X}_{n+1} | \widetilde{X}_n = v$ is multivariate Gaussian with mean vector $v + f(v) h$ and covariance matrix $h \Gamma^2$.  Specifically, the density is
+$$
+\left( \prod_{i=1}^d \frac{1}{\sqrt{2 \pi h \gamma_i^2}} \right)
+\exp \left( -\frac{1}{2h} (x - v - h \sum_{k=1}^M \beta_k \phi_k(v))^T \Gamma^{-2} (x - v - h \sum_{\ell=1}^M \beta_\ell \phi_\ell(v)) \right).
+$$
+As $h$ decreases, this Gaussian will better approximate the transition density
+$$
+X((n+1)h) | X(nh) = v,
+$$
+where $X(t)$ refers to the solution of (\ref{eqn:sde}), not its time-discretization.
+
+\paragraph{EM.} The EM algorithm consists of two steps, computing the expectation of the log likelihood function (on the completed data) and then maximizing it with respect to the parameters $\btheta = (\beta, \gamma)$.
+\begin{enumerate}
+\item Start with an initial guess for the parameters, $\btheta^{(0)}$.
+\item For the expectation (or E) step,
+\begin{equation}
+\label{eqn:expectation}
+Q(\btheta, \btheta^{(k)}) = \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\bx, \bz \mid \btheta)]
+\end{equation}
+Our plan is to evaluate this expectation via bridge sampling.  That is, we will sample from diffusion bridges $\bz \mid \bx, \btheta^{(k)}$.  Then $(\bx, \bz)$ will be a combination of the original data together with sample paths.
+\item For the maximization (or M) step, we start with the current iterate and a dummy variable $\btheta$ and define
+\begin{equation}
+\label{eqn:maximization}
+\btheta^{(k+1)} = \arg \max_{\btheta} Q(\btheta, \btheta^{(k)})
+\end{equation}
+It will turn out that we can maximize this quantity without numerical optimization.  All we will need to do is solve a least-squares problem.
+\item Iterate Step 2 and 3 until convergence.
+\end{enumerate}
+
+\paragraph{Details.} With a fixed parameter vector $\btheta^{(k)}$, the SDE (\ref{eqn:sde}) is specified completely, i.e., the drift and diffusion terms have no further unknowns.  For this SDE, we assume a diffusion bridge sampler is available.  We take $F$ diffusion bridge steps to march from $x_i$ to $x_{i+1}$; the time step will be $h = (\Delta t)/F$.  We can think of this process as inserting $F-1$ \emph{new} samples, $\{z_{i,j}\}_{j=1}^{F-1}$ between $x_i$ and $x_{i+1}$. 
+
+Let $\mathbf{z}^{(r)}$ denote the $r^\text{th}$ diffusion bridge sample path:
+\begin{equation}
+z^{(r)} \sim z \, | \, x, \beta^{(k)}
+\end{equation}
+The observed and sampled data can be interleaved together to create a time series (completed data)
+$$
+\mathbf{y}^{(r)} = \{y_j^{(r)}\}_{j=1}^N
+$$
+of length $N = LF + 1$.  Suppose we form $R$ such time series.  The expected log likelihood can then be approximated by
 \begin{align*}
-H_0(x) & = 1 / c_0, & c_0 & = \sqrt{2 \pi \sqrt{0!}} \\
-H_1(x) & = x / c_1, & c_1 & = \sqrt{2 \pi \sqrt{1!}} \\
-H_2(x) & = (x^2 - 1) / c_2, & c_2 & = \sqrt{2 \pi \sqrt{2!}} \\
-H_3(x) & = (x^3 - 3x) / c_3, & c_3 & = \sqrt{2 \pi \sqrt{3!}}
+Q(\btheta, \btheta^{(k)}) &= \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\bx, \bz \mid \btheta)] \\
+ &\approx \frac{1}{R} \sum_{r=1}^R \biggl[ \sum_{j=1}^N \left[ \sum_{i=1}^d -\frac{1}{2} \log (2 \pi h \gamma_i^2) \right] \\
+ &\qquad -\frac{1}{2h} (y_j^{(r)} - y_{j-1}^{(r)} - h \sum_{k=1}^M \beta_k \phi_k(y_{j-1}^{(r)}))^T \Gamma^{-2} (y_j^{(r)} - y_{j-1}^{(r)} - h \sum_{\ell=1}^M \beta_\ell \phi_\ell(y_{j-1}^{(r)}) ) \biggr] 
 \end{align*}
+
+To maximize $Q$ over $\btheta$, we first assume $\Gamma = \opdiag \gamma$ is known and maximize over $\beta$.  This is a least squares problem.  The solution is given by forming the matrix
+$$
+\mathcal{M}_{k,\ell} = \frac{1}{R} \sum_{r=1}^{R} \sum_{j=1}^N h \phi_k^T (y_{j-1}^{(r)}) \Gamma^{-2} \phi_\ell^T (y_{j-1}^{(r)})
+$$
+and the vector
+$$
+\rho_k = \frac{1}{R} \sum_{r=1}^{R} \sum_{j=1}^N \phi_k^T (y_{j-1}^{(r)}) \Gamma^{-2} (y_j^{(r)} - y_{j-1}^{(r)}).
+$$
+
+We then solve the system
+$$
+\mathcal{M} \beta = \rho
+$$
+for $\beta$.  Now that we have $\beta$, we maximize $Q$ over $\gamma$.  The solution can be obtained in closed form:
+$$
+\gamma_i^2 = \frac{1}{R N h} \sum_{r=1}^{R} \sum_{j=1}^N (( y_j^{(r)} - y_{j-1}^{(r)} - h \sum_{\ell=1}^M \beta_\ell \phi_\ell (y_{j-1}^{(r)}) ) \cdot e_i )^2
+$$
+where $e_i$ is the $i^\text{th}$ canonical basis vector in $\mathbb{R}^d$.
+
 We demonstrate the method for 1, 2 and 3 dimensional systems. 
 \begin{itemize}
 \item For the 1-dimensional system, we use the ? oscillator:
@@ -105,11 +194,6 @@ We demonstrate the method for 1, 2 and 3 dimensional systems.
 \mathrm{d}X_3(t) & = (X_1(t) X_2(t) - \beta X_3(t)) \: \mathrm{d}t + g_3 \: \mathrm{d}W_3(t)
 \end{align*}
 \end{itemize}
-For the general case where $X = (x_1, \cdots, x_d) \in \mathbb{R}^d$ case, the general form of the drift function $\vec{f} = (f_1(x_1, \cdots, x_d), \cdots, f_d(x_1, \cdots, x_d))$ includes cross interactions between the dimensions of $X$ to create an additive function of Hermite polynomial of maximum degree $M$:
-\begin{equation}
-f(x_1, \cdots, x_d) = \sum_{m = 0}^{M} \sum_{\sum i_m = 0}^{\sum i_m = m} \zeta_{i_m}^d \psi_{i_m}^d 
-\end{equation}
-
 For simplicity, consider the example where the $X \in \mathbb{R}^2$ and the highest degree of the Hermite polynomial is three, including four Hermite polynomials:
 \begin{align*}
 f(x_1, x_2) & = \sum_{m = 0}^{2} \sum_{i+j = 0}^{i+j = m} \zeta_{i,j} \: \psi_{i,j} \\
