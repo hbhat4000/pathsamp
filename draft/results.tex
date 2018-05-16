@@ -18,7 +18,7 @@
 \newcommand{\bx}{\ensuremath{\mathbf{x}}}
 \newcommand{\bz}{\ensuremath{\mathbf{z}}}
 
-\title{Learning Stochastic Differential Equations with Bridge Sampling}
+\title{Learning Stochastic Dynamical Systems via Bridge Sampling}
 \author{
  Harish~S. Bhat\\
  Applied Mathematics Unit\\
@@ -65,19 +65,22 @@ Points to cover:
 \item Note: constant noise case, not inferring the gvec
 \end{itemize}
 
-\section{Model Setup}
-Let $W_t$ denote Brownian motion in $\mathbb{R}^d$ and consider the SDE
+\section{Problem Setup}
+Let $W_t$ denote Brownian motion in $\mathbb{R}^d$---informally, an increment $dW_t$ of this process has a multivariate normal distribution with zero mean vector and covariance matrix $I dt$.  Let $X_t$ denote an $\mathbb{R}^d$-valued stochastic process that evolves according to the It\^{o} SDE
 \begin{equation} \label{eqn:sde}
 d X_t = f( X_t) dt + \Gamma d W_t.
 \end{equation}
-Here $X_t$, the solution of the SDE, is an $\mathbb{R}^d$-valued stochastic process.  We refer to $f : \mathbb{R}^d \to \mathbb{R}^d$ as the drift function, and to $\Gamma$ as the diffusion matrix.  In this work, to reduce the number of parameters in the model, we assume $\Gamma = \opdiag \gamma$ is a constant, diagonal matrix.
+For rigorous definitions of Brownian motion and SDE, see [Bhattacharya and Waymire 2009, Oksendal 2007].
+The nonlinear vector field $f : \Omega \subset \mathbb{R}^d \to \mathbb{R}^d$ is the \emph{drift} function, and the $d \times d$ matrix $\Gamma$ is the \emph{diffusion} matrix.  To reduce the number of model parameters, we assume $\Gamma = \opdiag \gamma$.
 
-Our goal is to develop an algorithm that accurately estimates the functional form of $f$ and the vector $\gamma$ from time series data.  In this work, we parameterize $f$ using Hermite polynomials.  The $n$-th Hermite polynomial takes the form
+\textbf{Our goal is to develop an algorithm that accurately estimates the functional form of $f$ and the vector $\gamma$ from time series data.}
+
+\paragraph{Parameterization.} We parameterize $f$ using Hermite polynomials.  The $n$-th Hermite polynomial takes the form
 \begin{equation}
 \label{eqn:hermdef}
 H_n(x) = (\sqrt{2 \pi} n!)^{-1/2} (-1)^n e^{x^2/2} \dfrac{\mathrm{d}^n}{\mathrm{d}x^n} e^{-x^2/2}
 \end{equation}
-Let $\langle f, g \rangle_w = \int_{\mathbb{R}} f(x) g(x) \exp(-x^2/2) \, dx$ denote a weighted $L^2$ inner product.  Then, $\langle H_i, H_j \rangle_w = \delta_{ij}$, i.e., the Hermite polynomials are orthonormal with respect to the weighted inner product.
+Let $\langle f, g \rangle_w = \int_{\mathbb{R}} f(x) g(x) \exp(-x^2/2) \, dx$ denote a weighted $L^2$ inner product.  Then, $\langle H_i, H_j \rangle_w = \delta_{ij}$, i.e., the Hermite polynomials are orthonormal with respect to the weighted inner product.  In fact, with respect to this inner product, the Hermite polynomials form an orthonormal basis of $L^2_w(\mathbb{R}) = \{ f \, : \, \langle f, f \rangle_w < \infty \}$.
 
 Now let $\alpha = (\alpha_1, \ldots, \alpha_d) \in \mathbb{Z}^d_+$ denote a multi-index.  We use the notation $|\alpha| = \sum_j \alpha_j$ and $x^\alpha = \prod_j (x_j)^{\alpha_j}$ for $x = (x_1, \ldots, x_d) \in \mathbb{R}^d$.  For $x \in \mathbb{R}^d$ and a multi-index $\alpha$, we also define
 \begin{equation}
@@ -93,28 +96,48 @@ We see that the maximum degree of $H_\alpha(x)$ is $|\alpha|$.  Hence we think o
 
 There are $\binom{m + d - 1}{d-1}$ possibilities for a $d$-dimensional multi-index $\alpha$ such that $|\alpha| = m$.  Summing this from $m=0$ to $M$, there are $\widetilde{M} = \binom{M+d}{d}$ total multi-indices in the double sum in (\ref{eqn:param1}).  Let $(i)$ denote the $i$-th multi-index according to some ordering.  Then we can write
 \begin{equation}
-\label{eqn:param1}
+\label{eqn:param2}
 f_j(x) = \sum_{i=1}^{\widetilde{M}} \beta^j_{(i)} H_{(i)}(x).
 \end{equation}
 
-Suppose we have data in the form of a time series, $\mathbf{x}$, considered to be direct observations of $X(t)$ at discrete time points.  For simplicity, let us assume the observations are collected at equispaced times, $j \Delta t$ for $0 \leq j \leq L$. Thus the observed data is $\mathbf{x} = x_0, x_1, \cdots, x_L$.  Each $x_j \in \mathbb{R}^d$.
+\paragraph{Data.} We consider our data $\mathbf{x} = \{x_j\}_{j=0}^L$ to be direct observations of $X_t$ at discrete points in time $\mathbf{t} = \{t_j\}_{t=0}^L$.  Note that these time points do not need to be equispaced.  
 
-\textbf{Our goal is to use the data to estimate the functional form of $f$ and the constant vector $\gamma$.}
-
-To achieve this goal, we propose to use EM.  Here we regard $\mathbf{x}$ as the incomplete data.  The missing data $\mathbf{z}$ is thought of as data collected at a time scale $h \ll \Delta t$ that is fine enough such that the transition density of (\ref{eqn:sde}) is approximately Gaussian.  That is, if we discretize (\ref{eqn:sde}) in time via Euler-Maruyama method, we obtain
+To achieve our estimation goal, we apply expectation maximization (EM).  We regard $\mathbf{x}$ as the incomplete data.  Let $\Delta t = \frac{1}{L} \sum_{j=1}^{L} (t_j - t_{j-1})$ be the average interobservation spacing.  We think of the missing data $\mathbf{z}$ as data collected at a time scale $h \ll \Delta t$ that is fine enough such that the transition density of (\ref{eqn:sde}) is approximately Gaussian.  To see how this works, let $\mathcal{N}(\mu, \Sigma)$ denote a multivariate normal with mean vector $\mu$ and covariance matrix $\Sigma$.  Now discretize (\ref{eqn:sde}) in time via the Euler-Maruyama method with time step $h > 0$; the result is
 \begin{equation} \label{eqn:euler}
-\widetilde{X}_{n+1} = \widetilde{X}_n + f(\widetilde{X}_n; \beta) h + \gamma h^{1/2} Z_{n+1}
+\widetilde{X}_{n+1} = \widetilde{X}_n + f(\widetilde{X}_n) h + h^{1/2} \Gamma Z_{n+1},
 \end{equation}
-where $Z_{n+1}$ is a standard normal, independent of $X_n$.  Note that $\widetilde{X}_{n+1} | \widetilde{X}_n = v$ is multivariate Gaussian with mean vector $v + f(v) h$ and covariance matrix $h \Gamma^2$.  Specifically, the density is
+where $Z_{n+1} \sim \mathcal{N}(0, I)$ is a standard multivariate normal, independent of $X_n$.  Note that $\widetilde{X}_{n+1} | \widetilde{X}_n = v$ has a $\mathcal{N}(v + f(v) h, h \Gamma^2)$ distribution.  As $h$ decreases, this Gaussian will converge to the true transition density $X_{(n+1)h} | X_{nh} = v$, 
+where $X_t$ refers to the solution of (\ref{eqn:sde}).
+
+\paragraph{Diffusion Bridge.} To augment or complete the data, we employ diffusion bridge sampling, using a Markov chain Monte Carlo (MCMC) method that goes back to [Roberts and Stramer, 2001; Papaspiliopoulos, Roberts, and Stramer, 2013].  Let us describe this method here.  We suppose our current estimate of $\btheta = (\beta, \gamma)$ is given.  Then the goal is to generate a sample path of (\ref{eqn:sde}) conditioned on both the initial value $x_i$ at time $t_i$, and the final value $x_{i+1}$ at time $t_{i+1}$.  By a sample path, we mean $F-1$ \emph{new} samples $\{z_{i,j}\}_{j=1}^{F-1}$ at times $t_i + j h$ with $h = (t_{i+1} - t_i)/F$.
+
+To generate such a path, we start by drawing a sample from a Brownian bridge with the same diffusion as (\ref{eqn:sde}).  That is, we sample from the SDE
+\begin{equation}
+\label{eqn:bbridgesde}
+d\widehat{X}_t = \Gamma dW_t
+\end{equation}
+conditioned on $\widehat{X}_{t_i} = x_i$ and $\widehat{X}_{t_{i+1}} = x_{i+1}$.  This Brownian bridge can be described explicitly:
+\begin{equation}
+\label{eqn:bbridge}
+\widehat{X}_t = \Gamma W_{t - t_i} + x_i - \frac{t - t_i}{t_{i+1} - t_i} (\Gamma W_{t_{i+1} - t_i} + x_{i} - x_{i+1} )
+\end{equation}
+
+
+Let $\mathbf{z}^{(r)}$ denote the $r^\text{th}$ diffusion bridge sample path:
+\begin{equation}
+z^{(r)} \sim z \, | \, x, \beta^{(k)}
+\end{equation}
+The observed and sampled data can be interleaved together to create a time series (completed data)
 $$
-\left( \prod_{i=1}^d \frac{1}{\sqrt{2 \pi h \gamma_i^2}} \right)
-\exp \left( -\frac{1}{2h} (x - v - h \sum_{k=1}^M \beta_k \phi_k(v))^T \Gamma^{-2} (x - v - h \sum_{\ell=1}^M \beta_\ell \phi_\ell(v)) \right).
+\mathbf{y}^{(r)} = \{y_j^{(r)}\}_{j=1}^N
 $$
-As $h$ decreases, this Gaussian will better approximate the transition density
-$$
-X((n+1)h) | X(nh) = v,
-$$
-where $X(t)$ refers to the solution of (\ref{eqn:sde}), not its time-discretization.
+of length $N = LF + 1$.  
+
+%Specifically, the density is
+%$$
+%\left( \prod_{i=1}^d \frac{1}{\sqrt{2 \pi h \gamma_i^2}} \right)
+%\exp \left( -\frac{1}{2h} (x - v - h \sum_{k=1}^M \beta_k \phi_k(v))^T \Gamma^{-2} (x - v - h \sum_{\ell=1}^M \beta_\ell \phi_\ell(v)) \right).
+%$$
 
 \paragraph{EM.} The EM algorithm consists of two steps, computing the expectation of the log likelihood function (on the completed data) and then maximizing it with respect to the parameters $\btheta = (\beta, \gamma)$.
 \begin{enumerate}
@@ -134,17 +157,10 @@ It will turn out that we can maximize this quantity without numerical optimizati
 \item Iterate Step 2 and 3 until convergence.
 \end{enumerate}
 
-\paragraph{Details.} With a fixed parameter vector $\btheta^{(k)}$, the SDE (\ref{eqn:sde}) is specified completely, i.e., the drift and diffusion terms have no further unknowns.  For this SDE, we assume a diffusion bridge sampler is available.  We take $F$ diffusion bridge steps to march from $x_i$ to $x_{i+1}$; the time step will be $h = (\Delta t)/F$.  We can think of this process as inserting $F-1$ \emph{new} samples, $\{z_{i,j}\}_{j=1}^{F-1}$ between $x_i$ and $x_{i+1}$. 
+\paragraph{Details.} With a fixed parameter vector $\btheta^{(k)}$, the SDE (\ref{eqn:sde}) is specified completely, i.e., the drift and diffusion terms have no further unknowns.  
 
-Let $\mathbf{z}^{(r)}$ denote the $r^\text{th}$ diffusion bridge sample path:
-\begin{equation}
-z^{(r)} \sim z \, | \, x, \beta^{(k)}
-\end{equation}
-The observed and sampled data can be interleaved together to create a time series (completed data)
-$$
-\mathbf{y}^{(r)} = \{y_j^{(r)}\}_{j=1}^N
-$$
-of length $N = LF + 1$.  Suppose we form $R$ such time series.  The expected log likelihood can then be approximated by
+
+Suppose we form $R$ such time series.  The expected log likelihood can then be approximated by
 \begin{align*}
 Q(\btheta, \btheta^{(k)}) &= \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\bx, \bz \mid \btheta)] \\
  &\approx \frac{1}{R} \sum_{r=1}^R \biggl[ \sum_{j=1}^N \left[ \sum_{i=1}^d -\frac{1}{2} \log (2 \pi h \gamma_i^2) \right] \\
