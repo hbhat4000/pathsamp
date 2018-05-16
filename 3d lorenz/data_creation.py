@@ -1,6 +1,16 @@
 import numpy as np
 import parameters as prm
 
+"""
+Sample equation is the Lorenz oscillator
+
+dx = sigma(y - x) dt + g_1 dWt
+dy = (x(rho - z) - y) dt + g_2 dWt
+dz = (xy - beta z) dt + g_3 dWt
+
+sigma = 10, rho = 28, beta = 8/3
+g_1 = 1e-1, g_2 = 1e-1, g_3 = 1e-1
+"""
 def system_drift(sim_param, x):
     derivatives = np.zeros((x.shape[0], x.shape[1]))
     derivatives[:, 0] = sim_param.sigma * (x[:, 1] - x[:, 0])
@@ -8,6 +18,18 @@ def system_drift(sim_param, x):
     derivatives[:, 2] = x[:, 0] * x[:, 1] - sim_param.beta * x[:, 2]
 
     return derivatives 
+
+def true_theta(sim_param):
+    theta = np.zeros((prm.dof, prm.dim))
+    theta[1, 0] = -sim_param.sigma
+    theta[2, 0] = sim_param.sigma
+    theta[1, 1] = sim_param.rho
+    theta[2, 1] = -1.
+    theta[7, 1] = -1.
+    theta[3, 2] = -sim_param.beta
+    theta[5, 2] = 1.
+
+    return theta
 
 def system_diffusion(sim_param):
     return np.dot(sim_param.gvec, np.random.standard_normal(prm.dim))

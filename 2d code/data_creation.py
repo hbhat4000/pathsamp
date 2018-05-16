@@ -14,6 +14,13 @@ def system_drift(sim_param, x):
     derivatives[:, 1] = sim_param.beta * x[:, 0] + sim_param.gamma * x[:, 0]**3
     return derivatives 
 
+def true_theta(sim_param):
+    theta = np.zeros((prm.dof, prm.dim))
+    theta[2, 0] = sim_param.alpha
+    theta[1, 1] = sim_param.beta
+    theta[6, 1] = sim_param.gamma
+    return theta
+
 def system_diffusion(sim_param):
     return np.dot(sim_param.gvec, np.random.standard_normal(prm.dim))
 

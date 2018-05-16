@@ -47,7 +47,6 @@ def hermite_basis(x):
 
     return y
 
-
 # drift function using "basis" functions defined by mypoly
 # x must be a numpy array, the points at which the drift is to be evaluated
 # theta must also be a numpy array, the coefficients of each "basis" function
@@ -73,14 +72,14 @@ def brownianbridge(d_param, em_param, xin, tin):
     h12 = np.sqrt(h)
 
     # W ~ N(0, sqrt(h)*g)
-    wincs = np.random.multivariate_normal(mean = np.zeros(prm.dim), 
-        cov = h * np.diag(np.square(d_param.gvec)), 
+    wincs = np.random.multivariate_normal(mean = np.zeros(prm.dim),
+        cov = h * np.diag(np.square(d_param.gvec)),
         size = em_param.numsubintervals)
     w = np.cumsum(wincs, axis = 0).T
 
     bridge = xin[0, :, None] + w
     bridge -= ((tvec - tin[0])/(tin[1]-tin[0]))*(w[:, em_param.numsubintervals - 1, None] + xin[0, :, None] - xin[1, :, None])
-    
+
     # concatenate the starting point to the bridge
     # tvec.shape is (11, ) that is (numsubintervals + 1, )
     # bridge.shape is (11, 2) that is (numsubintervals + 1, dim)
@@ -89,61 +88,16 @@ def brownianbridge(d_param, em_param, xin, tin):
     return tvec, bridge
 
 # Girsanov likelihood is computed using # TODO: insert reference to the paper
-def girsanov(d_param, em_param, path):
-	# path is of size (numsubintervals + 1, dim)
-	# b is of size (numsubintervals + 1, dim)
-	b = drift(d_param, path)
-	u = np.dot(np.diag(np.power(d_param.gvec, -2)), b.T).T
-	int1 = np.tensordot(u[:-1, :], np.diff(path, axis = 0))
-	u2 = np.einsum('ij,ji->i', u.T, b)
-	int2 = np.sum(0.5 * (u2[1:] + u2[:-1])) * em_param.h
-	r = int1 - 0.5 * int2
-	return r
-
-# this function computes MCMC steps for i-th interval of the j-th time series
-# using Brownian bridge. The accept-reject step is computed using the Girsanov
-# likelihood function. First burnin steps are rejected and the next numsteps
-# are used to compute the mmat and rvec (E step) which are used to solve the system of 
-# equations producing the next iteration of theta (M step).
-def mcmc(allx, allt, d_param, em_param, path_index, step_index):
-    mmat = np.zeros((prm.dim, prm.dof, prm.dof))
-    rvec = np.zeros((prm.dim, prm.dof))
-
-    # one time series, one interval, one dimension at a time
-    x = allx[path_index, step_index:(step_index + 2), :]
-    t = allt[path_index, step_index:(step_index + 2)]
-    
-    samples = np.zeros((em_param.numsubintervals, prm.dim))
-    _, xcur = brownianbridge(d_param, em_param, x, t)
-    oldlik = girsanov(d_param, em_param, xcur)
-    arburn = np.zeros(em_param.burninpaths)
-    for jj in range(em_param.burninpaths):
-        _, prop = brownianbridge(d_param, em_param, x, t)
-        proplik = girsanov(d_param, em_param, prop)
-        rho = proplik - oldlik
-        if (rho > np.log(np.random.uniform())):
-            xcur = prop
-            oldlik = proplik
-            arburn[jj] = 1
-    meanBurnin = np.mean(arburn)
-    
-    # for each path being sampled (r = 0 to r = R)
-    arsamp = np.zeros(em_param.mcmcpaths)
-    for jj in range(em_param.mcmcpaths):
-        _, prop = brownianbridge(d_param, em_param, x, t)
-        proplik = girsanov(d_param, em_param, prop)
-        rho = proplik - oldlik
-        if (rho > np.log(np.random.uniform())):
-            xcur = prop
-            oldlik = proplik
-            arsamp[jj] = 1
-        samples = xcur
-        pp = hermite_basis(samples[:(-1)])
-        mmat = mmat + em_param.h * np.matmul(pp.T, pp) / em_param.mcmcpaths
-        rvec = rvec + np.matmul((np.diff(samples, axis = 0)).T, pp) / em_param.mcmcpaths   
-    meanSample = np.mean(arsamp)
-    
-    return (mmat, rvec, meanBurnin, meanSample, path_index, step_index)
+def girsanov(d_param, em_param, path, tdiff):
+        # path is of size (numsubintervals + 1, dim)
+        # b is of size (numsubintervals + 1, dim)
+        b = drift(d_param, path)
+        u = np.dot(np.diag(np.power(d_param.gvec, -2)), b.T).T
+        int1 = np.tensordot(u[:-1, :], np.diff(path, axis = 0))
+        u2 = np.einsum('ij,ji->i', u.T, b)
+        int2 = np.sum(0.5 * (u2[1:] + u2[:-1])) * (tdiff)
+        r = int1 - 0.5 * int2
+        return r
 
 def index_mapping():
     index = 0
@@ -160,11 +114,7 @@ def index_mapping():
 
     return index_map
 
-def hermite_to_ordinary(theta):
-    transformation = np.zeros((prm.dof, prm.dof))
-    index_map = index_mapping()
-    index = 0
-    
+def h2o_simple_transformation():
     mat = np.zeros((prm.num_hermite_terms, prm.num_hermite_terms))
     mat[0, 0] = 0.63161877774606470129
     mat[1, 1] = 0.63161877774606470129
@@ -172,6 +122,16 @@ def hermite_to_ordinary(theta):
     mat[0, 2] = -mat[2, 2]
     mat[3, 3] = 0.25785728623970555997
     mat[1, 3] = -3 * mat[3, 3]
+
+    return mat
+
+
+def h2o_transformation_matrix():
+    transformation = np.zeros((prm.dof, prm.dof))
+    index_map = index_mapping()
+    index = 0
+
+    mat = h2o_simple_transformation()
 
     for d in range(0, prm.num_hermite_terms):
         for k in range(0, d + 1):
@@ -183,20 +143,144 @@ def hermite_to_ordinary(theta):
                             new_index = index_map[new_index_set]
                             transformation[new_index, index] = mat[i - 2, i] * mat[j, j] * mat[k, k]
                         if (j >= 2):
-                            new_index_set = (i, j - 2, k)
-                            new_index = index_map[new_index_set]
-                            transformation[new_index, index] = mat[i, i] * mat[j - 2, j] * mat[k, k]
+                           new_index_set = (i, j - 2, k)
+                           new_index = index_map[new_index_set]
+                           transformation[new_index, index] = mat[i, i] * mat[j - 2, j] * mat[k, k]
                         if (k >= 2):
-                            new_index_set = (i, j, k - 2)
-                            new_index = index_map[new_index_set]
-                            transformation[new_index, index] = mat[i, i] * mat[j, j] * mat[k - 2, k]
-                        
+                           new_index_set = (i, j, k - 2)
+                           new_index = index_map[new_index_set]
+                           transformation[new_index, index] = mat[i, i] * mat[j, j] * mat[k, k - 2]
+
                         transformation[index, index] = mat[i, i] * mat[j, j] * mat[k, k]
                         index += 1
-                            
-    transformed_theta = np.matmul(transformation, theta)
-    return np.transpose(transformed_theta)
 
+    return transformation
+
+def hermite_to_ordinary(theta):
+    transformation = h2o_transformation_matrix()
+    ordinary_theta = np.matmul(transformation, theta)
+    return ordinary_theta
+
+def ordinary_to_hermite(theta):
+    transformation = np.linalg.inv(h2o_transformation_matrix())
+    hermite_theta = np.matmul(transformation, theta)
+    return hermite_theta
+
+def norm_error(true_theta, estimated_theta):
+    errors = []
+    errors.append(np.sqrt(np.sum(np.power(np.abs(true_theta.ordinary - estimated_theta.ordinary), 2))))
+    errors.append(np.sqrt(np.sum(np.power(np.abs(true_theta.hermite - estimated_theta.hermite), 2))))
+    errors.append(np.sqrt(np.sum(np.power(np.abs(true_theta.sparse_ordinary - estimated_theta.sparse_ordinary), 2))))
+    errors.append(np.sqrt(np.sum(np.power(np.abs(true_theta.sparse_hermite - estimated_theta.sparse_hermite), 2))))
+    return errors
+
+
+def theta_sparsity(theta):
+    threshold = 0.1 * np.max(theta)
+    theta[np.abs(theta) < threshold] = 0.
+    return theta
+
+
+def residual(allx, allt, em_param, d_param, path_index, step_index):
+    gammavecsq = np.zeros((prm.dim))
+
+    # one time series, one interval, all dimensions at a time
+    x = allx[path_index, step_index:(step_index + 2), :]
+    t = allt[path_index, step_index:(step_index + 2)]
+    tdiff = (t[1] - t[0]) / em_param.numsubintervals
+
+    samples = np.zeros((em_param.numsubintervals, prm.dim))
+    _, xcur = brownianbridge(d_param, em_param, x, t)
+    oldlik = girsanov(d_param, em_param, xcur, tdiff)
+
+    arburn = np.zeros(em_param.burninpaths)
+    for jj in range(em_param.burninpaths):
+        _, prop = brownianbridge(d_param, em_param, x, t)
+        proplik = girsanov(d_param, em_param, prop, tdiff)
+
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
+            xcur = prop
+            oldlik = proplik
+            arburn[jj] = 1
+    meanBurnin = np.mean(arburn)
+    
+    # for each path being sampled (r = 0 to r = R)
+    arsamp = np.zeros(em_param.mcmcpaths)
+    for jj in range(em_param.mcmcpaths):
+        _, prop = brownianbridge(d_param, em_param, x, t)
+        proplik = girsanov(d_param, em_param, prop, tdiff)
+
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
+            xcur = prop
+            oldlik = proplik
+            arsamp[jj] = 1
+
+        samples = xcur
+        pp = hermite_basis(samples[:(-1)])
+        gammavecsq = gammavecsq + np.sum(np.square(np.diff(samples, axis = 0) - tdiff * np.matmul(pp, d_param.theta)), axis = 0) / (tdiff * em_param.mcmcpaths * (em_param.numsubintervals * (allx.shape[1] - 1) + 1))
+    
+    meanSample = np.mean(arsamp)
+
+    return (gammavecsq, meanBurnin, meanSample, path_index, step_index)
+
+def infer_noise(allx, allt, em_param, d_param):
+    gammavec = np.zeros((prm.dim))
+    
+    with Parallel(n_jobs=-1) as parallel:
+        results = parallel(delayed(residual)(allx, allt, em_param, d_param, path_index, step_index)
+            for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1))
+        for res in results:
+            gammavec += res[0]
+    return gammavec
+
+
+# this function computes MCMC steps for i-th interval of the j-th time series
+# using Brownian bridge. The accept-reject step is computed using the Girsanov
+# likelihood function. First burnin steps are rejected and the next numsteps
+# are used to compute the mmat and rvec (E step) which are used to solve the system of 
+# equations producing the next iteration of theta (M step).
+def mcmc(allx, allt, d_param, em_param, path_index, step_index):
+    mmat = np.zeros((prm.dim, prm.dof, prm.dof))
+    rvec = np.zeros((prm.dim, prm.dof))
+
+    # one time series, one interval, one dimension at a time
+    x = allx[path_index, step_index:(step_index + 2), :]
+    t = allt[path_index, step_index:(step_index + 2)]
+    tdiff = (t[1] - t[0]) / em_param.numsubintervals
+
+    samples = np.zeros((em_param.numsubintervals, prm.dim))
+    _, xcur = brownianbridge(d_param, em_param, x, t)
+    oldlik = girsanov(d_param, em_param, xcur, tdiff)
+    arburn = np.zeros(em_param.burninpaths)
+    for jj in range(em_param.burninpaths):
+        _, prop = brownianbridge(d_param, em_param, x, t)
+        proplik = girsanov(d_param, em_param, prop, tdiff)
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
+            xcur = prop
+            oldlik = proplik
+            arburn[jj] = 1
+    meanBurnin = np.mean(arburn)
+
+    # for each path being sampled (r = 0 to r = R)
+    arsamp = np.zeros(em_param.mcmcpaths)
+    for jj in range(em_param.mcmcpaths):
+        _, prop = brownianbridge(d_param, em_param, x, t)
+        proplik = girsanov(d_param, em_param, prop, tdiff)
+        rho = proplik - oldlik
+        if (rho > np.log(np.random.uniform())):
+            xcur = prop
+            oldlik = proplik
+            arsamp[jj] = 1
+        samples = xcur
+        pp = hermite_basis(samples[:(-1)])
+        mmat = mmat + tdiff * np.matmul(pp.T, pp) / em_param.mcmcpaths
+        rvec = rvec + np.matmul((np.diff(samples, axis = 0)).T, pp) / em_param.mcmcpaths
+    meanSample = np.mean(arsamp)
+
+    return (mmat, rvec, meanBurnin, meanSample, path_index, step_index)
 
 # this function computes the E-step for all intervals in all time series parallely.
 # the accummulated mmat and rvec are then used to solve the system, theta = mmat * rvec,
@@ -214,10 +298,10 @@ def em(allx, allt, em_param, d_param):
         print(numiter)
         mmat = np.zeros((prm.dim, prm.dof, prm.dof))
         rvec = np.zeros((prm.dim, prm.dof))
-        
+
         ## this parallelization is for all time series observations in 1 go
         with Parallel(n_jobs=-1) as parallel:
-            results = parallel(delayed(mcmc)(allx, allt, d_param, em_param, path_index, step_index) 
+            results = parallel(delayed(mcmc)(allx, allt, d_param, em_param, path_index, step_index)
                 for path_index in range(allx.shape[0]) for step_index in range(allx.shape[1] - 1))
             for res in results:
                 mmat += res[0]
@@ -225,7 +309,7 @@ def em(allx, allt, em_param, d_param):
                 print("path index:", res[4], ", step index: ", res[5], ", AR burin:", res[2], ", AR sampling:", res[3])
 
         newtheta = np.linalg.solve(mmat, rvec).T
-	
+
         # relative error
         error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
 

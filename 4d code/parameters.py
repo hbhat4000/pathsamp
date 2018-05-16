@@ -1,4 +1,6 @@
 import numpy as np
+import data_creation as dc
+import newbridge as nb
 
 def choose(degree, dim):
 	return np.math.factorial(degree) / (np.math.factorial(dim) * np.math.factorial(degree - dim))
@@ -19,14 +21,6 @@ class em:
 		self.niter = niter	# threshold for number of EM iterations, after which EM returns unsuccessfully
 		self.h = dt / numsubintervals	# time step for EM
 
-	def __init__(self, dt):
-		self.tol = 1e-2
-		self.burninpaths = 10
-		self.mcmcpaths = 100
-		self.numsubintervals = 10
-		self.niter = 100
-		self.h = dt / self.numsubintervals
-
 class data:
 	def __init__(self, theta, gvec):
 		self.theta = theta
@@ -42,22 +36,22 @@ class euler_maruyama:
 		self.it = it
 		self.numpaths = numpaths
 
-	def __init__(self, ic, it):
-		self.numsteps = 25000
-		self.savesteps = 100
-		self.ft = 10.0
-		self.h = self.ft / self.numsteps
-		self.ic = np.random.randn(10, dim)
-		self.it = it
-		self.numpaths = ic.shape[0]
-
 class system:
 	def __init__(self, kvec, mvec, gvec):
 		self.kvec = kvec
 		self.mvec = mvec
 		self.gvec = gvec
 
-	def __init__(self):
-		self.kvec = np.array([1., 0.7, 0.6])
-		self.mvec = np.array([0.2, 0.3])
-		self.gvec = np.full(dim, 0.1)
+class theta_transformations:
+    def __init__(self, theta, theta_type=None):
+        if theta_type is 'ordinary':
+            self.ordinary = theta
+            self.hermite = nb.ordinary_to_hermite(theta)
+            self.sparse_ordinary = nb.theta_sparsity(self.ordinary)
+            self.sparse_hermite = nb.theta_sparsity(self.hermite)
+        if theta_type is 'hermite':
+            self.ordinary = nb.hermite_to_ordinary(theta)
+            self.hermite = theta
+            self.sparse_ordinary = nb.theta_sparsity(self.ordinary)
+            self.sparse_hermite = nb.theta_sparsity(self.hermite)
+
