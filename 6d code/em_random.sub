@@ -2,7 +2,7 @@
 #$ -S /bin/bash
 #$ -q std.q
 #$ -cwd
-#$ -N EM_random_6d
+#$ -N EM_rand_6d
 #$ -t 1-10
 #$ -tc 10
 #$ -j y

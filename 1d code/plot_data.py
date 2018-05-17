@@ -1,14 +1,25 @@
-from matplotlib import pyplot as plt
-
-# load data
+import numpy as np
 import pickle
-with open('./varying_subintervals/data/common_data.pkl','rb') as f:
-    xout, tout, x_without_noise, euler_param, sim_param = pickle.load(f)
+from matplotlib import pyplot as plt
+import os
 
-plt.axis([0, 10, -0.5, 3])
+noise_mapping = (0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001)
+for parvalue in range(8):
+    with open('./data/noise_' + str(parvalue) + '.pkl', 'rb') as f:
+       xout, tout, xout_without_noise, euler_param, sim_param = pickle.load(f)
 
-for i in range(10):
-    plt.plot(tout[0, :], xout[i, :, 0], label='time series '+str(i))
+    x = xout[:, 0::10, :]
+    t = tout[:, 0::10]
 
-plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-plt.show()
+    fig = plt.figure()
+    ax = fig.gca()
+    ax.set_xticks(np.arange(0, 11, 1))
+    ax.set_yticks(np.arange(-1.0, 3.0, 0.5))
+
+    for i in range(10):
+        plt.plot(t[i, :], x[i, :, 0], label='initial condition ' + str(euler_param.ic[i]))
+
+    plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
+    plt.title('Observed data used for experiments, noise = ' + str(noise_mapping[parvalue]))
+    plt.grid()
+    plt.savefig('./data/plots/noise_' + str(parvalue) + '.eps', format = 'eps', bbox_inches='tight')

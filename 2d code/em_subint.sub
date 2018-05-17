@@ -1,8 +1,8 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q appliedmath.q
+#$ -q std.q
 #$ -cwd
-#$ -N EM_subint_2d
+#$ -N EM_sint_2d
 #$ -t 1-10
 #$ -tc 10
 #$ -j y

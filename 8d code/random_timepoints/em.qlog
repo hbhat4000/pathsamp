@@ -1,0 +1,275 @@
+Data shape: (10, 41, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.44414856  0.11889343  0.24312292 ...,  0.26203568  0.30445456
+   0.30876775]
+ [ 0.38846571  0.15636221  0.37857672 ...,  0.42513088  0.31485214
+   0.26489177]
+ [ 0.27582058  0.40319548  0.11001466 ...,  0.41798165  0.24059511
+   0.11022981]
+ ..., 
+ [ 0.05977695  0.10451736  0.03431769 ...,  0.3520707   0.38902262
+   0.44770248]
+ [ 0.36234753  0.35005002  0.4832856  ...,  0.07645822  0.09627275
+   0.40115824]
+ [ 0.36579332  0.12001087  0.01731349 ...,  0.35379202  0.1684574
+   0.17002482]]
+1
+Data shape: (10, 81, 8)
+Theta shape: (165, 8)
+Theta: [[  1.49477851e-01   4.00098278e-01   1.38882640e-01 ...,   9.13339794e-02
+    2.56340626e-01   2.62918908e-01]
+ [  2.96467167e-01   1.16776436e-01   4.94494217e-01 ...,   1.97773966e-01
+    1.37025139e-01   3.06277981e-01]
+ [  2.15878435e-02   3.04963770e-01   1.02385875e-01 ...,   2.61494633e-01
+    3.01368947e-01   4.00143156e-01]
+ ..., 
+ [  2.90491982e-02   2.44970098e-04   2.64941111e-01 ...,   2.16493854e-03
+    3.09544005e-01   7.12021485e-02]
+ [  2.68518831e-01   1.75914141e-01   3.64870928e-01 ...,   1.54894783e-01
+    2.41555598e-01   2.74696583e-01]
+ [  4.53441327e-01   1.66144838e-01   8.59003540e-02 ...,   3.75700575e-01
+    4.47272213e-01   2.46368455e-01]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.17912497  0.22316949  0.22008799 ...,  0.46382203  0.27395862
+   0.24772413]
+ [ 0.41260894  0.29232362  0.04732556 ...,  0.42164048  0.12564324
+   0.02810308]
+ [ 0.1918499   0.32176206  0.23424693 ...,  0.41083184  0.28114159
+   0.10788101]
+ ..., 
+ [ 0.16689939  0.21279997  0.18018513 ...,  0.48697537  0.43034016
+   0.29847639]
+ [ 0.39428274  0.17196545  0.3227289  ...,  0.01290534  0.40031037
+   0.32453902]
+ [ 0.478799    0.32698686  0.4118259  ...,  0.49426874  0.43047692
+   0.3405292 ]]
+1
+Data shape: (10, 61, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.01353122  0.08586246  0.27992898 ...,  0.10403456  0.33864934
+   0.16761672]
+ [ 0.36807108  0.19652172  0.40421885 ...,  0.43519998  0.19393033
+   0.47049021]
+ [ 0.17631908  0.08151261  0.04002274 ...,  0.04850786  0.41187504
+   0.2253698 ]
+ ..., 
+ [ 0.15607101  0.29796742  0.01475186 ...,  0.08265156  0.17256903
+   0.0256766 ]
+ [ 0.42332905  0.26349057  0.0209736  ...,  0.09656757  0.03089889
+   0.30323949]
+ [ 0.26244078  0.49476898  0.0954543  ...,  0.28151316  0.03978307
+   0.40278732]]
+1
+Data shape: (10, 101, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.11839562  0.05288831  0.29978118 ...,  0.43575162  0.33043789
+   0.05962501]
+ [ 0.28288615  0.20555213  0.37172852 ...,  0.47050883  0.32277176
+   0.27551478]
+ [ 0.42553575  0.09499213  0.02434678 ...,  0.2386912   0.11404539
+   0.1551978 ]
+ ..., 
+ [ 0.26249008  0.0810096   0.25586218 ...,  0.01957726  0.32414647
+   0.24935556]
+ [ 0.42897849  0.04834842  0.03690319 ...,  0.01136148  0.21985911
+   0.26688338]
+ [ 0.25414713  0.12723069  0.21914051 ...,  0.42061962  0.45363946
+   0.10524923]]
+1
+Data shape: (10, 21, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.21484788  0.31399938  0.31917959 ...,  0.1135271   0.07749978
+   0.31627541]
+ [ 0.11385644  0.02858902  0.17872227 ...,  0.36629484  0.4788563
+   0.23332276]
+ [ 0.12631413  0.16193297  0.0370089  ...,  0.11088312  0.03274028
+   0.36711565]
+ ..., 
+ [ 0.04775682  0.1241239   0.05349137 ...,  0.44887352  0.15097953
+   0.08586967]
+ [ 0.42153444  0.22118667  0.44793395 ...,  0.06398063  0.16211774
+   0.00281079]
+ [ 0.02171734  0.21775867  0.03388746 ...,  0.3606037   0.23468117
+   0.05003941]]
+1
+Data shape: (10, 71, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.2747702   0.42077955  0.10515434 ...,  0.48357254  0.41355421
+   0.11719053]
+ [ 0.25956021  0.31775334  0.3699704  ...,  0.43034212  0.36745767
+   0.28781112]
+ [ 0.31382585  0.4022069   0.15587614 ...,  0.06581117  0.06450477
+   0.23505666]
+ ..., 
+ [ 0.47772249  0.49708608  0.2610335  ...,  0.40453003  0.18664186
+   0.06332493]
+ [ 0.13728343  0.37110403  0.31402574 ...,  0.20360041  0.25761904
+   0.10146112]
+ [ 0.29139009  0.23048499  0.22099879 ...,  0.20753483  0.00499057
+   0.33084542]]
+1
+Data shape: (10, 31, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.36928732  0.08262683  0.43164325 ...,  0.02466566  0.47904777
+   0.20220225]
+ [ 0.03560348  0.00836647  0.40632459 ...,  0.15080711  0.41909737
+   0.1176296 ]
+ [ 0.03910673  0.08886312  0.08679527 ...,  0.18622637  0.38495091
+   0.39441729]
+ ..., 
+ [ 0.08283909  0.26864907  0.07573986 ...,  0.03419505  0.40667762
+   0.06972438]
+ [ 0.10131663  0.38992363  0.05562172 ...,  0.46361101  0.01906273
+   0.24036151]
+ [ 0.13792122  0.175179    0.1558805  ...,  0.07941596  0.3528787
+   0.27323392]]
+1
+Data shape: (10, 51, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.13290227  0.46451089  0.42406281 ...,  0.31754121  0.13065708
+   0.45404802]
+ [ 0.09657586  0.39399823  0.38139501 ...,  0.07435755  0.39296228
+   0.24627938]
+ [ 0.47313225  0.20571933  0.10164637 ...,  0.01761568  0.38218876
+   0.08551423]
+ ..., 
+ [ 0.26843676  0.37720147  0.16262071 ...,  0.14790467  0.49062744
+   0.10521384]
+ [ 0.24971302  0.04003897  0.20574825 ...,  0.28624065  0.00911699
+   0.28855702]
+ [ 0.13054645  0.49174825  0.07670226 ...,  0.2340716   0.31162165
+   0.00343491]]
+1
+Data shape: (10, 91, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.23695901  0.2213034   0.44778335 ...,  0.20623513  0.4958712
+   0.11781962]
+ [ 0.43579009  0.11564181  0.17661341 ...,  0.0906502   0.1025947
+   0.11413306]
+ [ 0.4096542   0.33814542  0.02711093 ...,  0.23162384  0.37910249
+   0.14534045]
+ ..., 
+ [ 0.16491557  0.3493231   0.22341051 ...,  0.19952558  0.44286926
+   0.23720557]
+ [ 0.29156734  0.06685053  0.31563552 ...,  0.03541643  0.47644366
+   0.07079964]
+ [ 0.3461189   0.04376259  0.25303273 ...,  0.07038068  0.07560627
+   0.19778383]]
+1
+path index: 0 , step index:  0 , AR burin: 1.0 , AR sampling: 0.88
+path index: 0 , step index:  1 , AR burin: 0.9 , AR sampling: 0.96
+path index: 0 , step index:  2 , AR burin: 0.3 , AR sampling: 0.24
+path index: 0 , step index:  3 , AR burin: 0.4 , AR sampling: 0.05
+path index: 0 , step index:  4 , AR burin: 0.3 , AR sampling: 0.0
+path index: 0 , step index:  5 , AR burin: 0.7 , AR sampling: 0.79
+path index: 0 , step index:  6 , AR burin: 0.5 , AR sampling: 0.2
+path index: 0 , step index:  7 , AR burin: 0.9 , AR sampling: 0.93
+path index: 0 , step index:  8 , AR burin: 0.2 , AR sampling: 0.01
+path index: 0 , step index:  9 , AR burin: 0.3 , AR sampling: 0.05
+path index: 1 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  1 , AR burin: 0.6 , AR sampling: 0.41
+path index: 1 , step index:  2 , AR burin: 0.5 , AR sampling: 0.41
+path index: 1 , step index:  3 , AR burin: 0.3 , AR sampling: 0.02
+path index: 1 , step index:  4 , AR burin: 0.3 , AR sampling: 0.05
+path index: 1 , step index:  5 , AR burin: 0.5 , AR sampling: 0.07
+path index: 1 , step index:  6 , AR burin: 0.2 , AR sampling: 0.01
+path index: 1 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  8 , AR burin: 0.4 , AR sampling: 0.15
+path index: 1 , step index:  9 , AR burin: 0.3 , AR sampling: 0.0
+path index: 2 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  1 , AR burin: 0.8 , AR sampling: 0.6
+path index: 2 , step index:  2 , AR burin: 0.3 , AR sampling: 0.39
+path index: 2 , step index:  3 , AR burin: 0.2 , AR sampling: 0.01
+path index: 2 , step index:  4 , AR burin: 0.4 , AR sampling: 0.01
+path index: 2 , step index:  5 , AR burin: 0.1 , AR sampling: 0.17
+path index: 2 , step index:  6 , AR burin: 0.4 , AR sampling: 0.0
+path index: 2 , step index:  7 , AR burin: 1.0 , AR sampling: 0.89
+path index: 2 , step index:  8 , AR burin: 0.1 , AR sampling: 0.09
+path index: 2 , step index:  9 , AR burin: 0.5 , AR sampling: 0.04
+path index: 3 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  1 , AR burin: 0.8 , AR sampling: 0.41
+path index: 3 , step index:  2 , AR burin: 0.8 , AR sampling: 0.66
+path index: 3 , step index:  3 , AR burin: 0.7 , AR sampling: 0.04
+path index: 3 , step index:  4 , AR burin: 0.7 , AR sampling: 0.14
+path index: 3 , step index:  5 , AR burin: 0.6 , AR sampling: 0.23
+path index: 3 , step index:  6 , AR burin: 0.0 , AR sampling: 0.04
+path index: 3 , step index:  7 , AR burin: 1.0 , AR sampling: 0.95
+path index: 3 , step index:  8 , AR burin: 0.2 , AR sampling: 0.09
+path index: 3 , step index:  9 , AR burin: 0.5 , AR sampling: 0.09
+path index: 4 , step index:  0 , AR burin: 1.0 , AR sampling: 0.97
+path index: 4 , step index:  1 , AR burin: 1.0 , AR sampling: 0.95
+path index: 4 , step index:  2 , AR burin: 0.5 , AR sampling: 0.23
+path index: 4 , step index:  3 , AR burin: 0.3 , AR sampling: 0.03
+path index: 4 , step index:  4 , AR burin: 0.7 , AR sampling: 0.62
+path index: 4 , step index:  5 , AR burin: 1.0 , AR sampling: 0.78
+path index: 4 , step index:  6 , AR burin: 0.1 , AR sampling: 0.04
+path index: 4 , step index:  7 , AR burin: 0.8 , AR sampling: 0.86
+path index: 4 , step index:  8 , AR burin: 0.2 , AR sampling: 0.22
+path index: 4 , step index:  9 , AR burin: 0.1 , AR sampling: 0.03
+path index: 5 , step index:  0 , AR burin: 1.0 , AR sampling: 0.97
+path index: 5 , step index:  1 , AR burin: 0.7 , AR sampling: 0.67
+path index: 5 , step index:  2 , AR burin: 0.7 , AR sampling: 0.49
+path index: 5 , step index:  3 , AR burin: 0.2 , AR sampling: 0.06
+path index: 5 , step index:  4 , AR burin: 0.5 , AR sampling: 0.28
+path index: 5 , step index:  5 , AR burin: 0.6 , AR sampling: 0.28
+path index: 5 , step index:  6 , AR burin: 0.3 , AR sampling: 0.05
+path index: 5 , step index:  7 , AR burin: 1.0 , AR sampling: 0.95
+path index: 5 , step index:  8 , AR burin: 0.0 , AR sampling: 0.06
+path index: 5 , step index:  9 , AR burin: 0.0 , AR sampling: 0.07
+path index: 6 , step index:  0 , AR burin: 1.0 , AR sampling: 0.97
+path index: 6 , step index:  1 , AR burin: 1.0 , AR sampling: 0.79
+path index: 6 , step index:  2 , AR burin: 0.9 , AR sampling: 0.78
+path index: 6 , step index:  3 , AR burin: 0.2 , AR sampling: 0.05
+path index: 6 , step index:  4 , AR burin: 0.7 , AR sampling: 0.15
+path index: 6 , step index:  5 , AR burin: 0.8 , AR sampling: 0.66
+path index: 6 , step index:  6 , AR burin: 0.3 , AR sampling: 0.17
+path index: 6 , step index:  7 , AR burin: 0.9 , AR sampling: 0.96
+path index: 6 , step index:  8 , AR burin: 0.1 , AR sampling: 0.04
+path index: 6 , step index:  9 , AR burin: 0.3 , AR sampling: 0.0
+path index: 7 , step index:  0 , AR burin: 1.0 , AR sampling: 0.97
+path index: 7 , step index:  1 , AR burin: 0.3 , AR sampling: 0.42
+path index: 7 , step index:  2 , AR burin: 0.6 , AR sampling: 0.64
+path index: 7 , step index:  3 , AR burin: 0.1 , AR sampling: 0.02
+path index: 7 , step index:  4 , AR burin: 0.4 , AR sampling: 0.21
+path index: 7 , step index:  5 , AR burin: 0.3 , AR sampling: 0.39
+path index: 7 , step index:  6 , AR burin: 0.3 , AR sampling: 0.02
+path index: 7 , step index:  7 , AR burin: 1.0 , AR sampling: 0.96
+path index: 7 , step index:  8 , AR burin: 0.2 , AR sampling: 0.14
+path index: 7 , step index:  9 , AR burin: 0.4 , AR sampling: 0.04
+path index: 8 , step index:  0 , AR burin: 0.8 , AR sampling: 0.95
+path index: 8 , step index:  1 , AR burin: 0.8 , AR sampling: 0.56
+path index: 8 , step index:  2 , AR burin: 0.2 , AR sampling: 0.39
+path index: 8 , step index:  3 , AR burin: 0.2 , AR sampling: 0.11
+path index: 8 , step index:  4 , AR burin: 0.2 , AR sampling: 0.08
+path index: 8 , step index:  5 , AR burin: 0.1 , AR sampling: 0.18
+path index: 8 , step index:  6 , AR burin: 0.2 , AR sampling: 0.03
+path index: 8 , step index:  7 , AR burin: 0.6 , AR sampling: 0.91
+path index: 8 , step index:  8 , AR burin: 0.1 , AR sampling: 0.07
+path index: 8 , step index:  9 , AR burin: 0.0 , AR sampling: 0.02
+path index: 9 , step index:  0 , AR burin: 1.0 , AR sampling: 0.95
+path index: 9 , step index:  1 , AR burin: 0.6 , AR sampling: 0.75
+path index: 9 , step index:  2 , AR burin: 0.4 , AR sampling: 0.29
+path index: 9 , step index:  3 , AR burin: 0.4 , AR sampling: 0.09
+path index: 9 , step index:  4 , AR burin: 0.1 , AR sampling: 0.05
+path index: 9 , step index:  5 , AR burin: 0.3 , AR sampling: 0.37
+path index: 9 , step index:  6 , AR burin: 0.3 , AR sampling: 0.02
+path index: 9 , step index:  7 , AR burin: 0.6 , AR sampling: 0.98
+path index: 9 , step index:  8 , AR burin: 0.0 , AR sampling: 0.04
+path index: 9 , step index:  9 , AR burin: 0.0 , AR sampling: 0.06
+189.808138104
+[[   47.09327435  -211.51942923  -139.6259099  ...,    54.27444511
+     28.23491235   -40.27469271]
+ [ -248.73140339 -1068.62070262  -228.96169812 ...,  -243.50445915
+    -68.96595278  -105.91912728]
+ [  128.73973161  -133.06653073   150.66360613 ...,   130.38602817
+      9.04147332    33.98941654]
+ ..., 
+ [    4.56513844    65.07425454    80.61272936 ...,    51.4251985
+     24.5835422     43.38409854]
+ [ -183.7258179     10.91605663   -35.37945422 ...,   106.86805116
+    -58.37903833   -33.50376517]
+ [  -36.344938    -144.68324131  -108.51614909 ...,   -40.1009633
+     -3.63015569  -111.64821645]]
+2

@@ -1,8 +1,8 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q appliedmath.q
+#$ -q std.q
 #$ -cwd
-#$ -N data
+#$ -N data_2d
 #$ -t 1-8
 #$ -tc 8
 #$ -j y

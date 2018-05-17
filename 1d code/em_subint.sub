@@ -2,7 +2,7 @@
 #$ -S /bin/bash
 #$ -q std.q
 #$ -cwd
-#$ -N EM_subint_1d
+#$ -N EM_sint_1d
 #$ -t 1-10
 #$ -tc 10
 #$ -j y

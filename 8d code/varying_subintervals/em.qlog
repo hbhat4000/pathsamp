@@ -1,0 +1,1064 @@
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.27898422  0.45350165  0.33345672 ...,  0.41840314  0.25241093
+   0.23579181]
+ [ 0.28007494  0.06535823  0.15942343 ...,  0.28185023  0.2252279
+   0.36333329]
+ [ 0.45299999  0.2903042   0.32783849 ...,  0.23099311  0.11918174
+   0.49096361]
+ ..., 
+ [ 0.0313519   0.23950584  0.10425455 ...,  0.46226548  0.2347237
+   0.13034387]
+ [ 0.45861668  0.28523387  0.38766191 ...,  0.23284581  0.06735167
+   0.4583734 ]
+ [ 0.23978092  0.11250957  0.0958602  ...,  0.05514657  0.18457707
+   0.11419209]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.21266835  0.24324146  0.10097257 ...,  0.22263782  0.00651793
+   0.34036037]
+ [ 0.15358984  0.13965318  0.43678156 ...,  0.11167635  0.36415296
+   0.48023551]
+ [ 0.22500019  0.0544407   0.46733784 ...,  0.49784292  0.24370173
+   0.20260577]
+ ..., 
+ [ 0.28560587  0.29384557  0.41297026 ...,  0.18024758  0.26695937
+   0.0074461 ]
+ [ 0.00312934  0.3927605   0.18048882 ...,  0.21863117  0.47713221
+   0.09301738]
+ [ 0.11258006  0.49325623  0.23067409 ...,  0.23498626  0.13136348
+   0.22502227]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.16063922  0.25353269  0.34549547 ...,  0.49476511  0.24522101
+   0.14171902]
+ [ 0.45648382  0.23019544  0.09789211 ...,  0.47559289  0.22367939
+   0.25358576]
+ [ 0.35864385  0.40753038  0.30533146 ...,  0.42728152  0.18326248
+   0.36951079]
+ ..., 
+ [ 0.46586542  0.10878846  0.12728126 ...,  0.49032107  0.49036829
+   0.15142065]
+ [ 0.21523744  0.29299954  0.4156304  ...,  0.26990755  0.40469069
+   0.47423153]
+ [ 0.06351816  0.15346225  0.05549363 ...,  0.16514936  0.11267115
+   0.15954114]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.14236491  0.15484786  0.28088824 ...,  0.42380981  0.31623164
+   0.19478424]
+ [ 0.35437504  0.39400392  0.13270805 ...,  0.11587911  0.44634993
+   0.41209375]
+ [ 0.04156329  0.28512442  0.23073557 ...,  0.4323033   0.02560642
+   0.07733528]
+ ..., 
+ [ 0.09215378  0.32761354  0.18669152 ...,  0.3705012   0.19663984
+   0.22639105]
+ [ 0.18721834  0.05032605  0.40930242 ...,  0.42823866  0.43868394
+   0.2154613 ]
+ [ 0.36334799  0.05352159  0.16724821 ...,  0.1881435   0.03590767
+   0.40233284]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.02626985  0.37489811  0.24385335 ...,  0.26614016  0.02813745
+   0.29043597]
+ [ 0.21406349  0.42959267  0.07430393 ...,  0.19827496  0.33302961
+   0.30172198]
+ [ 0.38942513  0.19886728  0.05186245 ...,  0.07787522  0.34911676
+   0.17853224]
+ ..., 
+ [ 0.22461038  0.12614464  0.29815411 ...,  0.3766276   0.28952256
+   0.1838477 ]
+ [ 0.15674604  0.21726948  0.19535127 ...,  0.17329394  0.02762506
+   0.112702  ]
+ [ 0.06385921  0.3682266   0.04708706 ...,  0.44277147  0.09928348
+   0.17429736]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.4511161   0.33339947  0.13935967 ...,  0.13147485  0.40969173
+   0.27020288]
+ [ 0.13725546  0.03460336  0.49178075 ...,  0.02796232  0.08777929
+   0.23045221]
+ [ 0.28011909  0.15559999  0.47727185 ...,  0.17493503  0.36397257
+   0.33550254]
+ ..., 
+ [ 0.17254923  0.14129427  0.04381333 ...,  0.39806563  0.06508139
+   0.15143226]
+ [ 0.08754614  0.23393246  0.00861764 ...,  0.08647764  0.1735316
+   0.39884212]
+ [ 0.00473926  0.1141616   0.28545504 ...,  0.13863876  0.1087511
+   0.39221474]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.49022402  0.33822858  0.05351518 ...,  0.38198627  0.4801452
+   0.1070435 ]
+ [ 0.38978188  0.02338846  0.07044567 ...,  0.15744447  0.45467604
+   0.218378  ]
+ [ 0.36262515  0.0735999   0.22560506 ...,  0.18392792  0.49721976
+   0.29842014]
+ ..., 
+ [ 0.14916366  0.14932189  0.14372805 ...,  0.30963983  0.20199829
+   0.31048357]
+ [ 0.21404172  0.04686242  0.44467706 ...,  0.37298237  0.22188005
+   0.19052695]
+ [ 0.09300419  0.37115414  0.03887108 ...,  0.30158389  0.44529512
+   0.00499456]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.2921678   0.04337497  0.27406648 ...,  0.30922632  0.01409974
+   0.47762934]
+ [ 0.06930001  0.10286707  0.4452498  ...,  0.48209024  0.13078354
+   0.14770234]
+ [ 0.17798285  0.24010511  0.30204358 ...,  0.47076826  0.33210096
+   0.35655235]
+ ..., 
+ [ 0.23892437  0.1178175   0.34359802 ...,  0.49869795  0.05595379
+   0.12433391]
+ [ 0.25019896  0.33062549  0.40377732 ...,  0.04401869  0.290973
+   0.12001891]
+ [ 0.48061447  0.06629715  0.25848915 ...,  0.46417712  0.02006022
+   0.45232554]]
+1
+Data shape: (10, 11, 8)
+Theta shape: (165, 8)
+Theta: [[ 0.13490524  0.3887942   0.08279974 ...,  0.37198547  0.15607868
+   0.10051548]
+ [ 0.07580787  0.29907565  0.36507025 ...,  0.36150523  0.13924266
+   0.44594586]
+ [ 0.43152128  0.22686585  0.16446367 ...,  0.39010872  0.25451621
+   0.33355403]
+ ..., 
+ [ 0.48140141  0.1763871   0.45650365 ...,  0.41673417  0.14272166
+   0.16491135]
+ [ 0.40221869  0.30399276  0.32547619 ...,  0.24941129  0.06245596
+   0.26550006]
+ [ 0.33432888  0.27149526  0.43485679 ...,  0.24888875  0.21189349
+   0.22647995]]
+1
+path index: 0 , step index:  0 , AR burin: 0.2 , AR sampling: 0.03
+path index: 0 , step index:  1 , AR burin: 0.4 , AR sampling: 0.06
+path index: 0 , step index:  2 , AR burin: 0.2 , AR sampling: 0.03
+path index: 0 , step index:  3 , AR burin: 0.7 , AR sampling: 0.15
+path index: 0 , step index:  4 , AR burin: 0.2 , AR sampling: 0.04
+path index: 0 , step index:  5 , AR burin: 0.5 , AR sampling: 0.02
+path index: 0 , step index:  6 , AR burin: 0.2 , AR sampling: 0.32
+path index: 0 , step index:  7 , AR burin: 0.3 , AR sampling: 0.04
+path index: 0 , step index:  8 , AR burin: 0.2 , AR sampling: 0.01
+path index: 0 , step index:  9 , AR burin: 0.4 , AR sampling: 0.03
+path index: 1 , step index:  0 , AR burin: 0.5 , AR sampling: 0.02
+path index: 1 , step index:  1 , AR burin: 0.2 , AR sampling: 0.04
+path index: 1 , step index:  2 , AR burin: 0.2 , AR sampling: 0.02
+path index: 1 , step index:  3 , AR burin: 0.3 , AR sampling: 0.03
+path index: 1 , step index:  4 , AR burin: 0.0 , AR sampling: 0.01
+path index: 1 , step index:  5 , AR burin: 0.5 , AR sampling: 0.02
+path index: 1 , step index:  6 , AR burin: 0.4 , AR sampling: 0.03
+path index: 1 , step index:  7 , AR burin: 0.5 , AR sampling: 0.12
+path index: 1 , step index:  8 , AR burin: 0.1 , AR sampling: 0.06
+path index: 1 , step index:  9 , AR burin: 0.3 , AR sampling: 0.03
+path index: 2 , step index:  0 , AR burin: 0.3 , AR sampling: 0.09
+path index: 2 , step index:  1 , AR burin: 0.0 , AR sampling: 0.02
+path index: 2 , step index:  2 , AR burin: 0.4 , AR sampling: 0.0
+path index: 2 , step index:  3 , AR burin: 0.4 , AR sampling: 0.06
+path index: 2 , step index:  4 , AR burin: 0.0 , AR sampling: 0.01
+path index: 2 , step index:  5 , AR burin: 0.3 , AR sampling: 0.06
+path index: 2 , step index:  6 , AR burin: 0.2 , AR sampling: 0.03
+path index: 2 , step index:  7 , AR burin: 0.0 , AR sampling: 0.1
+path index: 2 , step index:  8 , AR burin: 0.2 , AR sampling: 0.03
+path index: 2 , step index:  9 , AR burin: 0.1 , AR sampling: 0.04
+path index: 3 , step index:  0 , AR burin: 0.6 , AR sampling: 0.55
+path index: 3 , step index:  1 , AR burin: 0.1 , AR sampling: 0.01
+path index: 3 , step index:  2 , AR burin: 0.2 , AR sampling: 0.04
+path index: 3 , step index:  3 , AR burin: 0.3 , AR sampling: 0.04
+path index: 3 , step index:  4 , AR burin: 0.1 , AR sampling: 0.0
+path index: 3 , step index:  5 , AR burin: 0.1 , AR sampling: 0.0
+path index: 3 , step index:  6 , AR burin: 0.0 , AR sampling: 0.01
+path index: 3 , step index:  7 , AR burin: 0.2 , AR sampling: 0.04
+path index: 3 , step index:  8 , AR burin: 0.3 , AR sampling: 0.09
+path index: 3 , step index:  9 , AR burin: 0.3 , AR sampling: 0.04
+path index: 4 , step index:  0 , AR burin: 0.2 , AR sampling: 0.01
+path index: 4 , step index:  1 , AR burin: 0.9 , AR sampling: 0.68
+path index: 4 , step index:  2 , AR burin: 0.0 , AR sampling: 0.03
+path index: 4 , step index:  3 , AR burin: 0.0 , AR sampling: 0.18
+path index: 4 , step index:  4 , AR burin: 0.2 , AR sampling: 0.01
+path index: 4 , step index:  5 , AR burin: 0.2 , AR sampling: 0.01
+path index: 4 , step index:  6 , AR burin: 0.3 , AR sampling: 0.08
+path index: 4 , step index:  7 , AR burin: 0.2 , AR sampling: 0.05
+path index: 4 , step index:  8 , AR burin: 0.0 , AR sampling: 0.05
+path index: 4 , step index:  9 , AR burin: 0.0 , AR sampling: 0.02
+path index: 5 , step index:  0 , AR burin: 0.0 , AR sampling: 0.03
+path index: 5 , step index:  1 , AR burin: 0.2 , AR sampling: 0.01
+path index: 5 , step index:  2 , AR burin: 0.2 , AR sampling: 0.08
+path index: 5 , step index:  3 , AR burin: 0.2 , AR sampling: 0.4
+path index: 5 , step index:  4 , AR burin: 0.5 , AR sampling: 0.08
+path index: 5 , step index:  5 , AR burin: 0.0 , AR sampling: 0.02
+path index: 5 , step index:  6 , AR burin: 0.2 , AR sampling: 0.09
+path index: 5 , step index:  7 , AR burin: 0.4 , AR sampling: 0.03
+path index: 5 , step index:  8 , AR burin: 0.2 , AR sampling: 0.02
+path index: 5 , step index:  9 , AR burin: 0.2 , AR sampling: 0.14
+path index: 6 , step index:  0 , AR burin: 0.3 , AR sampling: 0.41
+path index: 6 , step index:  1 , AR burin: 0.2 , AR sampling: 0.06
+path index: 6 , step index:  2 , AR burin: 0.2 , AR sampling: 0.0
+path index: 6 , step index:  3 , AR burin: 0.2 , AR sampling: 0.03
+path index: 6 , step index:  4 , AR burin: 0.3 , AR sampling: 0.03
+path index: 6 , step index:  5 , AR burin: 0.2 , AR sampling: 0.01
+path index: 6 , step index:  6 , AR burin: 0.2 , AR sampling: 0.0
+path index: 6 , step index:  7 , AR burin: 0.1 , AR sampling: 0.07
+path index: 6 , step index:  8 , AR burin: 0.1 , AR sampling: 0.03
+path index: 6 , step index:  9 , AR burin: 0.1 , AR sampling: 0.02
+path index: 7 , step index:  0 , AR burin: 0.2 , AR sampling: 0.21
+path index: 7 , step index:  1 , AR burin: 0.2 , AR sampling: 0.0
+path index: 7 , step index:  2 , AR burin: 0.2 , AR sampling: 0.01
+path index: 7 , step index:  3 , AR burin: 0.2 , AR sampling: 0.01
+path index: 7 , step index:  4 , AR burin: 0.2 , AR sampling: 0.14
+path index: 7 , step index:  5 , AR burin: 0.1 , AR sampling: 0.05
+path index: 7 , step index:  6 , AR burin: 0.2 , AR sampling: 0.05
+path index: 7 , step index:  7 , AR burin: 0.1 , AR sampling: 0.0
+path index: 7 , step index:  8 , AR burin: 0.2 , AR sampling: 0.02
+path index: 7 , step index:  9 , AR burin: 0.1 , AR sampling: 0.0
+path index: 8 , step index:  0 , AR burin: 0.2 , AR sampling: 0.06
+path index: 8 , step index:  1 , AR burin: 0.0 , AR sampling: 0.04
+path index: 8 , step index:  2 , AR burin: 0.4 , AR sampling: 0.04
+path index: 8 , step index:  3 , AR burin: 0.5 , AR sampling: 0.05
+path index: 8 , step index:  4 , AR burin: 0.0 , AR sampling: 0.1
+path index: 8 , step index:  5 , AR burin: 0.1 , AR sampling: 0.01
+path index: 8 , step index:  6 , AR burin: 0.5 , AR sampling: 0.07
+path index: 8 , step index:  7 , AR burin: 0.1 , AR sampling: 0.02
+path index: 8 , step index:  8 , AR burin: 0.1 , AR sampling: 0.04
+path index: 8 , step index:  9 , AR burin: 0.0 , AR sampling: 0.04
+path index: 9 , step index:  0 , AR burin: 0.0 , AR sampling: 0.04
+path index: 9 , step index:  1 , AR burin: 0.2 , AR sampling: 0.08
+path index: 9 , step index:  2 , AR burin: 0.4 , AR sampling: 0.04
+path index: 9 , step index:  3 , AR burin: 0.4 , AR sampling: 0.31
+path index: 9 , step index:  4 , AR burin: 0.4 , AR sampling: 0.06
+path index: 9 , step index:  5 , AR burin: 0.0 , AR sampling: 0.07
+path index: 9 , step index:  6 , AR burin: 0.5 , AR sampling: 0.08
+path index: 9 , step index:  7 , AR burin: 0.0 , AR sampling: 0.06
+path index: 9 , step index:  8 , AR burin: 0.1 , AR sampling: 0.05
+path index: 9 , step index:  9 , AR burin: 0.0 , AR sampling: 0.04
+194.384789069
+[[  48.2907676    -6.70082032   -3.79995814 ...,   -5.86156848
+   -10.62600093  -28.78044952]
+ [-314.0732614    -6.8138569   135.19750316 ...,   31.94470022  102.2140304
+    -8.69193405]
+ [-209.49894348 -481.15945625   62.46443503 ...,   14.80910023
+    38.39593598    8.24046421]
+ ..., 
+ [  28.83755959  -83.07798767   37.74243285 ...,  -30.19470837
+    52.58620545   55.93091157]
+ [ -97.81399901  222.99540744   74.34590964 ..., -291.1628644   -13.77157147
+   175.20860061]
+ [   5.61035315  107.38694432   -0.93460455 ...,   -2.29832383
+   -22.78639996  -26.6491743 ]]
+2
+path index: 0 , step index:  0 , AR burin: 0.4 , AR sampling: 0.03
+path index: 0 , step index:  1 , AR burin: 0.4 , AR sampling: 0.04
+path index: 0 , step index:  2 , AR burin: 0.3 , AR sampling: 0.03
+path index: 0 , step index:  3 , AR burin: 0.2 , AR sampling: 0.06
+path index: 0 , step index:  4 , AR burin: 0.4 , AR sampling: 0.03
+path index: 0 , step index:  5 , AR burin: 0.4 , AR sampling: 0.02
+path index: 0 , step index:  6 , AR burin: 0.2 , AR sampling: 0.0
+path index: 0 , step index:  7 , AR burin: 0.2 , AR sampling: 0.0
+path index: 0 , step index:  8 , AR burin: 0.3 , AR sampling: 0.06
+path index: 0 , step index:  9 , AR burin: 0.3 , AR sampling: 0.03
+path index: 1 , step index:  0 , AR burin: 0.4 , AR sampling: 0.01
+path index: 1 , step index:  1 , AR burin: 0.3 , AR sampling: 0.01
+path index: 1 , step index:  2 , AR burin: 0.2 , AR sampling: 0.0
+path index: 1 , step index:  3 , AR burin: 0.2 , AR sampling: 0.12
+path index: 1 , step index:  4 , AR burin: 0.1 , AR sampling: 0.06
+path index: 1 , step index:  5 , AR burin: 0.5 , AR sampling: 0.13
+path index: 1 , step index:  6 , AR burin: 0.4 , AR sampling: 0.03
+path index: 1 , step index:  7 , AR burin: 0.1 , AR sampling: 0.04
+path index: 1 , step index:  8 , AR burin: 0.3 , AR sampling: 0.06
+path index: 1 , step index:  9 , AR burin: 0.3 , AR sampling: 0.02
+path index: 2 , step index:  0 , AR burin: 0.3 , AR sampling: 0.02
+path index: 2 , step index:  1 , AR burin: 0.2 , AR sampling: 0.06
+path index: 2 , step index:  2 , AR burin: 0.2 , AR sampling: 0.14
+path index: 2 , step index:  3 , AR burin: 0.6 , AR sampling: 0.07
+path index: 2 , step index:  4 , AR burin: 0.2 , AR sampling: 0.02
+path index: 2 , step index:  5 , AR burin: 0.4 , AR sampling: 0.01
+path index: 2 , step index:  6 , AR burin: 0.1 , AR sampling: 0.02
+path index: 2 , step index:  7 , AR burin: 0.5 , AR sampling: 0.07
+path index: 2 , step index:  8 , AR burin: 0.2 , AR sampling: 0.03
+path index: 2 , step index:  9 , AR burin: 0.3 , AR sampling: 0.04
+path index: 3 , step index:  0 , AR burin: 0.6 , AR sampling: 0.18
+path index: 3 , step index:  1 , AR burin: 0.3 , AR sampling: 0.04
+path index: 3 , step index:  2 , AR burin: 0.4 , AR sampling: 0.04
+path index: 3 , step index:  3 , AR burin: 0.3 , AR sampling: 0.05
+path index: 3 , step index:  4 , AR burin: 0.5 , AR sampling: 0.0
+path index: 3 , step index:  5 , AR burin: 0.3 , AR sampling: 0.0
+path index: 3 , step index:  6 , AR burin: 0.3 , AR sampling: 0.03
+path index: 3 , step index:  7 , AR burin: 0.1 , AR sampling: 0.07
+path index: 3 , step index:  8 , AR burin: 0.5 , AR sampling: 0.06
+path index: 3 , step index:  9 , AR burin: 0.3 , AR sampling: 0.06
+path index: 4 , step index:  0 , AR burin: 0.1 , AR sampling: 0.04
+path index: 4 , step index:  1 , AR burin: 0.3 , AR sampling: 0.41
+path index: 4 , step index:  2 , AR burin: 0.1 , AR sampling: 0.01
+path index: 4 , step index:  3 , AR burin: 0.1 , AR sampling: 0.03
+path index: 4 , step index:  4 , AR burin: 0.3 , AR sampling: 0.07
+path index: 4 , step index:  5 , AR burin: 0.1 , AR sampling: 0.03
+path index: 4 , step index:  6 , AR burin: 0.1 , AR sampling: 0.03
+path index: 4 , step index:  7 , AR burin: 0.5 , AR sampling: 0.1
+path index: 4 , step index:  8 , AR burin: 0.1 , AR sampling: 0.04
+path index: 4 , step index:  9 , AR burin: 0.1 , AR sampling: 0.04
+path index: 5 , step index:  0 , AR burin: 0.2 , AR sampling: 0.01
+path index: 5 , step index:  1 , AR burin: 0.3 , AR sampling: 0.02
+path index: 5 , step index:  2 , AR burin: 0.4 , AR sampling: 0.04
+path index: 5 , step index:  3 , AR burin: 0.6 , AR sampling: 0.14
+path index: 5 , step index:  4 , AR burin: 0.3 , AR sampling: 0.08
+path index: 5 , step index:  5 , AR burin: 0.1 , AR sampling: 0.02
+path index: 5 , step index:  6 , AR burin: 0.4 , AR sampling: 0.08
+path index: 5 , step index:  7 , AR burin: 0.1 , AR sampling: 0.04
+path index: 5 , step index:  8 , AR burin: 0.0 , AR sampling: 0.03
+path index: 5 , step index:  9 , AR burin: 0.2 , AR sampling: 0.01
+path index: 6 , step index:  0 , AR burin: 0.1 , AR sampling: 0.17
+path index: 6 , step index:  1 , AR burin: 0.3 , AR sampling: 0.14
+path index: 6 , step index:  2 , AR burin: 0.1 , AR sampling: 0.03
+path index: 6 , step index:  3 , AR burin: 0.2 , AR sampling: 0.02
+path index: 6 , step index:  4 , AR burin: 0.3 , AR sampling: 0.01
+path index: 6 , step index:  5 , AR burin: 0.1 , AR sampling: 0.02
+path index: 6 , step index:  6 , AR burin: 0.5 , AR sampling: 0.06
+path index: 6 , step index:  7 , AR burin: 0.1 , AR sampling: 0.0
+path index: 6 , step index:  8 , AR burin: 0.1 , AR sampling: 0.05
+path index: 6 , step index:  9 , AR burin: 0.0 , AR sampling: 0.04
+path index: 7 , step index:  0 , AR burin: 0.2 , AR sampling: 0.06
+path index: 7 , step index:  1 , AR burin: 0.1 , AR sampling: 0.03
+path index: 7 , step index:  2 , AR burin: 0.1 , AR sampling: 0.03
+path index: 7 , step index:  3 , AR burin: 0.0 , AR sampling: 0.03
+path index: 7 , step index:  4 , AR burin: 0.4 , AR sampling: 0.27
+path index: 7 , step index:  5 , AR burin: 0.3 , AR sampling: 0.01
+path index: 7 , step index:  6 , AR burin: 0.1 , AR sampling: 0.0
+path index: 7 , step index:  7 , AR burin: 0.1 , AR sampling: 0.04
+path index: 7 , step index:  8 , AR burin: 0.4 , AR sampling: 0.0
+path index: 7 , step index:  9 , AR burin: 0.1 , AR sampling: 0.04
+path index: 8 , step index:  0 , AR burin: 0.2 , AR sampling: 0.02
+path index: 8 , step index:  1 , AR burin: 0.3 , AR sampling: 0.02
+path index: 8 , step index:  2 , AR burin: 0.2 , AR sampling: 0.01
+path index: 8 , step index:  3 , AR burin: 0.4 , AR sampling: 0.01
+path index: 8 , step index:  4 , AR burin: 0.8 , AR sampling: 0.07
+path index: 8 , step index:  5 , AR burin: 0.4 , AR sampling: 0.04
+path index: 8 , step index:  6 , AR burin: 0.2 , AR sampling: 0.04
+path index: 8 , step index:  7 , AR burin: 0.2 , AR sampling: 0.06
+path index: 8 , step index:  8 , AR burin: 0.2 , AR sampling: 0.02
+path index: 8 , step index:  9 , AR burin: 0.1 , AR sampling: 0.02
+path index: 9 , step index:  0 , AR burin: 0.3 , AR sampling: 0.01
+path index: 9 , step index:  1 , AR burin: 0.1 , AR sampling: 0.03
+path index: 9 , step index:  2 , AR burin: 0.5 , AR sampling: 0.23
+path index: 9 , step index:  3 , AR burin: 0.7 , AR sampling: 0.59
+path index: 9 , step index:  4 , AR burin: 0.4 , AR sampling: 0.02
+path index: 9 , step index:  5 , AR burin: 0.5 , AR sampling: 0.04
+path index: 9 , step index:  6 , AR burin: 0.5 , AR sampling: 0.07
+path index: 9 , step index:  7 , AR burin: 0.1 , AR sampling: 0.07
+path index: 9 , step index:  8 , AR burin: 0.2 , AR sampling: 0.02
+path index: 9 , step index:  9 , AR burin: 0.1 , AR sampling: 0.02
+217.553044097
+[[  56.4686111    29.24715939    4.09473902 ...,   11.78835412
+    -4.10504421  -18.96644651]
+ [ -56.07049603 -157.8562258    23.7887931  ...,  108.49319658
+    68.03103878  -22.55914159]
+ [  -4.00972433 -660.55991637   25.60183757 ...,  133.26631864
+     7.41325506    5.87002232]
+ ..., 
+ [  -9.95436234  -42.55166218   36.70982656 ...,    9.0534163    45.77276342
+    47.62222568]
+ [-105.73463296  229.78751385   46.34083541 ..., -336.79537018
+   -29.10940696  185.58153498]
+ [  69.67027021   63.09595       8.29262588 ...,  -28.51817672
+   -10.43720712  -24.34948159]]
+2
+path index: 0 , step index:  0 , AR burin: 0.0 , AR sampling: 0.07
+path index: 0 , step index:  1 , AR burin: 0.3 , AR sampling: 0.06
+path index: 0 , step index:  2 , AR burin: 0.0 , AR sampling: 0.12
+path index: 0 , step index:  3 , AR burin: 0.1 , AR sampling: 0.17
+path index: 0 , step index:  4 , AR burin: 0.3 , AR sampling: 0.17
+path index: 0 , step index:  5 , AR burin: 0.2 , AR sampling: 0.09
+path index: 0 , step index:  6 , AR burin: 0.8 , AR sampling: 0.08
+path index: 0 , step index:  7 , AR burin: 0.2 , AR sampling: 0.05
+path index: 0 , step index:  8 , AR burin: 0.3 , AR sampling: 0.02
+path index: 0 , step index:  9 , AR burin: 0.2 , AR sampling: 0.03
+path index: 1 , step index:  0 , AR burin: 0.7 , AR sampling: 0.02
+path index: 1 , step index:  1 , AR burin: 0.3 , AR sampling: 0.06
+path index: 1 , step index:  2 , AR burin: 0.5 , AR sampling: 0.02
+path index: 1 , step index:  3 , AR burin: 0.2 , AR sampling: 0.01
+path index: 1 , step index:  4 , AR burin: 0.3 , AR sampling: 0.22
+path index: 1 , step index:  5 , AR burin: 0.0 , AR sampling: 0.17
+path index: 1 , step index:  6 , AR burin: 0.1 , AR sampling: 0.09
+path index: 1 , step index:  7 , AR burin: 0.5 , AR sampling: 0.34
+path index: 1 , step index:  8 , AR burin: 0.0 , AR sampling: 0.12
+path index: 1 , step index:  9 , AR burin: 0.0 , AR sampling: 0.03
+path index: 2 , step index:  0 , AR burin: 0.3 , AR sampling: 0.02
+path index: 2 , step index:  1 , AR burin: 0.2 , AR sampling: 0.04
+path index: 2 , step index:  2 , AR burin: 0.3 , AR sampling: 0.02
+path index: 2 , step index:  3 , AR burin: 0.3 , AR sampling: 0.05
+path index: 2 , step index:  4 , AR burin: 0.5 , AR sampling: 0.04
+path index: 2 , step index:  5 , AR burin: 0.6 , AR sampling: 0.1
+path index: 2 , step index:  6 , AR burin: 0.1 , AR sampling: 0.01
+path index: 2 , step index:  7 , AR burin: 0.0 , AR sampling: 0.03
+path index: 2 , step index:  8 , AR burin: 0.2 , AR sampling: 0.06
+path index: 2 , step index:  9 , AR burin: 0.1 , AR sampling: 0.01
+path index: 3 , step index:  0 , AR burin: 0.9 , AR sampling: 0.59
+path index: 3 , step index:  1 , AR burin: 0.7 , AR sampling: 0.06
+path index: 3 , step index:  2 , AR burin: 0.1 , AR sampling: 0.11
+path index: 3 , step index:  3 , AR burin: 0.1 , AR sampling: 0.03
+path index: 3 , step index:  4 , AR burin: 0.5 , AR sampling: 0.03
+path index: 3 , step index:  5 , AR burin: 0.5 , AR sampling: 0.03
+path index: 3 , step index:  6 , AR burin: 0.4 , AR sampling: 0.02
+path index: 3 , step index:  7 , AR burin: 0.2 , AR sampling: 0.01
+path index: 3 , step index:  8 , AR burin: 0.2 , AR sampling: 0.02
+path index: 3 , step index:  9 , AR burin: 0.2 , AR sampling: 0.09
+path index: 4 , step index:  0 , AR burin: 0.0 , AR sampling: 0.05
+path index: 4 , step index:  1 , AR burin: 0.5 , AR sampling: 0.42
+path index: 4 , step index:  2 , AR burin: 0.4 , AR sampling: 0.06
+path index: 4 , step index:  3 , AR burin: 0.5 , AR sampling: 0.29
+path index: 4 , step index:  4 , AR burin: 0.2 , AR sampling: 0.11
+path index: 4 , step index:  5 , AR burin: 0.3 , AR sampling: 0.06
+path index: 4 , step index:  6 , AR burin: 0.1 , AR sampling: 0.06
+path index: 4 , step index:  7 , AR burin: 0.3 , AR sampling: 0.06
+path index: 4 , step index:  8 , AR burin: 0.3 , AR sampling: 0.04
+path index: 4 , step index:  9 , AR burin: 0.4 , AR sampling: 0.02
+path index: 5 , step index:  0 , AR burin: 0.4 , AR sampling: 0.06
+path index: 5 , step index:  1 , AR burin: 0.2 , AR sampling: 0.04
+path index: 5 , step index:  2 , AR burin: 0.4 , AR sampling: 0.16
+path index: 5 , step index:  3 , AR burin: 0.5 , AR sampling: 0.39
+path index: 5 , step index:  4 , AR burin: 0.3 , AR sampling: 0.11
+path index: 5 , step index:  5 , AR burin: 0.4 , AR sampling: 0.03
+path index: 5 , step index:  6 , AR burin: 0.5 , AR sampling: 0.12
+path index: 5 , step index:  7 , AR burin: 0.1 , AR sampling: 0.06
+path index: 5 , step index:  8 , AR burin: 0.6 , AR sampling: 0.31
+path index: 5 , step index:  9 , AR burin: 0.1 , AR sampling: 0.07
+path index: 6 , step index:  0 , AR burin: 0.5 , AR sampling: 0.42
+path index: 6 , step index:  1 , AR burin: 0.3 , AR sampling: 0.28
+path index: 6 , step index:  2 , AR burin: 0.3 , AR sampling: 0.05
+path index: 6 , step index:  3 , AR burin: 0.1 , AR sampling: 0.01
+path index: 6 , step index:  4 , AR burin: 0.2 , AR sampling: 0.17
+path index: 6 , step index:  5 , AR burin: 0.3 , AR sampling: 0.02
+path index: 6 , step index:  6 , AR burin: 0.2 , AR sampling: 0.02
+path index: 6 , step index:  7 , AR burin: 0.1 , AR sampling: 0.01
+path index: 6 , step index:  8 , AR burin: 0.5 , AR sampling: 0.09
+path index: 6 , step index:  9 , AR burin: 0.4 , AR sampling: 0.02
+path index: 7 , step index:  0 , AR burin: 0.3 , AR sampling: 0.08
+path index: 7 , step index:  1 , AR burin: 0.4 , AR sampling: 0.08
+path index: 7 , step index:  2 , AR burin: 0.3 , AR sampling: 0.07
+path index: 7 , step index:  3 , AR burin: 0.3 , AR sampling: 0.17
+path index: 7 , step index:  4 , AR burin: 0.5 , AR sampling: 0.22
+path index: 7 , step index:  5 , AR burin: 0.3 , AR sampling: 0.06
+path index: 7 , step index:  6 , AR burin: 0.2 , AR sampling: 0.15
+path index: 7 , step index:  7 , AR burin: 0.3 , AR sampling: 0.08
+path index: 7 , step index:  8 , AR burin: 0.2 , AR sampling: 0.04
+path index: 7 , step index:  9 , AR burin: 0.3 , AR sampling: 0.02
+path index: 8 , step index:  0 , AR burin: 0.4 , AR sampling: 0.03
+path index: 8 , step index:  1 , AR burin: 0.3 , AR sampling: 0.01
+path index: 8 , step index:  2 , AR burin: 0.4 , AR sampling: 0.02
+path index: 8 , step index:  3 , AR burin: 0.3 , AR sampling: 0.03
+path index: 8 , step index:  4 , AR burin: 0.3 , AR sampling: 0.15
+path index: 8 , step index:  5 , AR burin: 0.4 , AR sampling: 0.0
+path index: 8 , step index:  6 , AR burin: 0.5 , AR sampling: 0.06
+path index: 8 , step index:  7 , AR burin: 0.2 , AR sampling: 0.01
+path index: 8 , step index:  8 , AR burin: 0.3 , AR sampling: 0.01
+path index: 8 , step index:  9 , AR burin: 0.3 , AR sampling: 0.01
+path index: 9 , step index:  0 , AR burin: 0.2 , AR sampling: 0.01
+path index: 9 , step index:  1 , AR burin: 0.3 , AR sampling: 0.0
+path index: 9 , step index:  2 , AR burin: 0.4 , AR sampling: 0.13
+path index: 9 , step index:  3 , AR burin: 0.7 , AR sampling: 0.42
+path index: 9 , step index:  4 , AR burin: 0.2 , AR sampling: 0.03
+path index: 9 , step index:  5 , AR burin: 0.2 , AR sampling: 0.0
+path index: 9 , step index:  6 , AR burin: 0.4 , AR sampling: 0.04
+path index: 9 , step index:  7 , AR burin: 0.3 , AR sampling: 0.07
+path index: 9 , step index:  8 , AR burin: 0.2 , AR sampling: 0.01
+path index: 9 , step index:  9 , AR burin: 0.3 , AR sampling: 0.01
+196.891230265
+[[ -24.49787677   45.67662201   29.30070488 ...,   -5.40644488
+    -4.15022256  -28.07463898]
+ [-412.63241353   -9.63150383  112.12012775 ...,  -62.15503667
+    72.92435832   13.7396055 ]
+ [ 115.62209586 -836.19384627 -189.03403737 ...,   27.41371874
+   -40.43152555  -43.19608113]
+ ..., 
+ [   7.27457532  -90.06105103   21.04725966 ...,  -58.93158307   48.9541124
+    57.91670469]
+ [ -30.72482608  159.97069034   24.984366   ..., -232.89247561
+   -26.64062519  186.37582372]
+ [  53.79899282  127.56836942    4.9262246  ...,    3.66046284
+   -24.02771796  -18.0418917 ]]
+2
+path index: 0 , step index:  0 , AR burin: 0.2 , AR sampling: 0.04
+path index: 0 , step index:  1 , AR burin: 0.3 , AR sampling: 0.09
+path index: 0 , step index:  2 , AR burin: 0.4 , AR sampling: 0.02
+path index: 0 , step index:  3 , AR burin: 0.5 , AR sampling: 0.11
+path index: 0 , step index:  4 , AR burin: 0.4 , AR sampling: 0.04
+path index: 0 , step index:  5 , AR burin: 0.3 , AR sampling: 0.03
+path index: 0 , step index:  6 , AR burin: 0.4 , AR sampling: 0.34
+path index: 0 , step index:  7 , AR burin: 0.1 , AR sampling: 0.01
+path index: 0 , step index:  8 , AR burin: 0.3 , AR sampling: 0.09
+path index: 0 , step index:  9 , AR burin: 0.1 , AR sampling: 0.0
+path index: 1 , step index:  0 , AR burin: 0.2 , AR sampling: 0.02
+path index: 1 , step index:  1 , AR burin: 0.2 , AR sampling: 0.02
+path index: 1 , step index:  2 , AR burin: 0.1 , AR sampling: 0.01
+path index: 1 , step index:  3 , AR burin: 0.7 , AR sampling: 0.51
+path index: 1 , step index:  4 , AR burin: 0.0 , AR sampling: 0.02
+path index: 1 , step index:  5 , AR burin: 0.2 , AR sampling: 0.05
+path index: 1 , step index:  6 , AR burin: 0.3 , AR sampling: 0.05
+path index: 1 , step index:  7 , AR burin: 0.2 , AR sampling: 0.03
+path index: 1 , step index:  8 , AR burin: 0.2 , AR sampling: 0.01
+path index: 1 , step index:  9 , AR burin: 0.2 , AR sampling: 0.03
+path index: 2 , step index:  0 , AR burin: 0.2 , AR sampling: 0.06
+path index: 2 , step index:  1 , AR burin: 0.4 , AR sampling: 0.17
+path index: 2 , step index:  2 , AR burin: 0.0 , AR sampling: 0.02
+path index: 2 , step index:  3 , AR burin: 0.2 , AR sampling: 0.03
+path index: 2 , step index:  4 , AR burin: 0.3 , AR sampling: 0.01
+path index: 2 , step index:  5 , AR burin: 0.0 , AR sampling: 0.05
+path index: 2 , step index:  6 , AR burin: 0.1 , AR sampling: 0.05
+path index: 2 , step index:  7 , AR burin: 0.3 , AR sampling: 0.04
+path index: 2 , step index:  8 , AR burin: 0.0 , AR sampling: 0.06
+path index: 2 , step index:  9 , AR burin: 0.2 , AR sampling: 0.03
+path index: 3 , step index:  0 , AR burin: 0.2 , AR sampling: 0.53
+path index: 3 , step index:  1 , AR burin: 0.2 , AR sampling: 0.01
+path index: 3 , step index:  2 , AR burin: 0.1 , AR sampling: 0.03
+path index: 3 , step index:  3 , AR burin: 0.4 , AR sampling: 0.04
+path index: 3 , step index:  4 , AR burin: 0.1 , AR sampling: 0.08
+path index: 3 , step index:  5 , AR burin: 0.2 , AR sampling: 0.01
+path index: 3 , step index:  6 , AR burin: 0.2 , AR sampling: 0.01
+path index: 3 , step index:  7 , AR burin: 0.4 , AR sampling: 0.05
+path index: 3 , step index:  8 , AR burin: 0.1 , AR sampling: 0.12
+path index: 3 , step index:  9 , AR burin: 0.5 , AR sampling: 0.07
+path index: 4 , step index:  0 , AR burin: 0.3 , AR sampling: 0.01
+path index: 4 , step index:  1 , AR burin: 0.5 , AR sampling: 0.5
+path index: 4 , step index:  2 , AR burin: 0.4 , AR sampling: 0.0
+path index: 4 , step index:  3 , AR burin: 0.4 , AR sampling: 0.2
+path index: 4 , step index:  4 , AR burin: 0.3 , AR sampling: 0.06
+path index: 4 , step index:  5 , AR burin: 0.3 , AR sampling: 0.01
+path index: 4 , step index:  6 , AR burin: 0.5 , AR sampling: 0.17
+path index: 4 , step index:  7 , AR burin: 0.4 , AR sampling: 0.02
+path index: 4 , step index:  8 , AR burin: 0.5 , AR sampling: 0.0
+path index: 4 , step index:  9 , AR burin: 0.4 , AR sampling: 0.02
+path index: 5 , step index:  0 , AR burin: 0.5 , AR sampling: 0.07
+path index: 5 , step index:  1 , AR burin: 0.2 , AR sampling: 0.01
+path index: 5 , step index:  2 , AR burin: 0.2 , AR sampling: 0.16
+path index: 5 , step index:  3 , AR burin: 0.5 , AR sampling: 0.2
+path index: 5 , step index:  4 , AR burin: 0.2 , AR sampling: 0.36
+path index: 5 , step index:  5 , AR burin: 0.4 , AR sampling: 0.0
+path index: 5 , step index:  6 , AR burin: 0.5 , AR sampling: 0.12
+path index: 5 , step index:  7 , AR burin: 0.2 , AR sampling: 0.03
+path index: 5 , step index:  8 , AR burin: 0.2 , AR sampling: 0.32
+path index: 5 , step index:  9 , AR burin: 0.6 , AR sampling: 0.14
+path index: 6 , step index:  0 , AR burin: 0.3 , AR sampling: 0.43
+path index: 6 , step index:  1 , AR burin: 0.5 , AR sampling: 0.12
+path index: 6 , step index:  2 , AR burin: 0.5 , AR sampling: 0.12
+path index: 6 , step index:  3 , AR burin: 0.1 , AR sampling: 0.07
+path index: 6 , step index:  4 , AR burin: 0.2 , AR sampling: 0.1
+path index: 6 , step index:  5 , AR burin: 0.0 , AR sampling: 0.03
+path index: 6 , step index:  6 , AR burin: 0.1 , AR sampling: 0.04
+path index: 6 , step index:  7 , AR burin: 0.5 , AR sampling: 0.04
+path index: 6 , step index:  8 , AR burin: 0.0 , AR sampling: 0.03
+path index: 6 , step index:  9 , AR burin: 0.0 , AR sampling: 0.05
+path index: 7 , step index:  0 , AR burin: 0.4 , AR sampling: 0.27
+path index: 7 , step index:  1 , AR burin: 0.0 , AR sampling: 0.16
+path index: 7 , step index:  2 , AR burin: 0.3 , AR sampling: 0.07
+path index: 7 , step index:  3 , AR burin: 0.1 , AR sampling: 0.11
+path index: 7 , step index:  4 , AR burin: 0.5 , AR sampling: 0.15
+path index: 7 , step index:  5 , AR burin: 0.2 , AR sampling: 0.09
+path index: 7 , step index:  6 , AR burin: 0.2 , AR sampling: 0.04
+path index: 7 , step index:  7 , AR burin: 0.0 , AR sampling: 0.05
+path index: 7 , step index:  8 , AR burin: 0.3 , AR sampling: 0.05
+path index: 7 , step index:  9 , AR burin: 0.0 , AR sampling: 0.04
+path index: 8 , step index:  0 , AR burin: 0.1 , AR sampling: 0.12
+path index: 8 , step index:  1 , AR burin: 0.1 , AR sampling: 0.05
+path index: 8 , step index:  2 , AR burin: 0.3 , AR sampling: 0.07
+path index: 8 , step index:  3 , AR burin: 0.3 , AR sampling: 0.05
+path index: 8 , step index:  4 , AR burin: 0.2 , AR sampling: 0.01
+path index: 8 , step index:  5 , AR burin: 0.3 , AR sampling: 0.03
+path index: 8 , step index:  6 , AR burin: 0.2 , AR sampling: 0.09
+path index: 8 , step index:  7 , AR burin: 0.1 , AR sampling: 0.1
+path index: 8 , step index:  8 , AR burin: 0.1 , AR sampling: 0.01
+path index: 8 , step index:  9 , AR burin: 0.1 , AR sampling: 0.02
+path index: 9 , step index:  0 , AR burin: 0.2 , AR sampling: 0.12
+path index: 9 , step index:  1 , AR burin: 0.1 , AR sampling: 0.06
+path index: 9 , step index:  2 , AR burin: 0.3 , AR sampling: 0.1
+path index: 9 , step index:  3 , AR burin: 0.3 , AR sampling: 0.34
+path index: 9 , step index:  4 , AR burin: 0.6 , AR sampling: 0.04
+path index: 9 , step index:  5 , AR burin: 0.1 , AR sampling: 0.04
+path index: 9 , step index:  6 , AR burin: 0.5 , AR sampling: 0.07
+path index: 9 , step index:  7 , AR burin: 0.3 , AR sampling: 0.04
+path index: 9 , step index:  8 , AR burin: 0.1 , AR sampling: 0.04
+path index: 9 , step index:  9 , AR burin: 0.1 , AR sampling: 0.07
+222.580288728
+[[    6.28913856    -1.08547757    23.07131045 ...,    46.66914978
+      1.19633764   -21.45832428]
+ [ -303.01569699  -181.02887665   103.62301963 ...,    69.45722937
+     48.88554304   -38.73168199]
+ [  203.92603334 -1035.65354537   -83.64382303 ...,    84.75741139
+     26.71127531   -49.42036349]
+ ..., 
+ [   47.91122453  -124.27326445    28.88026438 ...,   -40.43453777
+     67.50298004    49.78624289]
+ [  -32.42716132   167.16516574   -14.43851003 ...,  -228.74836415
+    -45.91329784   162.62926762]
+ [  -46.85778042   135.22985592    40.94438757 ...,    -7.59542609
+    -32.5992189     -6.70464664]]
+2
+path index: 0 , step index:  0 , AR burin: 0.2 , AR sampling: 0.05
+path index: 0 , step index:  1 , AR burin: 0.2 , AR sampling: 0.03
+path index: 0 , step index:  2 , AR burin: 0.3 , AR sampling: 0.07
+path index: 0 , step index:  3 , AR burin: 0.2 , AR sampling: 0.03
+path index: 0 , step index:  4 , AR burin: 0.3 , AR sampling: 0.03
+path index: 0 , step index:  5 , AR burin: 0.1 , AR sampling: 0.07
+path index: 0 , step index:  6 , AR burin: 0.2 , AR sampling: 0.0
+path index: 0 , step index:  7 , AR burin: 0.2 , AR sampling: 0.03
+path index: 0 , step index:  8 , AR burin: 0.2 , AR sampling: 0.03
+path index: 0 , step index:  9 , AR burin: 0.2 , AR sampling: 0.0
+path index: 1 , step index:  0 , AR burin: 0.1 , AR sampling: 0.02
+path index: 1 , step index:  1 , AR burin: 0.2 , AR sampling: 0.04
+path index: 1 , step index:  2 , AR burin: 0.1 , AR sampling: 0.04
+path index: 1 , step index:  3 , AR burin: 0.2 , AR sampling: 0.05
+path index: 1 , step index:  4 , AR burin: 0.4 , AR sampling: 0.1
+path index: 1 , step index:  5 , AR burin: 0.1 , AR sampling: 0.06
+path index: 1 , step index:  6 , AR burin: 0.2 , AR sampling: 0.04
+path index: 1 , step index:  7 , AR burin: 0.5 , AR sampling: 0.05
+path index: 1 , step index:  8 , AR burin: 0.3 , AR sampling: 0.01
+path index: 1 , step index:  9 , AR burin: 0.2 , AR sampling: 0.03
+path index: 2 , step index:  0 , AR burin: 0.3 , AR sampling: 0.03
+path index: 2 , step index:  1 , AR burin: 0.3 , AR sampling: 0.1
+path index: 2 , step index:  2 , AR burin: 0.5 , AR sampling: 0.06
+path index: 2 , step index:  3 , AR burin: 0.3 , AR sampling: 0.01
+path index: 2 , step index:  4 , AR burin: 0.2 , AR sampling: 0.02
+path index: 2 , step index:  5 , AR burin: 0.5 , AR sampling: 0.02
+path index: 2 , step index:  6 , AR burin: 0.5 , AR sampling: 0.01
+path index: 2 , step index:  7 , AR burin: 0.2 , AR sampling: 0.04
+path index: 2 , step index:  8 , AR burin: 0.2 , AR sampling: 0.02
+path index: 2 , step index:  9 , AR burin: 0.2 , AR sampling: 0.01
+path index: 3 , step index:  0 , AR burin: 0.3 , AR sampling: 0.16
+path index: 3 , step index:  1 , AR burin: 0.3 , AR sampling: 0.02
+path index: 3 , step index:  2 , AR burin: 0.4 , AR sampling: 0.01
+path index: 3 , step index:  3 , AR burin: 0.3 , AR sampling: 0.01
+path index: 3 , step index:  4 , AR burin: 0.4 , AR sampling: 0.01
+path index: 3 , step index:  5 , AR burin: 0.4 , AR sampling: 0.0
+path index: 3 , step index:  6 , AR burin: 0.2 , AR sampling: 0.02
+path index: 3 , step index:  7 , AR burin: 0.1 , AR sampling: 0.02
+path index: 3 , step index:  8 , AR burin: 0.2 , AR sampling: 0.02
+path index: 3 , step index:  9 , AR burin: 0.2 , AR sampling: 0.01
+path index: 4 , step index:  0 , AR burin: 0.2 , AR sampling: 0.02
+path index: 4 , step index:  1 , AR burin: 0.3 , AR sampling: 0.2
+path index: 4 , step index:  2 , AR burin: 0.2 , AR sampling: 0.0
+path index: 4 , step index:  3 , AR burin: 0.2 , AR sampling: 0.0
+path index: 4 , step index:  4 , AR burin: 0.3 , AR sampling: 0.02
+path index: 4 , step index:  5 , AR burin: 0.3 , AR sampling: 0.02
+path index: 4 , step index:  6 , AR burin: 0.2 , AR sampling: 0.05
+path index: 4 , step index:  7 , AR burin: 0.1 , AR sampling: 0.05
+path index: 4 , step index:  8 , AR burin: 0.2 , AR sampling: 0.0
+path index: 4 , step index:  9 , AR burin: 0.2 , AR sampling: 0.0
+path index: 5 , step index:  0 , AR burin: 0.2 , AR sampling: 0.0
+path index: 5 , step index:  1 , AR burin: 0.2 , AR sampling: 0.03
+path index: 5 , step index:  2 , AR burin: 0.3 , AR sampling: 0.02
+path index: 5 , step index:  3 , AR burin: 0.3 , AR sampling: 0.0
+path index: 5 , step index:  4 , AR burin: 0.2 , AR sampling: 0.02
+path index: 5 , step index:  5 , AR burin: 0.2 , AR sampling: 0.0
+path index: 5 , step index:  6 , AR burin: 0.2 , AR sampling: 0.0
+path index: 5 , step index:  7 , AR burin: 0.3 , AR sampling: 0.02
+path index: 5 , step index:  8 , AR burin: 0.0 , AR sampling: 0.03
+path index: 5 , step index:  9 , AR burin: 0.3 , AR sampling: 0.01
+path index: 6 , step index:  0 , AR burin: 0.6 , AR sampling: 0.31
+path index: 6 , step index:  1 , AR burin: 0.5 , AR sampling: 0.32
+path index: 6 , step index:  2 , AR burin: 0.2 , AR sampling: 0.01
+path index: 6 , step index:  3 , AR burin: 0.1 , AR sampling: 0.08
+path index: 6 , step index:  4 , AR burin: 0.2 , AR sampling: 0.03
+path index: 6 , step index:  5 , AR burin: 0.2 , AR sampling: 0.01
+path index: 6 , step index:  6 , AR burin: 0.3 , AR sampling: 0.01
+path index: 6 , step index:  7 , AR burin: 0.2 , AR sampling: 0.05
+path index: 6 , step index:  8 , AR burin: 0.2 , AR sampling: 0.01
+path index: 6 , step index:  9 , AR burin: 0.3 , AR sampling: 0.02
+path index: 7 , step index:  0 , AR burin: 0.6 , AR sampling: 0.24
+path index: 7 , step index:  1 , AR burin: 0.3 , AR sampling: 0.01
+path index: 7 , step index:  2 , AR burin: 0.2 , AR sampling: 0.02
+path index: 7 , step index:  3 , AR burin: 0.3 , AR sampling: 0.02
+path index: 7 , step index:  4 , AR burin: 0.6 , AR sampling: 0.35
+path index: 7 , step index:  5 , AR burin: 0.2 , AR sampling: 0.05
+path index: 7 , step index:  6 , AR burin: 0.1 , AR sampling: 0.03
+path index: 7 , step index:  7 , AR burin: 0.2 , AR sampling: 0.03
+path index: 7 , step index:  8 , AR burin: 0.3 , AR sampling: 0.02
+path index: 7 , step index:  9 , AR burin: 0.2 , AR sampling: 0.02
+path index: 8 , step index:  0 , AR burin: 0.1 , AR sampling: 0.01
+path index: 8 , step index:  1 , AR burin: 0.2 , AR sampling: 0.0
+path index: 8 , step index:  2 , AR burin: 0.1 , AR sampling: 0.01
+path index: 8 , step index:  3 , AR burin: 0.2 , AR sampling: 0.03
+path index: 8 , step index:  4 , AR burin: 0.2 , AR sampling: 0.01
+path index: 8 , step index:  5 , AR burin: 0.4 , AR sampling: 0.0
+path index: 8 , step index:  6 , AR burin: 0.4 , AR sampling: 0.04
+path index: 8 , step index:  7 , AR burin: 0.1 , AR sampling: 0.02
+path index: 8 , step index:  8 , AR burin: 0.2 , AR sampling: 0.0
+path index: 8 , step index:  9 , AR burin: 0.2 , AR sampling: 0.0
+path index: 9 , step index:  0 , AR burin: 0.2 , AR sampling: 0.01
+path index: 9 , step index:  1 , AR burin: 0.4 , AR sampling: 0.06
+path index: 9 , step index:  2 , AR burin: 0.4 , AR sampling: 0.04
+path index: 9 , step index:  3 , AR burin: 0.4 , AR sampling: 0.08
+path index: 9 , step index:  4 , AR burin: 0.3 , AR sampling: 0.04
+path index: 9 , step index:  5 , AR burin: 0.3 , AR sampling: 0.01
+path index: 9 , step index:  6 , AR burin: 0.3 , AR sampling: 0.03
+path index: 9 , step index:  7 , AR burin: 0.0 , AR sampling: 0.02
+path index: 9 , step index:  8 , AR burin: 0.3 , AR sampling: 0.0
+path index: 9 , step index:  9 , AR burin: 0.3 , AR sampling: 0.05
+214.994981602
+[[  5.47058396e+01   1.84951543e+01   3.34640676e+01 ...,   1.50730618e+00
+    1.58350871e+01   1.89787962e+01]
+ [ -2.24622507e+02   6.42314326e+01   8.73065686e+01 ...,  -3.28989113e+01
+    5.43652470e+01   1.94028774e+01]
+ [  1.91673057e+02  -9.37665707e+02  -1.57244243e+02 ...,   6.37454722e+01
+   -9.38811940e+01   1.92018984e+01]
+ ..., 
+ [  1.83385749e+01  -9.69475414e+01   1.34954272e+01 ...,  -4.43971544e+01
+    2.93440030e+01   5.33017910e+01]
+ [ -8.62100163e+01   1.65460887e+02   7.63762015e+00 ...,  -3.52467189e+02
+   -4.49405521e+01   2.10463015e+02]
+ [ -6.31202244e-01   9.62883492e+01   2.97883433e+01 ...,   1.93510482e+01
+    1.67681369e+01  -1.56441527e+01]]
+2
+path index: 0 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 0 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 1 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 2 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 3 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 4 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 5 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 6 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 7 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 8 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  0 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  1 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  2 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  3 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  4 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  5 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  6 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  7 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  8 , AR burin: 1.0 , AR sampling: 1.0
+path index: 9 , step index:  9 , AR burin: 1.0 , AR sampling: 1.0
+219.467334915
+[[   1.2388106    12.65253305  -14.76339493 ...,   -5.38026254
+    -2.62899289   -1.27951189]
+ [   7.43558756  -12.60834063 -208.86436241 ...,   93.63900214 -198.062268
+   -76.32740951]
+ [ -79.84883451 -386.11865321  175.56446714 ...,   11.09714531
+   129.22364068  -19.93010569]
+ ..., 
+ [   5.23487835   -6.14112728 -116.62619576 ...,   39.66541923
+   -93.72341789  -42.67688213]
+ [  26.013286    195.89100731  -69.31470816 ...,    5.55038801
+   -24.25510914   48.93717762]
+ [  13.32390969  -43.27543231  167.81540526 ...,  -33.42314759  157.2802753
+    37.29950519]]
+2
+path index: 0 , step index:  0 , AR burin: 0.4 , AR sampling: 0.04
+path index: 0 , step index:  1 , AR burin: 0.4 , AR sampling: 0.29
+path index: 0 , step index:  2 , AR burin: 0.4 , AR sampling: 0.07
+path index: 0 , step index:  3 , AR burin: 0.4 , AR sampling: 0.42
+path index: 0 , step index:  4 , AR burin: 0.5 , AR sampling: 0.39
+path index: 0 , step index:  5 , AR burin: 0.3 , AR sampling: 0.05
+path index: 0 , step index:  6 , AR burin: 0.7 , AR sampling: 0.22
+path index: 0 , step index:  7 , AR burin: 0.1 , AR sampling: 0.01
+path index: 0 , step index:  8 , AR burin: 0.7 , AR sampling: 0.15
+path index: 0 , step index:  9 , AR burin: 0.6 , AR sampling: 0.12
+path index: 1 , step index:  0 , AR burin: 0.5 , AR sampling: 0.14
+path index: 1 , step index:  1 , AR burin: 0.6 , AR sampling: 0.21
+path index: 1 , step index:  2 , AR burin: 0.2 , AR sampling: 0.01
+path index: 1 , step index:  3 , AR burin: 0.1 , AR sampling: 0.17
+path index: 1 , step index:  4 , AR burin: 0.5 , AR sampling: 0.26
+path index: 1 , step index:  5 , AR burin: 0.5 , AR sampling: 0.09
+path index: 1 , step index:  6 , AR burin: 0.4 , AR sampling: 0.19
+path index: 1 , step index:  7 , AR burin: 0.5 , AR sampling: 0.61
+path index: 1 , step index:  8 , AR burin: 0.2 , AR sampling: 0.17
+path index: 1 , step index:  9 , AR burin: 0.4 , AR sampling: 0.02
+path index: 2 , step index:  0 , AR burin: 0.5 , AR sampling: 0.38
+path index: 2 , step index:  1 , AR burin: 0.6 , AR sampling: 0.06
+path index: 2 , step index:  2 , AR burin: 0.4 , AR sampling: 0.17
+path index: 2 , step index:  3 , AR burin: 0.3 , AR sampling: 0.03
+path index: 2 , step index:  4 , AR burin: 0.4 , AR sampling: 0.06
+path index: 2 , step index:  5 , AR burin: 0.2 , AR sampling: 0.09
+path index: 2 , step index:  6 , AR burin: 0.2 , AR sampling: 0.0
+path index: 2 , step index:  7 , AR burin: 0.4 , AR sampling: 0.06
+path index: 2 , step index:  8 , AR burin: 0.1 , AR sampling: 0.05
+path index: 2 , step index:  9 , AR burin: 0.5 , AR sampling: 0.03
+path index: 3 , step index:  0 , AR burin: 0.9 , AR sampling: 0.76
+path index: 3 , step index:  1 , AR burin: 0.4 , AR sampling: 0.23
+path index: 3 , step index:  2 , AR burin: 0.4 , AR sampling: 0.02
+path index: 3 , step index:  3 , AR burin: 0.1 , AR sampling: 0.03
+path index: 3 , step index:  4 , AR burin: 0.4 , AR sampling: 0.01
+path index: 3 , step index:  5 , AR burin: 0.1 , AR sampling: 0.01
+path index: 3 , step index:  6 , AR burin: 0.4 , AR sampling: 0.02
+path index: 3 , step index:  7 , AR burin: 0.2 , AR sampling: 0.09
+path index: 3 , step index:  8 , AR burin: 0.4 , AR sampling: 0.06
+path index: 3 , step index:  9 , AR burin: 0.4 , AR sampling: 0.05
+path index: 4 , step index:  0 , AR burin: 0.5 , AR sampling: 0.09
+path index: 4 , step index:  1 , AR burin: 0.8 , AR sampling: 0.61
+path index: 4 , step index:  2 , AR burin: 0.2 , AR sampling: 0.02
+path index: 4 , step index:  3 , AR burin: 0.8 , AR sampling: 0.67
+path index: 4 , step index:  4 , AR burin: 0.5 , AR sampling: 0.16
+path index: 4 , step index:  5 , AR burin: 0.4 , AR sampling: 0.13
+path index: 4 , step index:  6 , AR burin: 0.7 , AR sampling: 0.26
+path index: 4 , step index:  7 , AR burin: 0.7 , AR sampling: 0.33
+path index: 4 , step index:  8 , AR burin: 0.7 , AR sampling: 0.03
+path index: 4 , step index:  9 , AR burin: 0.6 , AR sampling: 0.22
+path index: 5 , step index:  0 , AR burin: 0.2 , AR sampling: 0.01
+path index: 5 , step index:  1 , AR burin: 0.3 , AR sampling: 0.09
+path index: 5 , step index:  2 , AR burin: 0.7 , AR sampling: 0.08
+path index: 5 , step index:  3 , AR burin: 0.5 , AR sampling: 0.5
+path index: 5 , step index:  4 , AR burin: 0.7 , AR sampling: 0.43
+path index: 5 , step index:  5 , AR burin: 0.4 , AR sampling: 0.03
+path index: 5 , step index:  6 , AR burin: 0.1 , AR sampling: 0.02
+path index: 5 , step index:  7 , AR burin: 0.5 , AR sampling: 0.1
+path index: 5 , step index:  8 , AR burin: 0.6 , AR sampling: 0.32
+path index: 5 , step index:  9 , AR burin: 0.5 , AR sampling: 0.22
+path index: 6 , step index:  0 , AR burin: 0.4 , AR sampling: 0.48
+path index: 6 , step index:  1 , AR burin: 0.6 , AR sampling: 0.37
+path index: 6 , step index:  2 , AR burin: 0.2 , AR sampling: 0.21
+path index: 6 , step index:  3 , AR burin: 0.3 , AR sampling: 0.16
+path index: 6 , step index:  4 , AR burin: 0.3 , AR sampling: 0.03
+path index: 6 , step index:  5 , AR burin: 0.1 , AR sampling: 0.0
+path index: 6 , step index:  6 , AR burin: 0.3 , AR sampling: 0.05
+path index: 6 , step index:  7 , AR burin: 0.5 , AR sampling: 0.16
+path index: 6 , step index:  8 , AR burin: 0.4 , AR sampling: 0.22
+path index: 6 , step index:  9 , AR burin: 0.2 , AR sampling: 0.12
+path index: 7 , step index:  0 , AR burin: 0.6 , AR sampling: 0.81
+path index: 7 , step index:  1 , AR burin: 0.2 , AR sampling: 0.19
+path index: 7 , step index:  2 , AR burin: 0.3 , AR sampling: 0.41
+path index: 7 , step index:  3 , AR burin: 0.4 , AR sampling: 0.56
+path index: 7 , step index:  4 , AR burin: 0.3 , AR sampling: 0.35
+path index: 7 , step index:  5 , AR burin: 0.3 , AR sampling: 0.13
+path index: 7 , step index:  6 , AR burin: 0.7 , AR sampling: 0.36
+path index: 7 , step index:  7 , AR burin: 0.1 , AR sampling: 0.12
+path index: 7 , step index:  8 , AR burin: 0.4 , AR sampling: 0.01
+path index: 7 , step index:  9 , AR burin: 0.2 , AR sampling: 0.02
+path index: 8 , step index:  0 , AR burin: 0.5 , AR sampling: 0.01
+path index: 8 , step index:  1 , AR burin: 0.2 , AR sampling: 0.05
+path index: 8 , step index:  2 , AR burin: 0.6 , AR sampling: 0.19
+path index: 8 , step index:  3 , AR burin: 0.1 , AR sampling: 0.09
+path index: 8 , step index:  4 , AR burin: 0.4 , AR sampling: 0.16
+path index: 8 , step index:  5 , AR burin: 0.6 , AR sampling: 0.03
+path index: 8 , step index:  6 , AR burin: 0.4 , AR sampling: 0.02
+path index: 8 , step index:  7 , AR burin: 0.4 , AR sampling: 0.09
+path index: 8 , step index:  8 , AR burin: 0.1 , AR sampling: 0.06
+path index: 8 , step index:  9 , AR burin: 0.1 , AR sampling: 0.06
+path index: 9 , step index:  0 , AR burin: 0.5 , AR sampling: 0.15
+path index: 9 , step index:  1 , AR burin: 0.7 , AR sampling: 0.2
+path index: 9 , step index:  2 , AR burin: 0.3 , AR sampling: 0.19
+path index: 9 , step index:  3 , AR burin: 0.8 , AR sampling: 0.53
+path index: 9 , step index:  4 , AR burin: 0.7 , AR sampling: 0.08
+path index: 9 , step index:  5 , AR burin: 0.5 , AR sampling: 0.08
+path index: 9 , step index:  6 , AR burin: 0.3 , AR sampling: 0.05
+path index: 9 , step index:  7 , AR burin: 0.5 , AR sampling: 0.04
+path index: 9 , step index:  8 , AR burin: 0.6 , AR sampling: 0.06
+path index: 9 , step index:  9 , AR burin: 0.3 , AR sampling: 0.06
+226.444765309
+[[   -4.09825835     2.02189241   -13.31170349 ...,    26.98360938
+    -12.42314108   -33.99622452]
+ [ -349.88156388    -3.12762362    89.20944386 ...,   -35.52162396
+     65.31453813     2.59605709]
+ [ -280.95423195 -1043.94600415   -51.22170663 ...,    90.52792657
+    -14.39111427    -9.63859204]
+ ..., 
+ [   -9.85286919   -88.97636381    36.42837371 ...,   -43.20338548
+     51.20960836    54.61755524]
+ [  -30.41840021   181.06236188     7.14120738 ...,  -223.05472793
+    -15.74373725   169.50486063]
+ [   29.44372147    66.60860892    16.39449637 ...,   -27.96866297
+    -23.68217463   -15.62841472]]
+2
+path index: 0 , step index:  0 , AR burin: 0.2 , AR sampling: 0.19
+path index: 0 , step index:  1 , AR burin: 0.9 , AR sampling: 0.61
+path index: 0 , step index:  2 , AR burin: 0.2 , AR sampling: 0.12
+path index: 0 , step index:  3 , AR burin: 0.8 , AR sampling: 0.65
+path index: 0 , step index:  4 , AR burin: 0.6 , AR sampling: 0.62
+path index: 0 , step index:  5 , AR burin: 0.4 , AR sampling: 0.31
+path index: 0 , step index:  6 , AR burin: 0.6 , AR sampling: 0.34
+path index: 0 , step index:  7 , AR burin: 0.4 , AR sampling: 0.11
+path index: 0 , step index:  8 , AR burin: 0.6 , AR sampling: 0.23
+path index: 0 , step index:  9 , AR burin: 0.5 , AR sampling: 0.06
+path index: 1 , step index:  0 , AR burin: 0.4 , AR sampling: 0.01
+path index: 1 , step index:  1 , AR burin: 0.6 , AR sampling: 0.38
+path index: 1 , step index:  2 , AR burin: 0.4 , AR sampling: 0.01
+path index: 1 , step index:  3 , AR burin: 0.3 , AR sampling: 0.32
+path index: 1 , step index:  4 , AR burin: 0.7 , AR sampling: 0.47
+path index: 1 , step index:  5 , AR burin: 0.3 , AR sampling: 0.17
+path index: 1 , step index:  6 , AR burin: 0.2 , AR sampling: 0.13
+path index: 1 , step index:  7 , AR burin: 0.3 , AR sampling: 0.38
+path index: 1 , step index:  8 , AR burin: 0.3 , AR sampling: 0.0
+path index: 1 , step index:  9 , AR burin: 0.1 , AR sampling: 0.01
+path index: 2 , step index:  0 , AR burin: 0.3 , AR sampling: 0.5
+path index: 2 , step index:  1 , AR burin: 0.6 , AR sampling: 0.19
+path index: 2 , step index:  2 , AR burin: 0.3 , AR sampling: 0.46
+path index: 2 , step index:  3 , AR burin: 0.1 , AR sampling: 0.04
+path index: 2 , step index:  4 , AR burin: 0.3 , AR sampling: 0.13
+path index: 2 , step index:  5 , AR burin: 0.3 , AR sampling: 0.37
+path index: 2 , step index:  6 , AR burin: 0.1 , AR sampling: 0.07
+path index: 2 , step index:  7 , AR burin: 0.4 , AR sampling: 0.2
+path index: 2 , step index:  8 , AR burin: 0.1 , AR sampling: 0.18
+path index: 2 , step index:  9 , AR burin: 0.3 , AR sampling: 0.15
+path index: 3 , step index:  0 , AR burin: 0.6 , AR sampling: 0.7
+path index: 3 , step index:  1 , AR burin: 0.2 , AR sampling: 0.12
+path index: 3 , step index:  2 , AR burin: 0.2 , AR sampling: 0.11
+path index: 3 , step index:  3 , AR burin: 0.1 , AR sampling: 0.13
+path index: 3 , step index:  4 , AR burin: 0.2 , AR sampling: 0.05
+path index: 3 , step index:  5 , AR burin: 0.2 , AR sampling: 0.02
+path index: 3 , step index:  6 , AR burin: 0.2 , AR sampling: 0.04
+path index: 3 , step index:  7 , AR burin: 0.3 , AR sampling: 0.08
+path index: 3 , step index:  8 , AR burin: 0.2 , AR sampling: 0.35
+path index: 3 , step index:  9 , AR burin: 0.1 , AR sampling: 0.2
+path index: 4 , step index:  0 , AR burin: 0.2 , AR sampling: 0.09
+path index: 4 , step index:  1 , AR burin: 0.5 , AR sampling: 0.49
+path index: 4 , step index:  2 , AR burin: 0.5 , AR sampling: 0.15
+path index: 4 , step index:  3 , AR burin: 1.0 , AR sampling: 0.89
+path index: 4 , step index:  4 , AR burin: 0.3 , AR sampling: 0.1
+path index: 4 , step index:  5 , AR burin: 0.3 , AR sampling: 0.09
+path index: 4 , step index:  6 , AR burin: 0.5 , AR sampling: 0.37
+path index: 4 , step index:  7 , AR burin: 0.6 , AR sampling: 0.36
+path index: 4 , step index:  8 , AR burin: 0.4 , AR sampling: 0.12
+path index: 4 , step index:  9 , AR burin: 0.4 , AR sampling: 0.23
+path index: 5 , step index:  0 , AR burin: 0.5 , AR sampling: 0.31
+path index: 5 , step index:  1 , AR burin: 0.4 , AR sampling: 0.14
+path index: 5 , step index:  2 , AR burin: 0.4 , AR sampling: 0.32
+path index: 5 , step index:  3 , AR burin: 0.8 , AR sampling: 0.7
+path index: 5 , step index:  4 , AR burin: 0.5 , AR sampling: 0.43
+path index: 5 , step index:  5 , AR burin: 0.4 , AR sampling: 0.15
+path index: 5 , step index:  6 , AR burin: 0.6 , AR sampling: 0.46
+path index: 5 , step index:  7 , AR burin: 0.2 , AR sampling: 0.11
+path index: 5 , step index:  8 , AR burin: 0.6 , AR sampling: 0.54
+path index: 5 , step index:  9 , AR burin: 0.7 , AR sampling: 0.28
+path index: 6 , step index:  0 , AR burin: 0.6 , AR sampling: 0.65
+path index: 6 , step index:  1 , AR burin: 0.7 , AR sampling: 0.56
+path index: 6 , step index:  2 , AR burin: 0.5 , AR sampling: 0.29
+path index: 6 , step index:  3 , AR burin: 0.5 , AR sampling: 0.46
+path index: 6 , step index:  4 , AR burin: 0.1 , AR sampling: 0.11
+path index: 6 , step index:  5 , AR burin: 0.2 , AR sampling: 0.01
+path index: 6 , step index:  6 , AR burin: 0.5 , AR sampling: 0.11
+path index: 6 , step index:  7 , AR burin: 0.1 , AR sampling: 0.14
+path index: 6 , step index:  8 , AR burin: 0.2 , AR sampling: 0.05
+path index: 6 , step index:  9 , AR burin: 0.3 , AR sampling: 0.19
+path index: 7 , step index:  0 , AR burin: 0.7 , AR sampling: 0.71
+path index: 7 , step index:  1 , AR burin: 0.5 , AR sampling: 0.25
+path index: 7 , step index:  2 , AR burin: 0.5 , AR sampling: 0.5
+path index: 7 , step index:  3 , AR burin: 0.6 , AR sampling: 0.55
+path index: 7 , step index:  4 , AR burin: 0.6 , AR sampling: 0.44
+path index: 7 , step index:  5 , AR burin: 0.0 , AR sampling: 0.06
+path index: 7 , step index:  6 , AR burin: 0.8 , AR sampling: 0.52
+path index: 7 , step index:  7 , AR burin: 0.3 , AR sampling: 0.05
+path index: 7 , step index:  8 , AR burin: 0.2 , AR sampling: 0.19
+path index: 7 , step index:  9 , AR burin: 0.2 , AR sampling: 0.01
+path index: 8 , step index:  0 , AR burin: 0.5 , AR sampling: 0.31
+path index: 8 , step index:  1 , AR burin: 0.4 , AR sampling: 0.12
+path index: 8 , step index:  2 , AR burin: 0.3 , AR sampling: 0.18
+path index: 8 , step index:  3 , AR burin: 0.1 , AR sampling: 0.09
+path index: 8 , step index:  4 , AR burin: 0.5 , AR sampling: 0.3
+path index: 8 , step index:  5 , AR burin: 0.5 , AR sampling: 0.45
+path index: 8 , step index:  6 , AR burin: 0.6 , AR sampling: 0.52
+path index: 8 , step index:  7 , AR burin: 0.2 , AR sampling: 0.04
+path index: 8 , step index:  8 , AR burin: 0.4 , AR sampling: 0.01
+path index: 8 , step index:  9 , AR burin: 0.3 , AR sampling: 0.0
+path index: 9 , step index:  0 , AR burin: 0.5 , AR sampling: 0.4
+path index: 9 , step index:  1 , AR burin: 0.7 , AR sampling: 0.49
+path index: 9 , step index:  2 , AR burin: 0.1 , AR sampling: 0.33
+path index: 9 , step index:  3 , AR burin: 0.9 , AR sampling: 0.61
+path index: 9 , step index:  4 , AR burin: 0.1 , AR sampling: 0.16
+path index: 9 , step index:  5 , AR burin: 0.5 , AR sampling: 0.06
+path index: 9 , step index:  6 , AR burin: 0.0 , AR sampling: 0.27
+path index: 9 , step index:  7 , AR burin: 0.6 , AR sampling: 0.14
+path index: 9 , step index:  8 , AR burin: 0.5 , AR sampling: 0.15
+path index: 9 , step index:  9 , AR burin: 0.6 , AR sampling: 0.07
+216.665619542
+[[ -9.51234442e+00   1.75476828e+01  -1.44221770e+01 ...,   3.83733226e+01
+   -2.96161293e+01  -2.66001677e+01]
+ [ -3.02469724e+02   7.68526113e+01   6.28988393e+01 ...,  -2.64000483e+01
+    3.45306132e+01  -4.03762911e-01]
+ [ -3.05651856e+02  -6.37003889e+02  -1.48436018e+01 ...,  -1.37480631e+02
+   -9.14378027e+01   1.25552394e+01]
+ ..., 
+ [ -1.95398784e+01  -7.19060571e+01   5.11851300e+01 ...,  -1.01010928e+02
+    5.34312543e+01   7.04596241e+01]
+ [ -1.54640989e+02   2.30223595e+02   5.91360614e+01 ...,  -2.38180121e+02
+   -4.51182064e-01   1.85258059e+02]
+ [ -2.07015318e+00   6.87032090e+01   1.03035797e+01 ...,   4.46142096e+01
+   -2.89832392e+01  -3.36031368e+01]]
+2
