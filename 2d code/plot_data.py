@@ -17,9 +17,9 @@ for parvalue in range(8):
     titles = [r'$x_0$', r'$\dot{x_0}$']
 
     for i in range(10):
-        y_vals = [xout[i, :, 0], xout[i, :, 1]]
+        y_vals = [x[i, :, 0], x[i, :, 1]]
         for ax, title, y in zip(axes.flat, titles, y_vals):
-            ax.plot(tout[i, :], y, label='initial condition '+str(euler_param.ic[i]))
+            ax.plot(t[i, :], y, label='initial condition '+str(euler_param.ic[i]))
             ax.set_title(title)
             ax.grid(True)
             ax.set_xticks(np.arange(0, 11, 1))

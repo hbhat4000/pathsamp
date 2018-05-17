@@ -112,7 +112,7 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
     mmat = np.zeros((prm.dim, prm.dof, prm.dof))
     rvec = np.zeros((prm.dim, prm.dof))
 
-    # one time series, one interval, one dimension at a time
+    # one time series, one interval, all dimensions at a time
     x = allx[path_index, step_index:(step_index + 2), :]
     t = allt[path_index, step_index:(step_index + 2)]
     tdiff = (t[1] - t[0]) / em_param.numsubintervals
@@ -120,10 +120,12 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
     samples = np.zeros((em_param.numsubintervals, prm.dim))
     _, xcur = brownianbridge(d_param, em_param, x, t)
     oldlik = girsanov(d_param, em_param, xcur, tdiff)
+
     arburn = np.zeros(em_param.burninpaths)
     for jj in range(em_param.burninpaths):
         _, prop = brownianbridge(d_param, em_param, x, t)
         proplik = girsanov(d_param, em_param, prop, tdiff)
+
         rho = proplik - oldlik
         if (rho > np.log(np.random.uniform())):
             xcur = prop
@@ -136,11 +138,13 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
     for jj in range(em_param.mcmcpaths):
         _, prop = brownianbridge(d_param, em_param, x, t)
         proplik = girsanov(d_param, em_param, prop, tdiff)
+
         rho = proplik - oldlik
         if (rho > np.log(np.random.uniform())):
             xcur = prop
             oldlik = proplik
             arsamp[jj] = 1
+
         samples = xcur
         pp = hermite_basis(samples[:(-1)])
         mmat = mmat + tdiff * np.matmul(pp.T, pp) / em_param.mcmcpaths

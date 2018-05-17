@@ -18,7 +18,7 @@ numpoints = parvalue - 2
 
 sorted_indices = np.zeros((numpaths, parvalue))
 for i in range(numpaths):
-    random_indices = random.sample(range(0, allx.shape[1]), numpoints)
+    random_indices = random.sample(range(1, allx.shape[1]-1), numpoints)
     sorted_indices[i, 0] = 0
     sorted_indices[i, numpoints + 1] = allx.shape[1] - 1
     sorted_indices[i, 1:(numpoints+1)] = np.sort(random_indices)

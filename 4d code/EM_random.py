@@ -9,8 +9,8 @@ import random
 # for running the code using a job array on cluster
 parvalue = int(os.environ['SGE_TASK_ID']) * 10 + 1
 
-# load data, noise_1 is data with noise = 0.1
-with open('./data/noise_1.pkl','rb') as f:
+# load data, noise_2 is data with noise = 0.05
+with open('./data/noise_2.pkl','rb') as f:
     allx, allt, x_without_noise, euler_param, sim_param = pickle.load(f)
 
 numpaths = allx.shape[0]
@@ -18,7 +18,7 @@ numpoints = parvalue - 2
 
 sorted_indices = np.zeros((numpaths, parvalue))
 for i in range(numpaths):
-    random_indices = random.sample(range(0, allx.shape[1]), numpoints)
+    random_indices = random.sample(range(1, allx.shape[1]-1), numpoints)
     sorted_indices[i, 0] = 0
     sorted_indices[i, numpoints + 1] = allx.shape[1] - 1
     sorted_indices[i, 1:(numpoints+1)] = np.sort(random_indices)
@@ -59,5 +59,5 @@ print("\n")
 
 # save to file
 with open('./random_timepoints/rand_' + str(parvalue) + '.pkl','wb') as f:
-    pickle.dump([error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param], f)
+    pickle.dump([x, t, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param], f)
 

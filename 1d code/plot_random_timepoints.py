@@ -45,6 +45,7 @@ ax = fig.gca()
 plt.plot(numpoints, error_plot[0, ])
 plt.title('Error in estimated theta in Hermite space')
 plt.grid()
+ax.set_xticks(numpoints)
 plt.savefig('./random_timepoints/plots/error/hermite.eps', format = 'eps', bbox_inches='tight')
 
 # 2b) Error in estimated theta in Ordinary space
@@ -53,6 +54,7 @@ ax = fig.gca()
 plt.plot(numpoints, error_plot[1, ])
 plt.title('Error in estimated theta in Ordinary space')
 plt.grid()
+ax.set_xticks(numpoints)
 plt.savefig('./random_timepoints/plots/error/ordinary.eps', format = 'eps', bbox_inches='tight')
 
 # 2c) Error in estimated gvec
@@ -61,6 +63,7 @@ ax = fig.gca()
 plt.plot(numpoints, error_plot[2, ])
 plt.title('Error in estimated gvec')
 plt.grid()
+ax.set_xticks(numpoints)
 plt.savefig('./random_timepoints/plots/error/gvec.eps', format = 'eps', bbox_inches='tight')
 ###################################################################################################
 
