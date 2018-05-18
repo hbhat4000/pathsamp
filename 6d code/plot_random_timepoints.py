@@ -9,7 +9,7 @@ for parvalue in range(1, 11):
         x, t, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
 
     fig, axes = plt.subplots(nrows=3, ncols=2, sharex=True)
-    fig.set_figwidth(15)
+    fig.set_figwidth(20)
     fig.set_figheight(15)
     titles = [r'$x_0$', r'$x_1$', r'$x_2$', r'$x_3$', r'$x_4$', r'$x_5$']
 
@@ -88,15 +88,35 @@ plt.savefig('./random_timepoints/plots/error/gvec.eps', format = 'eps', bbox_inc
 
 # 3) Comparison of true drift function vs estimated drift function
 def f(theta, x):
-    y = np.sum(nb.hermite_basis(x) * theta, axis = 0)
-    return (y)
+    y = np.zeros((x.shape[0], x.shape[1]))
+    for i in range(x.shape[0]):
+        y[i, :] = index(theta[:, i], x)
+    return y  
 
-x = np.arange(-5.0, 6.0, 1.0)
-x1 = np.array((x, x, x, x, x, x))
-x2 = np.array((x, x, x, x, x, x))
+def index(theta, x):
+    y = np.zeros((x.shape[1]))
+    index = 0
+
+    for d in range(0, 4):
+        for n in range(0, d + 1):
+            for m in range(0, d + 1):
+                for l in range(0, d + 1):
+                    for k in range(0, d + 1):
+                        for j in range(0, d + 1):
+                            for i in range(0, d + 1):
+                                if (i + j + k + l + m + n == d):
+                                    y += theta[index] * np.power(x[0, :], i) * np.power(x[1, :], j) * np.power(x[2, :], k) * np.power(x[3, :], l) * np.power(x[4, :], m) * np.power(x[5, :], n)
+                                    index += 1
+
+    return y
+
+x_sparse = np.arange(-2.0, 2.0, 0.5)
+x_dense = np.arange(-2.0, 2.0, 0.1)
+x1 = np.array((x_sparse, x_sparse, x_sparse, x_sparse, x_sparse, x_sparse))
+x2 = np.array((x_dense, x_dense, x_dense, x_dense, x_dense, x_dense))
 
 fig, axes = plt.subplots(nrows=3, ncols=2, sharex=True)
-fig.set_figwidth(15)
+fig.set_figwidth(20)
 fig.set_figheight(15)
 titles = [r'$x_0$', r'$x_1$', r'$x_2$', r'$x_3$', r'$x_4$', r'$x_5$']
 

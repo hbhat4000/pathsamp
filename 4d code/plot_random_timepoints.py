@@ -95,10 +95,10 @@ def index(theta, x):
     index = 0
 
     for d in range(0, 4):
-        for i in range(0, d + 1):
-            for j in range(0, d + 1):
-                for k in range(0, d + 1):
-                    for l in range(0, d + 1):
+        for l in range(0, d + 1):
+            for k in range(0, d + 1):
+                for j in range(0, d + 1):
+                    for i in range(0, d + 1):
                         if (i + j + k + l == d):
                             y += theta[index] * np.power(x[0, :], i) * np.power(x[1, :], j) * np.power(x[2, :], k) * np.power(x[3, :], l)
                             index += 1
