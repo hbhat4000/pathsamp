@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=latex 2016.5.22)  18 MAY 2018 04:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=latex 2016.5.22)  18 MAY 2018 09:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -931,15 +931,15 @@ Package microtype Info: Loading generic settings for font family
 
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 77.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 78.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 77.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 78.
 
-Underfull \hbox (badness 1540) in paragraph at lines 96--98
+Underfull \hbox (badness 1540) in paragraph at lines 95--97
 \T1/ptm/m/n/10 Let $\OMS/cmsy/m/n/10 h\OML/cmm/m/it/10 f; g\OMS/cmsy/m/n/10 i[]
  \OT1/cmr/m/n/10 = [][] \OML/cmm/m/it/10 f\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x\O
 T1/cmr/m/n/10 )\OML/cmm/m/it/10 g\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x\OT1/cmr/m/
@@ -949,8 +949,20 @@ n/10 in-ner prod-uct. Then,
  []
 
 [2] [3] [4] [5]
-Overfull \hbox (84.68211pt too wide) in paragraph at lines 270--270
-[] 
+File: "../1d code/varying_noise/plots/hermite.eps" Graphic file (type eps)
+ <"../1d code/varying_noise/plots/hermite.eps">
+File: "../2d code/varying_noise/plots/hermite.eps" Graphic file (type eps)
+
+<"../2d code/varying_noise/plots/hermite.eps">
+File: "../3d damped duffing/varying_noise/plots/hermite.eps" Graphic file (type
+ eps)
+
+<"../3d damped duffing/varying_noise/plots/hermite.eps">
+File: "../3d lorenz/varying_noise/plots/hermite.eps" Graphic file (type eps)
+
+<"../3d lorenz/varying_noise/plots/hermite.eps">
+Underfull \hbox (badness 10000) in paragraph at lines 250--254
+[][] []
  []
 
 (./results.bbl
@@ -1028,7 +1040,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 124--132
 70375$.  URL
  []
 
-
+[7]
 Underfull \hbox (badness 10000) in paragraph at lines 141--149
 []\T1/ptm/m/n/9 O. Pa-paspiliopou-los, G. O. Roberts, and O. Stramer.  Data Aug
 -men-ta-tion for Dif-
@@ -1088,7 +1100,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 171--180
 . 2017 . 07 . 050$.  URL
  []
 
-[7]
+
 Underfull \hbox (badness 10000) in paragraph at lines 201--208
 []\T1/ptm/m/n/9 A. Rut-tor, P. Batz, and M. Op-per.  Ap-prox-i-mate Gaus-sian p
 ro-cess in-fer-
@@ -1189,24 +1201,24 @@ Underfull \hbox (badness 1460) in paragraph at lines 297--303
  ISBN 978-3-540-04758-2.  URL
  []
 
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 277.
- [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 277.
+[8])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 268.
+ [9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 268.
  (./results.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 277.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 277.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 268.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 268.
 Package rerunfilecheck Info: File `results.out' has not changed.
-(rerunfilecheck)             Checksum: C442BD1DFF58BF0472CF6BFD2E77DE0F;95.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 277.
+(rerunfilecheck)             Checksum: 18A38B960CD781D5A2A5E003147914AE;141.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 268.
  ) 
 Here is how much of TeX's memory you used:
- 10745 strings out of 493015
- 163821 string characters out of 6133377
- 297476 words of memory out of 5000000
- 14099 multiletter control sequences out of 15000+600000
+ 10761 strings out of 493015
+ 164237 string characters out of 6133377
+ 297732 words of memory out of 5000000
+ 14109 multiletter control sequences out of 15000+600000
  36825 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,12n,38p,958b,518s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,12n,38p,958b,542s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on results.dvi (8 pages, 78324 bytes).
+Output written on results.dvi (9 pages, 79184 bytes).
