@@ -176,7 +176,7 @@ def norm_error(true_theta, estimated_theta):
 
 
 def theta_sparsity(theta):
-    threshold = 0.1 * np.max(theta)
+    threshold = 0.1 * np.max(np.abs(theta))
     theta[np.abs(theta) < threshold] = 0.
     return theta
 

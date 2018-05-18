@@ -1,7 +1,6 @@
 import numpy as np
 import pickle
 from matplotlib import pyplot as plt
-import os
 
 # 1) Data used
 for parvalue in range(1, 11):
@@ -19,7 +18,7 @@ for parvalue in range(1, 11):
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
     plt.title('Observed data used for random time point experiments, number of time steps = ' + str(parvalue*10+1))
     plt.grid()
-    plt.savefig('./random_timepoints/plots/data/rand_' + str(parvalue*10+1) + '.eps', format = 'eps', bbox_inches='tight')
+    plt.savefig('./random_timepoints/plots/rand_' + str(parvalue*10+1) + '.eps', format = 'eps', bbox_inches='tight')
 
 ################################################################################################
 
@@ -35,36 +34,42 @@ error_plot = np.zeros((3, parval))
 numpoints = np.zeros(parval)
 for i in range(parval):
     numpoints[i] = meta_error_list[i][0][1]
-    error_plot[0, i] = meta_error_list[i][6][0]
-    error_plot[1, i] = meta_error_list[i][6][1]
-    error_plot[2, i] = np.abs(meta_error_list[i][6][4])
+    error_plot[0, i] = meta_error_list[i][6][1]
+    error_plot[1, i] = meta_error_list[i][6][0]
+    error_plot[2, i] = np.sqrt(np.sum(np.square(np.abs(meta_error_list[i][6][4]))))
 
 # 2a) Error in estimated theta in Hermite space
 fig = plt.figure()
 ax = fig.gca()
 plt.plot(numpoints, error_plot[0, ])
-plt.title('Error in estimated theta in Hermite space')
+plt.title('Frobenius norm error in estimated theta in Hermite space')
 plt.grid()
 ax.set_xticks(numpoints)
-plt.savefig('./random_timepoints/plots/error/hermite.eps', format = 'eps', bbox_inches='tight')
+# ax.set_ylim([0., 1.])
+# ax.set_yticks(np.arange(0., 1.1, 0.1))
+plt.savefig('./random_timepoints/plots/hermite.eps', format = 'eps', bbox_inches='tight')
 
 # 2b) Error in estimated theta in Ordinary space
 fig = plt.figure()
 ax = fig.gca()
 plt.plot(numpoints, error_plot[1, ])
-plt.title('Error in estimated theta in Ordinary space')
+plt.title('Frobenius norm error in estimated theta in Ordinary space')
 plt.grid()
 ax.set_xticks(numpoints)
-plt.savefig('./random_timepoints/plots/error/ordinary.eps', format = 'eps', bbox_inches='tight')
+# ax.set_ylim([0., 2.])
+# ax.set_yticks(np.arange(0., 2.1, 0.2))
+plt.savefig('./random_timepoints/plots/ordinary.eps', format = 'eps', bbox_inches='tight')
 
 # 2c) Error in estimated gvec
 fig = plt.figure()
 ax = fig.gca()
 plt.plot(numpoints, error_plot[2, ])
-plt.title('Error in estimated gvec')
+plt.title('Frobenius norm error in estimated gvec')
 plt.grid()
 ax.set_xticks(numpoints)
-plt.savefig('./random_timepoints/plots/error/gvec.eps', format = 'eps', bbox_inches='tight')
+# ax.set_ylim([0., 0.05])
+# ax.set_yticks(np.arange(0., 0.06, 0.01))
+plt.savefig('./random_timepoints/plots/gvec.eps', format = 'eps', bbox_inches='tight')
 ###################################################################################################
 
 # 3) Comparison of true drift function vs estimated drift function
@@ -83,4 +88,4 @@ for i in range(parval):
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.title('Comparison of true drift function vs estimated drift functions')
 plt.grid()
-plt.savefig('./random_timepoints/plots/error/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./random_timepoints/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
