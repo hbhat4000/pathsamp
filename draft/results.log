@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=latex 2016.5.22)  18 MAY 2018 09:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=latex 2016.5.22)  18 MAY 2018 09:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -753,7 +753,17 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \ALG@tmplength=\skip60
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
-) (./results.aux)
+) (./results.aux
+
+LaTeX Warning: Label `fig:exp1' multiply defined.
+
+
+LaTeX Warning: Label `fig:exp2' multiply defined.
+
+
+LaTeX Warning: Label `fig:exp2' multiply defined.
+
+)
 \openout1 = `results.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
@@ -949,23 +959,182 @@ n/10 in-ner prod-uct. Then,
  []
 
 [2] [3] [4] [5]
-File: "../1d code/varying_noise/plots/hermite.eps" Graphic file (type eps)
- <"../1d code/varying_noise/plots/hermite.eps">
-File: "../2d code/varying_noise/plots/hermite.eps" Graphic file (type eps)
+File: ../1dcode/varying_num_timeseries/plots/hermite.eps Graphic file (type eps
+)
+ <../1dcode/varying_num_timeseries/plots/hermite.eps>
+File: ../2dcode/varying_num_timeseries/plots/hermite.eps Graphic file (type eps
+)
 
-<"../2d code/varying_noise/plots/hermite.eps">
-File: "../3d damped duffing/varying_noise/plots/hermite.eps" Graphic file (type
- eps)
+<../2dcode/varying_num_timeseries/plots/hermite.eps>
+File: ../3ddampedduffing/varying_num_timeseries/plots/hermite.eps Graphic file 
+(type eps)
 
-<"../3d damped duffing/varying_noise/plots/hermite.eps">
-File: "../3d lorenz/varying_noise/plots/hermite.eps" Graphic file (type eps)
+<../3ddampedduffing/varying_num_timeseries/plots/hermite.eps>
 
-<"../3d lorenz/varying_noise/plots/hermite.eps">
-Underfull \hbox (badness 10000) in paragraph at lines 250--254
+LaTeX Warning: File `../3dlorenz/varying_num_timeseries/plots/hermite.eps' not 
+found on input line 253.
+
+
+! LaTeX Error: File `../3dlorenz/varying_num_timeseries/plots/hermite.eps' not 
+found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.253 ...varying_num_timeseries/plots/hermite.eps}
+                                                  
+? 
+
+! LaTeX Error: Cannot determine size of graphic in ../3dlorenz/varying_num_time
+series/plots/hermite.eps (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.253 ...varying_num_timeseries/plots/hermite.eps}
+                                                  
+? 
+File: ../3dlorenz/varying_num_timeseries/plots/hermite.eps Graphic file (type e
+ps)
+<../3dlorenz/varying_num_timeseries/plots/hermite.eps>
+File: ../1dcode/varying_num_timeseries/plots/drift_comparison.eps Graphic file 
+(type eps)
+
+<../1dcode/varying_num_timeseries/plots/drift_comparison.eps>
+File: ../2dcode/varying_num_timeseries/plots/drift_comparison.eps Graphic file 
+(type eps)
+
+<../2dcode/varying_num_timeseries/plots/drift_comparison.eps>
+File: ../3ddampedduffing/varying_num_timeseries/plots/drift_comparison.eps Grap
+hic file (type eps)
+
+<../3ddampedduffing/varying_num_timeseries/plots/drift_comparison.eps>
+
+LaTeX Warning: File `../3dlorenz/varying_num_timeseries/plots/drift_comparison.
+eps' not found on input line 262.
+
+
+! LaTeX Error: File `../3dlorenz/varying_num_timeseries/plots/drift_comparison.
+eps' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.262 ...um_timeseries/plots/drift_comparison.eps}
+                                                  
+? 
+
+! LaTeX Error: Cannot determine size of graphic in ../3dlorenz/varying_num_time
+series/plots/drift_comparison.eps (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.262 ...um_timeseries/plots/drift_comparison.eps}
+                                                  
+? 
+File: ../3dlorenz/varying_num_timeseries/plots/drift_comparison.eps Graphic fil
+e (type eps)
+<../3dlorenz/varying_num_timeseries/plots/drift_comparison.eps>
+Underfull \hbox (badness 10000) in paragraph at lines 259--263
 [][] []
  []
 
-(./results.bbl
+File: ../1dcode/random_timepoints/plots/hermite.eps Graphic file (type eps)
+<../1dcode/random_timepoints/plots/hermite.eps>
+File: ../2dcode/random_timepoints/plots/hermite.eps Graphic file (type eps)
+
+<../2dcode/random_timepoints/plots/hermite.eps>
+File: ../3ddampedduffing/random_timepoints/plots/hermite.eps Graphic file (type
+ eps)
+
+<../3ddampedduffing/random_timepoints/plots/hermite.eps>
+
+LaTeX Warning: File `../3dlorenz/random_timepoints/plots/hermite.eps' not found
+ on input line 273.
+
+
+! LaTeX Error: File `../3dlorenz/random_timepoints/plots/hermite.eps' not found
+.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.273 ...renz/random_timepoints/plots/hermite.eps}
+                                                  
+? 
+
+! LaTeX Error: Cannot determine size of graphic in ../3dlorenz/random_timepoint
+s/plots/hermite.eps (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.273 ...renz/random_timepoints/plots/hermite.eps}
+                                                  
+? 
+File: ../3dlorenz/random_timepoints/plots/hermite.eps Graphic file (type eps)
+<../3dlorenz/random_timepoints/plots/hermite.eps>
+File: ../1dcode/varying_noise/plots/hermite.eps Graphic file (type eps)
+
+<../1dcode/varying_noise/plots/hermite.eps>
+File: ../2dcode/varying_noise/plots/hermite.eps Graphic file (type eps)
+
+<../2dcode/varying_noise/plots/hermite.eps>
+File: ../3ddampedduffing/varying_noise/plots/hermite.eps Graphic file (type eps
+)
+
+<../3ddampedduffing/varying_noise/plots/hermite.eps>
+File: ../3dlorenz/varying_noise/plots/hermite.eps Graphic file (type eps)
+
+<../3dlorenz/varying_noise/plots/hermite.eps>
+File: ../1dcode/varying_subintervals/plots/tp_51/hermite.eps Graphic file (type
+ eps)
+
+<../1dcode/varying_subintervals/plots/tp_51/hermite.eps>
+File: ../2dcode/varying_subintervals/plots/tp_51/hermite.eps Graphic file (type
+ eps)
+
+<../2dcode/varying_subintervals/plots/tp_51/hermite.eps>
+File: ../3ddampedduffing/varying_subintervals/plots/tp_51/hermite.eps Graphic f
+ile (type eps)
+
+<../3ddampedduffing/varying_subintervals/plots/tp_51/hermite.eps>
+
+LaTeX Warning: File `../3dlorenz/varying_subintervals/plots/tp_51/hermite.eps' 
+not found on input line 294.
+
+
+! LaTeX Error: File `../3dlorenz/varying_subintervals/plots/tp_51/hermite.eps' 
+not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.294 ...ing_subintervals/plots/tp_51/hermite.eps}
+                                                  
+? 
+
+! LaTeX Error: Cannot determine size of graphic in ../3dlorenz/varying_subinter
+vals/plots/tp_51/hermite.eps (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.294 ...ing_subintervals/plots/tp_51/hermite.eps}
+                                                  
+? 
+File: ../3dlorenz/varying_subintervals/plots/tp_51/hermite.eps Graphic file (ty
+pe eps)
+<../3dlorenz/varying_subintervals/plots/tp_51/hermite.eps> (./results.bbl
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <9> not available
 (Font)              Font shape `U/lasy/m/n' tried instead on input line 22.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
@@ -1022,7 +1191,7 @@ Underfull \hbox (badness 1769) in paragraph at lines 95--104
  / rspa . 2017 . 0009$.  URL
  []
 
-
+[7]
 Underfull \hbox (badness 10000) in paragraph at lines 124--132
 []\T1/ptm/m/n/9 J. Nico-lau.  NON-PARA-MET-RIC ES-TI-MA-TION OF SECOND-ORDER ST
 OCHAS-
@@ -1040,7 +1209,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 124--132
 70375$.  URL
  []
 
-[7]
+
 Underfull \hbox (badness 10000) in paragraph at lines 141--149
 []\T1/ptm/m/n/9 O. Pa-paspiliopou-los, G. O. Roberts, and O. Stramer.  Data Aug
 -men-ta-tion for Dif-
@@ -1129,7 +1298,7 @@ Underfull \hbox (badness 1953) in paragraph at lines 210--219
 via data dis-cov-ery and sparse op-ti-miza-
  []
 
-
+[8]
 Underfull \hbox (badness 5954) in paragraph at lines 222--229
 []\T1/ptm/m/n/9 H. Scha-ef-fer, R. Caflisch, C. D. Hauck, and S. Os-her.  Spars
 e dy-nam-ics for par-tial
@@ -1201,24 +1370,28 @@ Underfull \hbox (badness 1460) in paragraph at lines 297--303
  ISBN 978-3-540-04758-2.  URL
  []
 
-[8])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 268.
+)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 304.
  [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 268.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 304.
  (./results.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 268.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 268.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 304.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 304.
 Package rerunfilecheck Info: File `results.out' has not changed.
 (rerunfilecheck)             Checksum: 18A38B960CD781D5A2A5E003147914AE;141.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 268.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 304.
  ) 
 Here is how much of TeX's memory you used:
- 10761 strings out of 493015
- 164237 string characters out of 6133377
- 297732 words of memory out of 5000000
- 14109 multiletter control sequences out of 15000+600000
+ 10793 strings out of 493015
+ 165694 string characters out of 6133377
+ 295903 words of memory out of 5000000
+ 14128 multiletter control sequences out of 15000+600000
  36825 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,12n,38p,958b,542s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,12n,39p,958b,528s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on results.dvi (9 pages, 79184 bytes).
+Output written on results.dvi (9 pages, 81884 bytes).

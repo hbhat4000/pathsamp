@@ -247,18 +247,54 @@ In what follows, we refer to these systems as the 1$d$, 2$d$, Duffing, and Loren
 \paragraph{Experiment 1: Varying Number of Time Series.} Here we vary data volume by stepping the number $S$ of time series from $S=1$ to $S=10$.  Each time series has length $L+1 = 101$.
 
 \begin{figure}[th]
-\includegraphics[height=2in]{"../1dcode/varying_noise/plots/hermite.eps"}
-\includegraphics[height=2in]{"../2dcode/varying_noise/plots/hermite.eps"}
-\includegraphics[height=2in]{"../3ddampedduffing/varying_noise/plots/hermite.eps"}
-\includegraphics[height=2in]{"../3dlorenz/varying_noise/plots/hermite.eps"}
+\includegraphics[height=1in]{../1dcode/varying_num_timeseries/plots/hermite.eps}
+\includegraphics[height=1in]{../2dcode/varying_num_timeseries/plots/hermite.eps}
+\includegraphics[height=1in]{../3ddampedduffing/varying_num_timeseries/plots/hermite.eps}
+\includegraphics[height=1in]{../3dlorenz/varying_num_timeseries/plots/hermite.eps}
+\caption{Varying number of time series.}
+\label{fig:exp1}
+\end{figure}
+
+\begin{figure}[th]
+\includegraphics[height=1in]{../1dcode/varying_num_timeseries/plots/drift_comparison.eps}
+\includegraphics[height=1in]{../2dcode/varying_num_timeseries/plots/drift_comparison.eps}
+\includegraphics[height=1in]{../3ddampedduffing/varying_num_timeseries/plots/drift_comparison.eps}
+\includegraphics[height=1in]{../3dlorenz/varying_num_timeseries/plots/drift_comparison.eps}
+\caption{Varying number of time series.}
+\label{fig:exp1}
 \end{figure}
 
 \paragraph{Experiment 2: Varying Length of Time Series.} Here we vary data volume by stepping the length $L+1$ of the time series from $L+1 = 11$ to $L+1 = 101$, keeping the number of time series fixed at $S=10$.
 
+\begin{figure}[th]
+\includegraphics[height=1in]{../1dcode/random_timepoints/plots/hermite.eps}
+\includegraphics[height=1in]{../2dcode/random_timepoints/plots/hermite.eps}
+\includegraphics[height=1in]{../3ddampedduffing/random_timepoints/plots/hermite.eps}
+\includegraphics[height=1in]{../3dlorenz/random_timepoints/plots/hermite.eps}
+\caption{Varying length of time series.}
+\label{fig:exp2}
+\end{figure}
+
 \paragraph{Experiment 3: Varying Noise Strength.} Here we vary the noise strength $\gamma$, stepping from $0.5$ to $0.0001$ while keeping other parameters constant.  Specifically, we take $S=10$ time series each of length $L+1 = 101$.
+\begin{figure}[th]
+\includegraphics[height=1in]{../1dcode/varying_noise/plots/hermite.eps}
+\includegraphics[height=1in]{../2dcode/varying_noise/plots/hermite.eps}
+\includegraphics[height=1in]{../3ddampedduffing/varying_noise/plots/hermite.eps}
+\includegraphics[height=1in]{../3dlorenz/varying_noise/plots/hermite.eps}
+\caption{Varying noise strength.}
+\label{fig:exp2}
+\end{figure}
 
 \paragraph{Experiment 4: Varying Data Augmentation.} 
 Here we vary the number $F$ of interleaved diffusion bridge samples from $F=1$ to $F=9$.  Note that for $F=1$, no diffusion bridge is created; the likelihood is computed by applying the Gaussian transition density directly to the observed data.
+\begin{figure}[th]
+\includegraphics[height=1in]{../1dcode/varying_subintervals/plots/tp_51/hermite.eps}
+\includegraphics[height=1in]{../2dcode/varying_subintervals/plots/tp_51/hermite.eps}
+\includegraphics[height=1in]{../3ddampedduffing/varying_subintervals/plots/tp_51/hermite.eps}
+\includegraphics[height=1in]{../3dlorenz/varying_subintervals/plots/tp_51/hermite.eps}
+\caption{Varying length of the diffusion bridge.}
+\label{fig:exp2}
+\end{figure}
 
 {\small
 \bibliographystyle{abbrvnat}
