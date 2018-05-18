@@ -71,16 +71,11 @@ In the literature, variational Bayesian methods are the only other SDE learning 
 
 Many other techniques explored in the statistical literature focus on scalar SDE \cite{nicolau_nonparametric_2007, muller_empirical_2010, verzelen_inferring_2012, bhat_nonparametric_2016}.
 
-As mentioned, differential equation discovery problems have attracted considerable recent interest.  A variety of methods have been developed to learn ODE \cite{brunton_discovering_2016, schon_probabilistic_2017, chen_network_2017, tran_exact_2017, schaeffer_extracting_2017, schaeffer_learning_2017, quade_sparse_2018} as well as PDE \cite{schaeffer_sparse_2013, raissi_machine_2017, rudy_data-driven_2017, raissi_hidden_2018}.  Unlike many of these works, we do not focus on model selection; if needed, our methods can be combined with model selection procedures developed in the ODE context \cite{mangan_inferring_2016, mangan_model_2017}.
+As mentioned, differential equation discovery problems have attracted considerable recent interest.  A variety of methods have been developed to learn ODE \cite{brunton_discovering_2016, schon_probabilistic_2017, chen_network_2017, tran_exact_2017, schaeffer_extracting_2017, schaeffer_learning_2017, quade_sparse_2018} as well as PDE \cite{schaeffer_sparse_2013, raissi_machine_2017, rudy_data-driven_2017, raissi_hidden_2018}.  Unlike many of these works, we do not focus on model selection and/or regularization; if needed, our methods can be combined with model selection procedures developed in the ODE context \cite{mangan_inferring_2016, mangan_model_2017}.
 
-Points to cover:
 \begin{itemize}
-\item data specification, DONE
-\item Hermite polynomial and drift function representation, DONE
 \item Expectation and maximization formulas assuming data is filled in, CLOSE2DONE
-\item Filling data in with diffusion bridge, DONE
-\item MCMC iterations of brownian bridge using girsanov likelihood, DONE
-\item how synthetic data is generated
+\item how synthetic data is generated, EDIT
 \item results: 1D, 2D, 3D damped duffing, 3D lorenz
 \item plots: error of theta vs noise, error vs amount of data (number of data points) parametric curves for noise levels, brownian bridge plots for illustration, ...
 \end{itemize}
@@ -92,7 +87,7 @@ d X_t = f( X_t) dt + \Gamma d W_t.
 \end{equation}
 For rigorous definitions of Brownian motion and SDE, see \cite{bhattacharya_stochastic_2009, oksendal_stochastic_2003}.  The nonlinear vector field $f : \Omega \subset \mathbb{R}^d \to \mathbb{R}^d$ is the \emph{drift} function, and the $d \times d$ matrix $\Gamma$ is the \emph{diffusion} matrix.  To reduce the number of model parameters, we assume $\Gamma = \opdiag \gamma$.
 
-\textbf{Our goal is to develop an algorithm that accurately estimates the functional form of $f$ and the vector $\gamma$ from time series data.}
+\emph{Our goal is to develop an algorithm that accurately estimates the functional form of $f$ and the vector $\gamma$ from time series data.}
 
 \paragraph{Parameterization.} We parameterize $f$ using Hermite polynomials.  The $n$-th Hermite polynomial takes the form
 \begin{equation}
@@ -119,9 +114,9 @@ There are $\binom{m + d - 1}{d-1}$ possibilities for a $d$-dimensional multi-ind
 f_j(x) = \sum_{i=1}^{\widetilde{M}} \beta^j_{(i)} H_{(i)}(x).
 \end{equation}
 
-\paragraph{Data.} We consider our data $\bx = \{x_j\}_{j=0}^L$ to be direct observations of $X_t$ at discrete points in time $\bt = \{t_j\}_{t=0}^L$.  Note that these time points do not need to be equispaced.  
+\paragraph{Data.} We consider our data $\bx = \{x_j\}_{j=0}^L$ to be direct observations of $X_t$ at discrete points in time $\bt = \{t_j\}_{t=0}^L$.  Note that these time points do not need to be equispaced.  In the derivation that follows, we will consider the data $(\bt, \bx)$ to be one time series.  Later, we indicate how our methods generalize naturally to multiple time series, i.e., repeated observations of the same system.
 
-To achieve our estimation goal, we apply expectation maximization (EM).  We regard $\bx$ as the incomplete data.  Let $\Delta t = \max_{j} (t_j - t_{j-1})$ be the maximum interobservation spacing.  We think of the missing data $\bz$ as data collected at a time scale $h \ll \Delta t$ that is fine enough such that the transition density of (\ref{eqn:sde}) is approximately Gaussian.  To see how this works, let $\mathcal{N}(\mu, \Sigma)$ denote a multivariate normal with mean vector $\mu$ and covariance matrix $\Sigma$.  Now discretize (\ref{eqn:sde}) in time via the Euler-Maruyama method with time step $h > 0$; the result is
+To achieve our estimation goal, we apply expectation maximization (EM).  We regard $\bx$ as the incomplete data.  Let $\Delta t = \max_{j} (t_j - t_{j-1})$ be the maximum interobservation spacing.  We think of the missing data $\bz$ as data collected at a time scale $h \ll \Delta t$ fine enough such that the transition density of (\ref{eqn:sde}) is approximately Gaussian.  To see how this works, let $\mathcal{N}(\mu, \Sigma)$ denote a multivariate normal with mean vector $\mu$ and covariance matrix $\Sigma$.  Now discretize (\ref{eqn:sde}) in time via the Euler-Maruyama method with time step $h > 0$; the result is
 \begin{equation} \label{eqn:euler}
 \widetilde{X}_{n+1} = \widetilde{X}_n + f(\widetilde{X}_n) h + h^{1/2} \Gamma Z_{n+1},
 \end{equation}
@@ -151,80 +146,96 @@ Let $\mathbb{P}$ denote the law of the diffusion bridge process, and let $\mathb
 \label{eqn:ratio}
 \frac{d \mathbb{P}}{d \mathbb{Q}} = C \exp \left( \int_{t_i}^{t_{i+1}} f(\widehat{X}_s)^T \Gamma^{-2} \, d \widehat{X}_s - \frac{1}{2} \int_{t_i}^{t_{i+1}} f(\widehat{X_s})^T \Gamma^{-2} f(\widehat{X_s}) \, ds \right),
 \end{equation}
-where the constant $C$ depends only on $x_i$ and $x_{i+1}$.  The left-hand side is a Radon-Nikodym derivative, equivalent to a density or likelihood; the ratio of two such likelihoods is the accept/reject ratio in the Metropolis algorithm [Stuart 2010].  
+where the constant $C$ depends only on $x_i$ and $x_{i+1}$.  The left-hand side is a Radon-Nikodym derivative, equivalent to a density or likelihood; the ratio of two such likelihoods is the accept/reject ratio in the Metropolis algorithm 
+\cite{stuart_inverse_2010}.
 
-Putting the above pieces together yields the following Metropolis algorithm to generate diffusion bridge sample paths.  Fix $F \geq 2$ and $i \in \{0, \ldots, L-1\}$.  Assume we have stored the previous Metropolis step, i.e., a path $\bz^{(\ell)} = \{z_{i,j}\}_{j=1}^{F-1}$.
+Putting the above pieces together yields the following Metropolis algorithm to generate diffusion bridge sample paths.  Fix $F \geq 2$ and $i \in \{0, \ldots, L-1\}$.  Assume we have stored the previous Metropolis step, i.e., a path $\bz^{(\ell)} = \{z_{i,j}^{(\ell)}\}_{j=1}^{F-1}$.
 \begin{enumerate}
 \item Use (\ref{eqn:bbridge}) to generate samples of $\widehat{X}_t$ at times $t_i + j h$, for $j = 1, 2, \ldots, F-1$ and $h = (t_{i+1} - t_i)/F$.  This is the proposal $\bz^\ast = \{z^\ast_{i,j}\}_{j=1}^{F-1}$.
 \item Numerically approximate the integrals in (\ref{eqn:ratio}) to compute the likelihood of the proposal.  Specifically, we compute
 \begin{multline*}
 p(\bz^\ast)/C = \sum_{j=0}^{F-1} f(z^\ast_{i,j})^T \Gamma^{-2} (z^\ast_{i,j+1} - z^\ast_{i,j}) \\ - \frac{h}{4} \sum_{j=0}^{F-1} \left[ f(z^\ast_{i,j})^T \Gamma^{-2} f(z^\ast_{i,j}) + f(z^\ast_{i,j+1})^T \Gamma^{-2} f(z^\ast_{i,j+1}) \right]
 \end{multline*}
+We have discretized the stochastic $d\widehat{X}_s$ integral using It\^{o}'s definition, and we have discretized the ordinary $ds$ integral using the trapezoidal rule.
 \item Accept the proposal with probability $p(\bz^\ast)/p(\bz^{(\ell)})$---note the factors of $C$ cancel.  If the proposal is accepted, then set $\bz^{(\ell+1)} = \bz^\ast$. Else set $\bz^{(\ell+1)} = \bz^{(\ell)}$.
 \end{enumerate}
 We initialize this algorithm with a Brownian bridge path, run for $10$ burn-in steps, and then use subsequent steps as the diffusion bridge samples we seek. 
 
-
-\paragraph{Expectation Maximization (EM).} Let us now give details to justify the intuition expressed above, that employing the diffusion bridge to augment the data on a fine scale will enable estimation.  Let $\bz$ a diffusion bridge sample path.  We interleave this sampled data together with the observed data $\bx$ to create the completed time series
-$$
+\paragraph{Expectation Maximization (EM).} Let us now give details to justify the intuition expressed above, that employing the diffusion bridge to augment the data on a fine scale will enable estimation.  Let $\bz^{(r)} = \{z_{i,j}^{(r)}\}_{j=1}^{F-1}$ be the $r$-th diffusion bridge sample path.  We interleave this sampled data together with the observed data $\bx$ to create the completed time series
+\begin{equation*}
 \by^{(r)} = \{y_j^{(r)}\}_{j=1}^N,
-$$
-where $N = LF + 1$.  By interleaving, we mean that $y_{1 + i F}^{(r)} = x_i$ for $i = 0, 1, \ldots, L$, and that $y_{1 + j + i F}^{(r)} = z_{i, j}$ for $j = 1, 2, \ldots, F-1$ and $i = 0, 1, \ldots, L-1$.
-
-Let $h_j$ denote the elapsed time between observations $y_j$ and $y_{j+1}$.  Using the completed data, the temporal discretization (\ref{eqn:euler}) of the SDE, the Markov property, and property (\ref{eqn:condden}), we have:
-\begin{align*}
-\log p(\bx, \bz \mid \btheta) &= \log p(\by \mid \btheta) \\
- &= \sum_{j=1}^{N-1} \log p(y_{j+1} \mid y_j, \btheta) \\
- &= -\sum_{j=1}^{N-1} \Biggl[ \sum_{i=1}^d \frac{1}{2} \log(2 \pi h_j \gamma_i^2) \\
- &+ \frac{1}{2h_j} (y_{j+1} - y_j - h_j \sum_{k=1}^{\widetilde{M}} \beta_{(k)} H_{(k)}(y_j))^T \Gamma^{-2} (y_{j+1} - y_j - h_j \sum_{\ell=1}^{\widetilde{M}} \beta_{(\ell)} H_{(\ell)}(y_j)) \Biggr].
-\end{align*}
-
-\paragraph{EM.} The EM algorithm consists of two steps, computing the expectation of the log likelihood function (on the completed data) and then maximizing it with respect to the parameters 
+\end{equation*}
+where $N = LF + 1$.  By interleaving, we mean that $y_{1 + i F}^{(r)} = x_i$ for $i = 0, 1, \ldots, L$, and that $y_{1 + j + i F}^{(r)} = z_{i, j}$ for $j = 1, 2, \ldots, F-1$ and $i = 0, 1, \ldots, L-1$.  With this notation, we can more easily express the EM algorithm.  Let us assume that we currently have access to $\btheta^{(k)}$, our estimate of the parameters after $k$ iterations.  If $k=0$, we set $\btheta^{(0)}$ equal to an initial guess.  Then we follow two steps:
 \begin{enumerate}
-\item Start with an initial guess for the parameters, $\btheta^{(0)}$.
-\item For the expectation (or E) step,
-\begin{equation}
-\label{eqn:expectation}
-Q(\btheta, \btheta^{(k)}) = \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\bx, \bz \mid \btheta)]
-\end{equation}
-Our plan is to evaluate this expectation via bridge sampling.  That is, we will sample from diffusion bridges $\bz \mid \bx, \btheta^{(k)}$.  Then $(\bx, \bz)$ will be a combination of the original data together with sample paths.
-\item For the maximization (or M) step, we start with the current iterate and a dummy variable $\btheta$ and define
+\item For the expectation step, we first generate an ensemble of $R$ diffusion bridge sample paths.  Interleaving as above, this yields $R$ completed time series $\by^{(r)}$ for $r = 1, \ldots, R$.  In what follows, we will use an average over this ensemble to approximate the expected value.  Let $h_j$ denote the elapsed time between observations $y_j$ and $y_{j+1}$.  Using the completed data, the temporal discretization (\ref{eqn:euler}) of the SDE, the Markov property, and property (\ref{eqn:condden}), we have:
+\begin{align*}
+Q(\btheta, \btheta^{(k)}) &= \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\bx, \bz \mid \btheta)] \\
+ &\approx \frac{1}{R} \sum_{r=1}^R \log p(\by^{(r)} \mid \btheta) \\
+ &= \frac{1}{R} \sum_{r=1}^R \sum_{j=1}^{N-1} \log p(y_{j+1}^{(r)} \mid y_j^{(r)}, \btheta) \\
+ &= -\frac{1}{R} \sum_{r=1}^R \sum_{j=1}^{N-1} \Biggl[ \sum_{i=1}^d \frac{1}{2} \log(2 \pi h_j \gamma_i^2) \\
+ &\qquad + \frac{1}{2h_j} \biggl\| \Gamma^{-1} \Bigl(y_{j+1}^{(r)} - y_j^{(r)} - h_j \sum_{\ell=1}^{\widetilde{M}} \beta_{(\ell)} H_{(\ell)}\bigl(y_j^{(r)}\bigr)\Bigr) \biggr\|^2 \Biggr].
+\end{align*}
+\item Now for the M step:
 \begin{equation}
 \label{eqn:maximization}
 \btheta^{(k+1)} = \arg \max_{\btheta} Q(\btheta, \btheta^{(k)})
 \end{equation}
-It will turn out that we can maximize this quantity without numerical optimization.  All we will need to do is solve a least-squares problem.
-\item Iterate Step 2 and 3 until convergence.
-\end{enumerate}
-
-\paragraph{Details.} With a fixed parameter vector $\btheta^{(k)}$, the SDE (\ref{eqn:sde}) is specified completely, i.e., the drift and diffusion terms have no further unknowns.  
-
-
-Suppose we form $R$ such time series.  The expected log likelihood can then be approximated by
-\begin{align*}
-Q(\btheta, \btheta^{(k)}) &= \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\bx, \bz \mid \btheta)] \\
- &\approx \frac{1}{R} \sum_{r=1}^R \biggl[ \sum_{j=1}^N \left[ \sum_{i=1}^d -\frac{1}{2} \log (2 \pi h \gamma_i^2) \right] \\
- &\qquad -\frac{1}{2h} (y_j^{(r)} - y_{j-1}^{(r)} - h \sum_{k=1}^M \beta_k \phi_k(y_{j-1}^{(r)}))^T \Gamma^{-2} (y_j^{(r)} - y_{j-1}^{(r)} - h \sum_{\ell=1}^M \beta_\ell \phi_\ell(y_{j-1}^{(r)}) ) \biggr] 
-\end{align*}
-
 To maximize $Q$ over $\btheta$, we first assume $\Gamma = \opdiag \gamma$ is known and maximize over $\beta$.  This is a least squares problem.  The solution is given by forming the matrix
-$$
-\mathcal{M}_{k,\ell} = \frac{1}{R} \sum_{r=1}^{R} \sum_{j=1}^N h \phi_k^T (y_{j-1}^{(r)}) \Gamma^{-2} \phi_\ell^T (y_{j-1}^{(r)})
-$$
+\begin{equation*}
+\mathcal{M}_{k,\ell} = \frac{1}{R} \sum_{r=1}^{R} \sum_{j=1}^N h_j \phi_k^T (y_{j-1}^{(r)}) \Gamma^{-2} \phi_\ell^T (y_{j-1}^{(r)})
+\end{equation*}
 and the vector
-$$
+\begin{equation*}
 \rho_k = \frac{1}{R} \sum_{r=1}^{R} \sum_{j=1}^N \phi_k^T (y_{j-1}^{(r)}) \Gamma^{-2} (y_j^{(r)} - y_{j-1}^{(r)}).
-$$
-
-We then solve the system
-$$
-\mathcal{M} \beta = \rho
-$$
-for $\beta$.  Now that we have $\beta$, we maximize $Q$ over $\gamma$.  The solution can be obtained in closed form:
-$$
+\end{equation*}
+We then solve the system $\mathcal{M} \beta = \rho$ for $\beta$.  Now that we have $\beta$, we maximize $Q$ over $\gamma$.  The solution can be obtained in closed form:
+\begin{equation*}
 \gamma_i^2 = \frac{1}{R N h} \sum_{r=1}^{R} \sum_{j=1}^N (( y_j^{(r)} - y_{j-1}^{(r)} - h \sum_{\ell=1}^M \beta_\ell \phi_\ell (y_{j-1}^{(r)}) ) \cdot e_i )^2
-$$
+\end{equation*}
 where $e_i$ is the $i^\text{th}$ canonical basis vector in $\mathbb{R}^d$.
+\end{enumerate}
+We iterate the above two steps until $\| \btheta^{(k+1)} - \btheta^{(k)} \| < \delta$ for some tolerance $\delta > 0$.
+
+Let us remark that there are three sources of error in the above derivation.  The first relates to replacing the expectation by a sample average; the induced error should, by the law of large numbers, decrease as $R^{-1/2}$.  The second stems from the approximate nature of the computed diffusion bridge samples---as indicated above, we use numerical integration to approximate the Girsanov likelihood.  The third source of error is in using the Gaussian transition density to approximate the true transition density of the SDE.  Both the second and third sources of error vanish in the $F \to \infty$ limit \cite{kloeden_numerical_2011}.
+
+\section{Experiments.}
+1d case - The observed data is created using a known dynamical system and additive Gaussian noise. Euler-Maruyama time stepping is used from a randomly chosen initial condition to march forward in time. The initial time is 0 and the final time point is 10. While the time stepping happens with $h = 0.0001$ and 100,000 internal time steps are taken, only 1000 of these time steps are saved. A smaller time scale for data generation is used so that the error in the observed data is mostly accredited to the Gaussian noise and not the error of the numerical stepping method. The system described above has a stable equilibrium at $~1.6$ and an unstable equilibrium at $~ -0.6$. The initial conditions were thus specified to be > -0.6 to avoid the unstable equilibrium.
+
+For the 1d case, the dynamical system equation is given as:
+\begin{equation}
+dX_t = (1 + x - x^2) dt + g dW_t
+\end{equation}
+In the nonparametric form it can be written as:
+\begin{equation}
+f_1(x) = \sum \Phi(x) \beta + g dW_t
+\end{equation}
+where $\Phi$ is the matrix created by the hermite basis functions and beta are the parameters to be inferred. With Hermite functions upto degree 3, $\Phi$ can be represented as:
+\begin{equation}
+\Phi(x) =
+\begin{bmatrix}
+    h_0(x) & h_1(x) & h_2(x^2 - 1) & h_3(x^3 - 3x) \\
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\beta =
+\begin{bmatrix}
+    \beta_0 & \beta_1 & \beta_2 & \beta_3 \\
+\end{bmatrix}
+\end{equation}
+
+For inference, 4 sets of experiments were performed to monitor the error in the estimated parameter $\beta$ with changes in the Expectation Maximization parameters. The initial guess of $\beta$ is randomly generated with mean 0 and variance 0.5 as we assume the $\beta$ to be sparse. While maximizing the likelihood of $\beta$, noise in the data is known and kept constant at 0.05. The tolerance for relative error in the estimated parameters is set to be 0.01. The MCMC iteration includes 10 burnin steps and 100 recorded iterations. Different variations of the number of time series, number of data points, number of sub intervals and amount of noise in the data is used in the following experiments:
+\begin{itemize}
+\item Varying amount of data by providing more time series with the same number of data points in each. We varied the number of time series from 1 to 10 with 101 data points each.
+\item Varying amount of data by providing random time points ranging from 11 to 101 points from the same 10 time series.
+\item Varying amount of noise. 10 time series were created using varying amount of noise, ranging from 0.5 to 0.0001 while keeping other parameters constant
+\item Varying number of subintervals were used for the Brownian bridge sampling ranging from 1 to 9. With 1 sub interval, no Brownian bridge is created and the expectation is merely the sum of the observed data. With 2 intervals, 1 additional latent point is introduced into the system and Brownian bridges are created to compute the likelihood of the observed and the latent data points combined.
+\end{itemize}
+
+For error computation, the Frobenius norm of the difference between estimated $\tilde{\beta}$ and true $\beta$ in the Hermite space is considered:
+\begin{equation}
+e = \sqrt{\sum \rvert \beta_i - \tilde{\beta_i} \rvert ^2}
+\end{equation}
 
 We demonstrate the method for 1, 2 and 3 dimensional systems. 
 \begin{itemize}
