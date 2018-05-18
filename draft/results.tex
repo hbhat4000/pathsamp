@@ -62,6 +62,8 @@
 \end{abstract}
 
 \section{Introduction}
+\vspace{-1.5ex}
+
 Traditional mathematical modeling in the sciences and engineering often has as its goal the development of equations of motion that describe observed phenomena.  Classically, these equations of motion usually took the form of deterministic systems of ordinary or partial differential equations (ODE or PDE, respectively).  Especially in systems of contemporary interest in biology and finance where intrinsic noise must be modeled, we find stochastic differential equations (SDE) used instead of deterministic ones.  Still, these models are often built from first principles, after which the model's predictions (obtained, for instance, by numerical simulation) are compared against observed data.
 
 Recent years have seen a surge of interest in using data to automate discovery of ODE, PDE, and SDE models.  These machine learning approaches complement traditional modeling efforts, using available data to constrain the space of plausible models, and shortening the feedback loop linking model development to prediction and comparison to real observations.  We posit two additional reasons to develop algorithms to learn SDE models.  First, SDE models---including the models considered here---have the capacity to model highly nonlinear, coupled stochastic systems, including systems whose equilibria are non-Gaussian and/or multimodal.  Second, SDE models often allow for interpretability.  Especially if the terms on the right-hand side of the SDE are expressed in terms of commonly used functions (such as polynomials), we can obtain a qualitative understanding of how the system's variables influence, regulate, and/or mediate one other. 
@@ -75,6 +77,8 @@ Many other techniques explored in the statistical literature focus on scalar SDE
 As mentioned, differential equation discovery problems have attracted considerable recent interest.  A variety of methods have been developed to learn ODE \cite{brunton_discovering_2016, schon_probabilistic_2017, chen_network_2017, tran_exact_2017, schaeffer_extracting_2017, schaeffer_learning_2017, quade_sparse_2018} as well as PDE \cite{schaeffer_sparse_2013, raissi_machine_2017, rudy_data-driven_2017, raissi_hidden_2018}.  Unlike many of these works, we do not focus on model selection and/or regularization; if needed, our methods can be combined with model selection procedures developed in the ODE context \cite{mangan_inferring_2016, mangan_model_2017}.
 
 \section{Problem Setup}
+\vspace{-1.5ex}
+
 Let $W_t$ denote Brownian motion in $\mathbb{R}^d$---informally, an increment $dW_t$ of this process has a multivariate normal distribution with zero mean vector and covariance matrix $I dt$.  Let $X_t$ denote an $\mathbb{R}^d$-valued stochastic process that evolves according to the It\^{o} SDE
 \begin{equation} \label{eqnsde}
 d X_t = f( X_t) dt + \Gamma d W_t.
@@ -154,7 +158,7 @@ p(\bz^\ast)/C = \sum_{j=0}^{F-1} f(z^\ast_{i,j})^T \Gamma^{-2} (z^\ast_{i,j+1} -
 We have discretized the stochastic $d\widehat{X}_s$ integral using It\^{o}'s definition, and we have discretized the ordinary $ds$ integral using the trapezoidal rule.
 \item Accept the proposal with probability $p(\bz^\ast)/p(\bz^{(\ell)})$---note the factors of $C$ cancel.  If the proposal is accepted, then set $\bz^{(\ell+1)} = \bz^\ast$. Else set $\bz^{(\ell+1)} = \bz^{(\ell)}$.
 \end{enumerate}
-We initialize this algorithm with a Brownian bridge path, run for $10$ burn-in steps, and then use subsequent steps as the diffusion bridge samples we seek. 
+We initialize this MCMC algorithm with a Brownian bridge path and use post-burn-in steps as the diffusion bridge samples we seek. 
 
 \paragraph{Expectation Maximization (EM).} Let us now give details to justify the intuition expressed above, that employing the diffusion bridge to augment the data on a fine scale will enable estimation.  Let $\bz^{(r)} = \{z_{i,j}^{(r)}\}_{j=1}^{F-1}$ be the $r$-th diffusion bridge sample path.  We interleave this sampled data together with the observed data $\bx$ to create the completed time series
 \begin{equation*}
@@ -200,9 +204,11 @@ When the data consists of multiple time series $\{ \bt^{(i)}, \bx^{(i)} \}_{i=1}
 There are three sources of error in the above algorithm.  The first relates to replacing the expectation by a sample average; the induced error should, by the law of large numbers, decrease as $R^{-1/2}$.  The second stems from the approximate nature of the computed diffusion bridge samples---as indicated above, we use numerical integration to approximate the Girsanov likelihood.  The third source of error is in using the Gaussian transition density to approximate the true transition density of the SDE.  Both the second and third sources of error vanish in the $F \to \infty$ limit \cite{kloeden_numerical_2011}.
 
 \section{Experiments}
-We present a series of increasingly higher-dimensional experiments with synthetic data.  To generate this data, we start with a known stochastic dynamical system of the form (\ref{eqnsde}).  Using Euler-Maruyama time stepping starting from a randomly chosen initial condition, we march forward in time from $t=0$ to a final time $t=T$.  Here $T$ is problem-specific; for the one-dimensional example, $T=10$.
+\vspace{-1.5ex}
 
-In all examples, we use a fine internal time step to generate the data, but we \emph{save} the data at a much coarser time scale.  For instance, in the one-dimensional example, we step forward internally at a time step of $h = 0.0001$, but we save the data at increments of $0.01$ units of time, essentially discarding 99\% of the simulated trajectory.  We use a fine internal time step to reduce, to the extent possible, numerical error in the simulated data.  We save the data on a coarse time scale to test the data augmentation method proposed in this paper.  In all examples, we choose initial conditions so that simulated trajectories remain bounded.
+We present a series of increasingly higher-dimensional experiments with synthetic data.  To generate this data, we start with a known stochastic dynamical system of the form (\ref{eqnsde}).  Using Euler-Maruyama time stepping starting from a randomly chosen initial condition, we march forward in time from $t=0$ to a final time $t=10$. 
+
+In all examples, we step forward internally at a time step of $h = 0.0001$, but for the purposes of estimation, we only use data sampled every $0.1$ units of time, discarding 99.9\% of the simulated trajectory.  We use a fine internal time step to reduce, to the extent possible, numerical error in the simulated data.  We save the data on a coarse time scale to test the proposed EM algorithm.
 
 To study how the EM method performs as a function of noise strength, data volume, and data augmentation, we perform four sets of experiments.  When we run EM, we randomly generate the initial guess $\beta^{(0)} \sim \mathcal{N}(\mu=0, \sigma^2=0.5)$.  We set the EM tolerance parameter $\delta = 0.01$.  The only regularization we include is to threshold $\beta$---values less than $0.01$ in absolute value are reset to zero.  Finally, in the MCMC diffusion bridge sampler, we use $10$ burn-in steps and then create an ensemble of size $R=100$.
 
@@ -213,18 +219,17 @@ To quantify the error between the estimated $\widetilde{\beta}$ and the true $\b
 \end{equation}
 The $\widetilde{\beta}$ coefficients are the Hermite coefficients of the estimated drift vector field $f$.  For each example system, we compute the true Hermite coefficients $\beta$ by multiplying the true ordinary polynomial coefficients by a change-of-basis matrix that is easily computed.
 
-We test the method using stochastic systems in dimensions $d= 1, 2, 3$.
-For the one-dimensional system, we use
+We test the method using stochastic systems in dimensions $d= 1, 2, 3$.  In 1D, we use
 \begin{equation*}
 dX_t = (1 + X_t - X_t^2 ) dt + \gamma dW_t.
 \end{equation*}
 
-In two dimensions, we use a stochastic Duffing oscillator with no damping or driving:
-\begin{align*}
-dX_{0,t} &= X_{1,t} dt + \gamma_0 dW_{0,t} \\
-dX_{1,t} &= (-X_{0,t} - X^3_0(t)) dt + \gamma_1 dW_{1,t}
-\end{align*}
-For the three-dimensional case, we consider the stochastic, damped, driven Duffing oscillator:
+In 2D, we use a stochastic Duffing oscillator with no damping or driving:
+\begin{equation*}
+dX_{0,t} = X_{1,t} dt + \gamma_0 dW_{0,t}, \qquad
+dX_{1,t} = (-X_{0,t} - X^3_{0,t}) dt + \gamma_1 dW_{1,t}
+\end{equation*}
+For the 3D case, we consider the stochastic, damped, driven Duffing oscillator:
 \begin{align*}
 dX_{0,t} & = X_{1,t} dt + \gamma_0 dW_{0,t} \\
 dX_{1,t} & = (X_{0,t} - X_{0,t}^3 - 0.3 X_{1,t} + 0.5 \cos (X_{2,t})) dt + \gamma_1 dW_{1,t} \\
@@ -274,6 +279,7 @@ the estimated drift more closely approximates the ground truth.  From top to bot
 \label{fig:exp2hermite}
 \end{figure}
 
+\vspace{-1.5ex}
 \paragraph{Experiment 3: Varying Noise Strength.} Here we vary the noise strength $\gamma$, stepping from $0.5$ to $0.0001$ while keeping other parameters constant.  Specifically, we take $S=10$ time series each of length $L+1 = 101$.  In Figure \ref{fig:exp3hermite}, we have plotted Frobenius errors for all three systems.  Though the error in the estimated coefficients for the 3D system may seem large, the estimated and true drift functions are close---see Figure \ref{fig:exp3drift}.
 
 \begin{figure}[th]
@@ -294,6 +300,7 @@ the estimated drift more closely approximates the ground truth.  From top to bot
 \label{fig:exp3drift}
 \end{figure}
 
+\vspace{-1.5ex}
 \paragraph{Experiment 4: Varying Data Augmentation.}
 We start with $S = 10$ time series with $L+1 = 51$ points each.  Here we vary the number of interleaved diffusion bridge samples: $F=1, \ldots, 10$.  For $F=1$, no diffusion bridge is created; the likelihood is computed by applying the Gaussian transition density directly to the observed data.  The results, plotted in Figures \ref{fig:exp4hermite} and \ref{fig:exp4drift}, show that increased data augmentation dramatically improves the quality of estimated drifts.  Though the Frobenius error for the 3D system exceeds $2.6$, Figure \ref{fig:exp4drift} shows that EM's estimates are still accurate.
 
@@ -317,7 +324,11 @@ We have not plotted results for the scarce data regime where we have $S=10$ time
 \label{fig:exp4drift}
 \end{figure}
 
-\section{Conclusion} We have developed an EM algorithm for estimation of drift functions and diffusion matrices for SDE.  We have demonstrated the conditions under which the algorithm succeeds in estimating SDE.  Specifically, our tests show that with enough data volume and data augmentation, the EM algorithm produces highly accurate results.  In future work, we seek to further test our method on high-dimensional, nonlinear problems, problems with non-constant diffusion matrices, and real experimental data.  As we move to higher-dimensional problems, we will also explore regularization and model selection techniques.
+\vspace{-1.5ex}
+\section{Conclusion}
+\vspace{-1.5ex}
+
+We have developed an EM algorithm for estimation of drift functions and diffusion matrices for SDE.  We have demonstrated the conditions under which the algorithm succeeds in estimating SDE.  Specifically, our tests show that with enough data volume and data augmentation, the EM algorithm produces highly accurate results.  In future work, we seek to further test our method on high-dimensional, nonlinear problems, problems with non-constant diffusion matrices, and real experimental data.  As we move to higher-dimensional problems, we will also explore regularization and model selection techniques.
 
 \clearpage
 

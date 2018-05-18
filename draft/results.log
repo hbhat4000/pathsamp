@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=latex 2016.5.22)  18 MAY 2018 12:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=latex 2016.5.22)  18 MAY 2018 12:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -931,7 +931,7 @@ Package microtype Info: Loading generic settings for font family
 
 
 ]
-Underfull \hbox (badness 1540) in paragraph at lines 90--92
+Underfull \hbox (badness 1540) in paragraph at lines 94--96
 \T1/ptm/m/n/10 Let $\OMS/cmsy/m/n/10 h\OML/cmm/m/it/10 f; g\OMS/cmsy/m/n/10 i[]
  \OT1/cmr/m/n/10 = [][] \OML/cmm/m/it/10 f\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x\O
 T1/cmr/m/n/10 )\OML/cmm/m/it/10 g\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x\OT1/cmr/m/
@@ -963,7 +963,7 @@ File: ../2dcode/varying_num_timeseries/plots/hermite.eps Graphic file (type eps
 File: ../3ddampedduffing/varying_num_timeseries/plots/hermite.eps Graphic file 
 (type eps)
 
-<../3ddampedduffing/varying_num_timeseries/plots/hermite.eps> [6]
+<../3ddampedduffing/varying_num_timeseries/plots/hermite.eps>
 File: ../3ddampedduffing/random_timepoints/plots/drift_comparison.eps Graphic f
 ile (type eps)
 
@@ -977,7 +977,7 @@ File: ../2dcode/random_timepoints/plots/hermite.eps Graphic file (type eps)
 File: ../3ddampedduffing/random_timepoints/plots/hermite.eps Graphic file (type
  eps)
 
-<../3ddampedduffing/random_timepoints/plots/hermite.eps>
+<../3ddampedduffing/random_timepoints/plots/hermite.eps> [6]
 File: ../1dcode/varying_noise/plots/hermite.eps Graphic file (type eps)
 
 <../1dcode/varying_noise/plots/hermite.eps>
@@ -1008,262 +1008,31 @@ File: ../3ddampedduffing/varying_subintervals/plots/tp_51/drift_comparison.eps
 Graphic file (type eps)
 
 <../3ddampedduffing/varying_subintervals/plots/tp_51/drift_comparison.eps>
-[8] [9] (./results.bbl
+[8] (./results.bbl
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <9> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 22.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 21.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 22.
-
-Overfull \hbox (72.44936pt too wide) in paragraph at lines 16--25
-[][][][]\T1/ptm/m/n/9 . 
- []
-
-
-Underfull \hbox (badness 2547) in paragraph at lines 59--67
-[]\T1/ptm/m/n/9 S. Chen, A. Sho-jaie, and D. M. Wit-ten.  Net-work Re-con-struc
--tion From High-Dimensional
- []
-
-
-Underfull \hbox (badness 3078) in paragraph at lines 59--67
-\T1/ptm/m/n/9 Or-di-nary Dif-fer-en-tial Equa-tions.  \T1/ptm/m/it/9 Jour-nal o
-f the Amer-i-can Sta-tis-ti-cal As-so-ci-a-tion\T1/ptm/m/n/9 , 112(520):
- []
-
-
-Underfull \hbox (badness 3302) in paragraph at lines 59--67
-\T1/ptm/m/n/9 1697--1707, Oct. 2017.  ISSN 0162-1459.  doi: $10 . 1080 / 016214
-59 . 2016 . 1229197$.  URL
- []
-
-
-Underfull \hbox (badness 1253) in paragraph at lines 69--75
-[]\T1/ptm/m/n/9 Z. Ghahra-mani and S. T. Roweis.  Learn-ing non-lin-ear dy-nam-
-i-cal sys-tems us-ing an EM al-go-
- []
-
-
-Overfull \hbox (80.6732pt too wide) in paragraph at lines 69--75
-[][][][]\T1/ptm/m/n/9 . 
- []
-
-
-Underfull \hbox (badness 2799) in paragraph at lines 95--104
-[]\T1/ptm/m/n/9 N. M. Man-gan, J. N. Kutz, S. L. Brun-ton, and J. L. Proc-tor. 
- Model se-lec-tion for dy-
- []
-
-
-Underfull \hbox (badness 1783) in paragraph at lines 95--104
-\T1/ptm/m/n/9 nam-i-cal sys-tems via sparse re-gres-sion and in-for-ma-tion cri
--te-ria.  \T1/ptm/m/it/9 Proc. R. Soc. A\T1/ptm/m/n/9 , 473(2204):
- []
-
-
-Underfull \hbox (badness 1769) in paragraph at lines 95--104
-\T1/ptm/m/n/9 20170009, Aug. 2017.  ISSN 1364-5021, 1471-2946.  doi: $10 . 1098
- / rspa . 2017 . 0009$.  URL
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 124--132
-[]\T1/ptm/m/n/9 J. Nico-lau.  NON-PARA-MET-RIC ES-TI-MA-TION OF SECOND-ORDER ST
-OCHAS-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 124--132
-\T1/ptm/m/n/9 TIC DIF-FER-EN-TIAL EQUA-TIONS.  \T1/ptm/m/it/9 Econo-met-ric The
--ory\T1/ptm/m/n/9 , 23(05):880, Oct.
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 124--132
-\T1/ptm/m/n/9 2007.  ISSN 0266-4666, 1469-4360.  doi: $10 . 1017 / S02664666070
-70375$.  URL
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 141--149
-[]\T1/ptm/m/n/9 O. Pa-paspiliopou-los, G. O. Roberts, and O. Stramer.  Data Aug
--men-ta-tion for Dif-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 141--149
-\T1/ptm/m/n/9 fu-sions.  \T1/ptm/m/it/9 Jour-nal of Com-pu-ta-tional and Graph-
-i-cal Statis-tics\T1/ptm/m/n/9 , 22(3):665--688, July
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 141--149
-\T1/ptm/m/n/9 2013.  ISSN 1061-8600, 1537-2715.  doi: $10 . 1080 / 10618600 . 2
-013 . 783484$.  URL
- []
-
-
-Underfull \hbox (badness 1163) in paragraph at lines 151--157
-[]\T1/ptm/m/n/9 M. Quade, M. Abel, J. N. Kutz, and S. L. Brun-ton.  Sparse Iden
--ti-fi-ca-tion of Non-lin-ear Dy-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 159--168
-[]\T1/ptm/m/n/9 M. Raissi and G. E. Kar-ni-adakis.  Hid-den physics mod-els: Ma
--chine learn-ing of
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 159--168
-\T1/ptm/m/n/9 non-lin-ear par-tial dif-fer-en-tial equa-tions.  \T1/ptm/m/it/9 
-Jour-nal of Com-pu-ta-tional Physics\T1/ptm/m/n/9 , 357:
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 159--168
-\T1/ptm/m/n/9 125--141, Mar. 2018.  ISSN 0021-9991.  doi: $10 . 1016 / j . jcp 
-. 2017 . 11 . 039$.  URL
- []
-
-
-Underfull \hbox (badness 7759) in paragraph at lines 171--180
-[]\T1/ptm/m/n/9 M. Raissi, P. Perdikaris, and G. E. Kar-ni-adakis.  Ma-chine le
-arn-ing of lin-ear dif-fer-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 171--180
-\T1/ptm/m/n/9 en-tial equa-tions us-ing Gaus-sian pro-cesses.  \T1/ptm/m/it/9 J
-our-nal of Com-pu-ta-tional Physics\T1/ptm/m/n/9 , 348:
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 171--180
-\T1/ptm/m/n/9 683--693, Nov. 2017.  ISSN 0021-9991.  doi: $10 . 1016 / j . jcp 
-. 2017 . 07 . 050$.  URL
- []
-
-[10
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 201--208
-[]\T1/ptm/m/n/9 A. Rut-tor, P. Batz, and M. Op-per.  Ap-prox-i-mate Gaus-sian p
-ro-cess in-fer-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--208
-\T1/ptm/m/n/9 ence for the drift func-tion in stochas-tic dif-fer-en-tial equa-
-tions.  In \T1/ptm/m/it/9 Ad-vances
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--208
-\T1/ptm/m/it/9 in Neu-ral In-for-ma-tion Pro-cess-ing Sys-tems\T1/ptm/m/n/9 , p
-ages 2040--2048, 2013.  URL
- []
-
-
-Overfull \hbox (248.00783pt too wide) in paragraph at lines 201--208
-[][][][]\T1/ptm/m/n/9 . 
- []
-
-
-Underfull \hbox (badness 1953) in paragraph at lines 210--219
-[]\T1/ptm/m/n/9 H. Scha-ef-fer.  Learn-ing par-tial dif-fer-en-tial equa-tions 
-via data dis-cov-ery and sparse op-ti-miza-
- []
-
-
-Underfull \hbox (badness 5954) in paragraph at lines 222--229
-[]\T1/ptm/m/n/9 H. Scha-ef-fer, R. Caflisch, C. D. Hauck, and S. Os-her.  Spars
-e dy-nam-ics for par-tial
- []
-
-
-Underfull \hbox (badness 5924) in paragraph at lines 222--229
-\T1/ptm/m/n/9 dif-fer-en-tial equa-tions.  \T1/ptm/m/it/9 Pro-ceed-ings of the 
-Na-tional Academy of Sci-ences\T1/ptm/m/n/9 , 110(17):6634--
- []
-
-
-Underfull \hbox (badness 3118) in paragraph at lines 222--229
-\T1/ptm/m/n/9 6639, Apr. 2013.  ISSN 0027-8424, 1091-6490.  doi: $10 . 1073 / p
-nas . 1302752110$.  URL
- []
-
-
-Underfull \hbox (badness 6047) in paragraph at lines 248--255
-[]\T1/ptm/m/n/9 A. M. Stu-art.  In-verse prob-lems: A Bayesian per-spec-tive.  
-\T1/ptm/m/it/9 Acta Nu-mer-ica\T1/ptm/m/n/9 , 19:451--
- []
-
-
-Underfull \hbox (badness 1990) in paragraph at lines 248--255
-\T1/ptm/m/n/9 559, May 2010.  ISSN 0962-4929, 1474-0508.  doi: $10 . 1017 / S09
-62492910000061$.  URL
- []
-
-
-Underfull \hbox (badness 3179) in paragraph at lines 268--277
-[]\T1/ptm/m/n/9 F. van der Meulen, M. Schauer, and H. van Zan-ten.  Re-versible
- jump MCMC for non-
- []
-
-
-Underfull \hbox (badness 2626) in paragraph at lines 268--277
-\T1/ptm/m/n/9 para-met-ric drift es-ti-ma-tion for dif-fu-sion pro-cesses.  \T1
-/ptm/m/it/9 Com-pu-ta-tional Statis-tics & Data Anal-y-
- []
-
-
-Underfull \hbox (badness 3009) in paragraph at lines 268--277
-\T1/ptm/m/it/9 sis\T1/ptm/m/n/9 , 71:615--632, Mar. 2014.  ISSN 0167-9473.  doi
-: $10 . 1016 / j . csda . 2013 . 03 . 002$.  URL
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 280--285
-[]\T1/ptm/m/n/9 N. Verze-len, W. Tao, H.-G. Müller, and oth-ers.  In-fer-ring s
-tochas-tic dy-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 280--285
-\T1/ptm/m/n/9 nam-ics from func-tional data.  \T1/ptm/m/it/9 Biometrika\T1/ptm/
-m/n/9 , 99(3):533--550, 2012.  URL
- []
-
-
-Underfull \hbox (badness 1552) in paragraph at lines 297--303
-[]\T1/ptm/m/n/9 B. Øk-sendal.  \T1/ptm/m/it/9 Stochas-tic Dif-fer-en-tial Equa-
-tions: An In-tro-duc-tion with Ap-pli-ca-tions\T1/ptm/m/n/9 .  Uni-ver-
- []
-
-
-Underfull \hbox (badness 1460) in paragraph at lines 297--303
-\T1/ptm/m/n/9 si-text. Springer-Verlag, Berlin Hei-del-berg, 6 edi-tion, 2003. 
- ISBN 978-3-540-04758-2.  URL
- []
-
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 329.
- [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 329.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 21.
+ [9
+
+])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 340.
+ [10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 340.
  (./results.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 329.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 329.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 340.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 340.
 Package rerunfilecheck Info: File `results.out' has not changed.
 (rerunfilecheck)             Checksum: CDDE566E7532360DF6710897E227F72D;186.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 329.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 340.
  ) 
 Here is how much of TeX's memory you used:
  10777 strings out of 493015
  165272 string characters out of 6133377
- 302557 words of memory out of 5000000
+ 300283 words of memory out of 5000000
  14119 multiletter control sequences out of 15000+600000
  36825 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,12n,41p,958b,516s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,12n,41p,958b,524s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on results.dvi (11 pages, 92564 bytes).
+Output written on results.dvi (10 pages, 82620 bytes).
