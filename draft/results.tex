@@ -74,17 +74,12 @@ Many other techniques explored in the statistical literature focus on scalar SDE
 
 As mentioned, differential equation discovery problems have attracted considerable recent interest.  A variety of methods have been developed to learn ODE \cite{brunton_discovering_2016, schon_probabilistic_2017, chen_network_2017, tran_exact_2017, schaeffer_extracting_2017, schaeffer_learning_2017, quade_sparse_2018} as well as PDE \cite{schaeffer_sparse_2013, raissi_machine_2017, rudy_data-driven_2017, raissi_hidden_2018}.  Unlike many of these works, we do not focus on model selection and/or regularization; if needed, our methods can be combined with model selection procedures developed in the ODE context \cite{mangan_inferring_2016, mangan_model_2017}.
 
-\begin{itemize}
-\item results 1D, 2D, 3D damped duffing, 3D lorenz
-\item plots error of theta vs noise, error vs amount of data (number of data points) parametric curves for noise levels, brownian bridge plots for illustration, ...
-\end{itemize}
-
 \section{Problem Setup}
 Let $W_t$ denote Brownian motion in $\mathbb{R}^d$---informally, an increment $dW_t$ of this process has a multivariate normal distribution with zero mean vector and covariance matrix $I dt$.  Let $X_t$ denote an $\mathbb{R}^d$-valued stochastic process that evolves according to the It\^{o} SDE
 \begin{equation} \label{eqnsde}
 d X_t = f( X_t) dt + \Gamma d W_t.
 \end{equation}
-For rigorous definitions of Brownian motion and SDE, see \cite{bhattacharya_stochastic_2009, oksendal_stochastic_2003}.  The nonlinear vector field $f  \Omega \subset \mathbb{R}^d \to \mathbb{R}^d$ is the \emph{drift} function, and the $d \times d$ matrix $\Gamma$ is the \emph{diffusion} matrix.  To reduce the number of model parameters, we assume $\Gamma = \opdiag \gamma$.
+For rigorous definitions of Brownian motion and SDE, see \cite{bhattacharya_stochastic_2009, oksendal_stochastic_2003}.  The nonlinear vector field $f : \Omega \subset \mathbb{R}^d \to \mathbb{R}^d$ is the \emph{drift} function, and the $d \times d$ matrix $\Gamma$ is the \emph{diffusion} matrix.  To reduce the number of model parameters, we assume $\Gamma = \opdiag \gamma$.
 
 \emph{Our goal is to develop an algorithm that accurately estimates the functional form of $f$ and the vector $\gamma$ from time series data.}
 
@@ -221,7 +216,7 @@ The $\widetilde{\beta}$ coefficients are the Hermite coefficients of the estimat
 We test the method using stochastic systems in dimensions $d= 1, 2, 3$.
 For the one-dimensional system, we use
 \begin{equation*}
-dX_t = (-1 + X_t + X_t^2 ) dt + \gamma dW_t.
+dX_t = (1 + X_t - X_t^2 ) dt + \gamma dW_t.
 \end{equation*}
 
 In two dimensions, we use a stochastic Duffing oscillator with no damping or driving:
@@ -241,12 +236,11 @@ In what follows, we refer to these systems as the 1D, 2D, and 3D systems.
 
 \begin{figure}[th]
 \begin{center}
-\includegraphics[height=1.4in]{../1dcode/varying_num_timeseries/plots/drift_comparison.eps}\\
-\includegraphics[height=1.4in]{../2dcode/varying_num_timeseries/plots/drift_comparison.eps}\\
-\includegraphics[height=1.4in]{../3ddampedduffing/varying_num_timeseries/plots/drift_comparison.eps}
+\includegraphics[height=1.2in]{../1dcode/varying_num_timeseries/plots/drift_comparison.eps} \includegraphics[height=1.2in]{../2dcode/varying_num_timeseries/plots/drift_comparison.eps}\\
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_num_timeseries/plots/drift_comparison.eps}
 \end{center}
 \caption{As we increase the number $S$ of time series used to learn the drift,
-the estimated drift more closely approximates the ground truth.  From top to bottom, we have plotted estimated and true drifts for the 1D, 2D, and 3D systems.  For the 1D and 2D systems, the true drifts depend on only one variable.  For the $dX_{1,t}$ component of the 3D system, we have plotted the dependence of the drifts on $X_0$ only, keeping $X_1$ and $X_2$ fixed at $0$.}
+the estimated drift more closely approximates the ground truth.  From top to bottom, left to right, we have plotted estimated and true drifts for the 1D, 2D, and 3D systems.  For the 1D and 2D systems, the true drifts depend on only one variable.  For the $dX_{1,t}$ component of the 3D system, we have plotted the dependence of the drifts on $X_0$ only, keeping $X_1$ and $X_2$ fixed at $0$.}
 \label{fig:exp1drift}
 \end{figure}
 
@@ -260,7 +254,7 @@ the estimated drift more closely approximates the ground truth.  From top to bot
 \label{fig:exp1hermite}
 \end{figure}
 
-\paragraph{Experiment 2: Varying Length of Time Series.} Here we vary data volume by stepping the length $L+1$ of the time series from $L+1 = 11$ to $L+1 = 101$, keeping the number of time series fixed at $S=10$.  Also note that in this experiment, observation times strictly between the initial and final times are chosen randomly.  In Figure \ref{fig:exp2drift}, we have plotted the estimated and true drifts for only the 3D system.  Compared with Experiment 1, we see that randomization of the observation times improves estimation.  That is, even with $L+1 = 11$ data points per time series, we obtain accurate estimates.
+\paragraph{Experiment 2: Varying Length of Time Series.} Here we vary data volume by stepping the length $L+1$ of the time series from $L+1 = 11$ to $L+1 = 101$, keeping the number of time series fixed at $S=10$.  Also note that in this experiment, observation times strictly between the initial and final times are chosen randomly.  In Figure \ref{fig:exp2drift}, we have plotted the estimated and true drifts for only the 3D system; in Figure \ref{fig:exp2hermite}, we have plotted the error (\ref{eqn:frob}) for all three systems.  Comparing with Experiment 1, we see that randomization of the observation times improves estimation.  That is, even with $L+1 = 11$ data points per time series, we obtain accurate estimates.
 
 \begin{figure}[th]
 \begin{center}
@@ -280,23 +274,47 @@ the estimated drift more closely approximates the ground truth.  From top to bot
 \label{fig:exp2hermite}
 \end{figure}
 
-\paragraph{Experiment 3: Varying Noise Strength.} Here we vary the noise strength $\gamma$, stepping from $0.5$ to $0.0001$ while keeping other parameters constant.  Specifically, we take $S=10$ time series each of length $L+1 = 101$.
+\paragraph{Experiment 3: Varying Noise Strength.} Here we vary the noise strength $\gamma$, stepping from $0.5$ to $0.0001$ while keeping other parameters constant.  Specifically, we take $S=10$ time series each of length $L+1 = 101$.  In Figure \ref{fig:exp3hermite}, we have plotted Frobenius errors for all three systems.  Though the error in the estimated coefficients for the 3D system may seem large, the estimated and true drift functions are close---see Figure \ref{fig:exp3drift}.
+
 \begin{figure}[th]
-\includegraphics[height=1in]{../1dcode/varying_noise/plots/hermite.eps}
-\includegraphics[height=1in]{../2dcode/varying_noise/plots/hermite.eps}
-\includegraphics[height=1in]{../3ddampedduffing/varying_noise/plots/hermite.eps}
-\caption{Varying noise strength.}
-\label{fig:exp2}
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/varying_noise/plots/hermite.eps}
+\includegraphics[height=1.2in]{../2dcode/varying_noise/plots/hermite.eps}
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_noise/plots/hermite.eps}
+\end{center}
+\caption{Varying the strength of the noise in the simulated data alters the quality of estimated drift coefficients, quantified using the Frobenius error (\ref{eqn:frob}).  We proceed from left to right.  For the 1D and 2D systems, the maximum noise strength of $0.5$ remains below the magnitude of the drift field coefficients. For these systems, as the noise strength decreases, the error drops close to zero.  For the 3D system, the maximum noise strength of $0.5$ is greater than or equal to two of the drift field coefficients, leading to apparently decreased performance---however, see Figure \ref{fig:exp3drift}.}
+\label{fig:exp3hermite}
 \end{figure}
 
-\paragraph{Experiment 4: Varying Data Augmentation.} 
-Here we vary the number $F$ of interleaved diffusion bridge samples from $F=1$ to $F=9$.  Note that for $F=1$, no diffusion bridge is created; the likelihood is computed by applying the Gaussian transition density directly to the observed data.
 \begin{figure}[th]
-\includegraphics[height=1in]{../1dcode/varying_subintervals/plots/tp_51/hermite.eps}
-\includegraphics[height=1in]{../2dcode/varying_subintervals/plots/tp_51/hermite.eps}
-\includegraphics[height=1in]{../3ddampedduffing/varying_subintervals/plots/tp_51/hermite.eps}
-\caption{Varying length of the diffusion bridge.}
-\label{fig:exp2}
+\begin{center}
+\includegraphics[height=1.4in]{../3ddampedduffing/varying_noise/plots/drift_comparison.eps}
+\end{center}
+\caption{Though Figure \ref{fig:exp3hermite} shows a Frobenius norm error for the 3D system greater than $\approx 1.8$ at all noise levels, when plotted, the estimated drift functions lie close to the true drift function. The three components of the vector field are plotted as in the third row of Figure \ref{fig:exp1drift}.}
+\label{fig:exp3drift}
+\end{figure}
+
+\paragraph{Experiment 4: Varying Data Augmentation.}
+We start with $S = 10$ time series with $L+1 = 51$ points each.  Here we vary the number of interleaved diffusion bridge samples: $F=1, ldots, 10$.  For $F=1$, no diffusion bridge is created; the likelihood is computed by applying the Gaussian transition density directly to the observed data.  The results, plotted in Figures \ref{fig:exp4hermite} and \ref{fig:exp4drift}, show that increased data augmentation dramatically improves the quality of estimated drifts.  Though the Frobenius error for the 3D system exceeds $2.6$, Figure \ref{fig:exp4drift} shows that EM's estimates are still accurate.
+
+We have not plotted results for the scarce data regime where we have $S=10$ time series with $L=11$ points each.  In this regime, data augmentation enables highly accurate estimation for the 2D and 3D systems.  For the 1D system, the observations do not explore phase space properly, leading to poor estimation of the drift.
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/varying_subintervals/plots/tp_51/hermite.eps}
+\includegraphics[height=1.2in]{../2dcode/varying_subintervals/plots/tp_51/hermite.eps}
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_subintervals/plots/tp_51/hermite.eps}
+\end{center}
+\caption{As we increase the length $F$ of the diffusion bridge interleaving observed data points, the quality of estimated drifts improves considerably.}
+\label{fig:exp4hermite}
+\end{figure}
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_subintervals/plots/tp_51/drift_comparison.eps}
+\end{center}
+\caption{Hang on}
+\label{fig:exp4drift}
 \end{figure}
 
 \section{Conclusion} We have developed an EM algorithm for estimation of drift functions and diffusion matrices for SDE.  We have demonstrated the conditions under which the algorithm succeeds in estimating SDE.  Specifically, our tests show that with enough data volume and data augmentation, the EM algorithm produces highly accurate results.  In future work, we seek to further test our method on high-dimensional, nonlinear problems, problems with non-constant diffusion matrices, and real experimental data.  As we move to higher-dimensional problems, we will also explore regularization and model selection techniques.
