@@ -1,0 +1,187 @@
+\begin{thebibliography}{19}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bhat and Madushani(2016)]{bhat_nonparametric_2016}
+H.~S. Bhat and R.~W. M.~A. Madushani.
+\newblock Nonparametric {Adjoint}-{Based} {Inference} for {Stochastic}
+  {Differential} {Equations}.
+\newblock In \emph{2016 {IEEE} {International} {Conference} on {Data} {Science}
+  and {Advanced} {Analytics} ({DSAA})}, pages 798--807, Oct. 2016.
+\newblock \doi{10.1109/DSAA.2016.69}.
+
+\bibitem[Bhattacharya and Waymire(2009)]{bhattacharya_stochastic_2009}
+R.~N. Bhattacharya and E.~C. Waymire.
+\newblock \emph{Stochastic {Processes} with {Applications}}.
+\newblock SIAM, Aug. 2009.
+\newblock ISBN 978-0-89871-689-4.
+\newblock Google-Books-ID: 89dZjIid6XcC.
+
+\bibitem[Brunton et~al.(2016)Brunton, Proctor, and
+  Kutz]{brunton_discovering_2016}
+S.~L. Brunton, J.~L. Proctor, and J.~N. Kutz.
+\newblock Discovering governing equations from data by sparse identification of
+  nonlinear dynamical systems.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 113\penalty0
+  (15):\penalty0 3932--3937, Apr. 2016.
+\newblock ISSN 0027-8424, 1091-6490.
+\newblock \doi{10.1073/pnas.1517384113}.
+\newblock URL \url{http://www.pnas.org/lookup/doi/10.1073/pnas.1517384113}.
+
+\bibitem[Mangan et~al.(2016)Mangan, Brunton, Proctor, and
+  Kutz]{mangan_inferring_2016}
+N.~M. Mangan, S.~L. Brunton, J.~L. Proctor, and J.~N. Kutz.
+\newblock Inferring {Biological} {Networks} by {Sparse} {Identification} of
+  {Nonlinear} {Dynamics}.
+\newblock \emph{IEEE Transactions on Molecular, Biological and Multi-Scale
+  Communications}, 2\penalty0 (1):\penalty0 52--63, June 2016.
+\newblock \doi{10.1109/TMBMC.2016.2633265}.
+
+\bibitem[Mangan et~al.(2017)Mangan, Kutz, Brunton, and
+  Proctor]{mangan_model_2017}
+N.~M. Mangan, J.~N. Kutz, S.~L. Brunton, and J.~L. Proctor.
+\newblock Model selection for dynamical systems via sparse regression and
+  information criteria.
+\newblock \emph{Proc. R. Soc. A}, 473\penalty0 (2204):\penalty0 20170009, Aug.
+  2017.
+\newblock ISSN 1364-5021, 1471-2946.
+\newblock \doi{10.1098/rspa.2017.0009}.
+\newblock URL
+  \url{http://rspa.royalsocietypublishing.org/content/473/2204/20170009}.
+
+\bibitem[Meulen et~al.(2017)Meulen, Schauer, and Waaij]{meulen_adaptive_2017}
+F.~v.~d. Meulen, M.~Schauer, and J.~v. Waaij.
+\newblock Adaptive nonparametric drift estimation for diffusion processes using
+  {Faber}–{Schauder} expansions.
+\newblock \emph{Statistical Inference for Stochastic Processes}, pages 1--26,
+  June 2017.
+\newblock ISSN 1387-0874, 1572-9311.
+\newblock \doi{10.1007/s11203-017-9163-7}.
+\newblock URL
+  \url{https://link.springer.com/article/10.1007/s11203-017-9163-7}.
+
+\bibitem[Müller et~al.(2010)Müller, Yao, and {others}]{muller_empirical_2010}
+H.-G. Müller, F.~Yao, and {others}.
+\newblock Empirical dynamics for longitudinal data.
+\newblock \emph{The Annals of Statistics}, 38\penalty0 (6):\penalty0
+  3458--3486, 2010.
+\newblock URL \url{http://projecteuclid.org/euclid.aos/1291126964}.
+
+\bibitem[Nicolau(2007)]{nicolau_nonparametric_2007}
+J.~Nicolau.
+\newblock {NONPARAMETRIC} {ESTIMATION} {OF} {SECOND}-{ORDER} {STOCHASTIC}
+  {DIFFERENTIAL} {EQUATIONS}.
+\newblock \emph{Econometric Theory}, 23\penalty0 (05):\penalty0 880, Oct. 2007.
+\newblock ISSN 0266-4666, 1469-4360.
+\newblock \doi{10.1017/S0266466607070375}.
+\newblock URL
+  \url{http://www.journals.cambridge.org/abstract_S0266466607070375}.
+
+\bibitem[Papaspiliopoulos and Roberts(2012)]{papaspiliopoulos_importance_2012}
+O.~Papaspiliopoulos and G.~Roberts.
+\newblock Importance sampling techniques for estimation of diffusion models.
+\newblock \emph{Statistical methods for stochastic differential equations},
+  124:\penalty0 311--340, 2012.
+
+\bibitem[Papaspiliopoulos et~al.(2013)Papaspiliopoulos, Roberts, and
+  Stramer]{papaspiliopoulos_data_2013}
+O.~Papaspiliopoulos, G.~O. Roberts, and O.~Stramer.
+\newblock Data {Augmentation} for {Diffusions}.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 22\penalty0
+  (3):\penalty0 665--688, July 2013.
+\newblock ISSN 1061-8600, 1537-2715.
+\newblock \doi{10.1080/10618600.2013.783484}.
+\newblock URL
+  \url{http://www.tandfonline.com/doi/abs/10.1080/10618600.2013.783484}.
+
+\bibitem[Roberts and Stramer(2001)]{roberts_inference_2001}
+G.~O. Roberts and O.~Stramer.
+\newblock On inference for partially observed nonlinear diffusion models using
+  the {Metropolis}–{Hastings} algorithm.
+\newblock \emph{Biometrika}, 88\penalty0 (3):\penalty0 603--621, Oct. 2001.
+\newblock ISSN 0006-3444.
+\newblock \doi{10.1093/biomet/88.3.603}.
+\newblock URL \url{https://academic.oup.com/biomet/article/88/3/603/340094}.
+
+\bibitem[Rudy et~al.(2017)Rudy, Brunton, Proctor, and
+  Kutz]{rudy_data-driven_2017}
+S.~H. Rudy, S.~L. Brunton, J.~L. Proctor, and J.~N. Kutz.
+\newblock Data-driven discovery of partial differential equations.
+\newblock \emph{Science Advances}, 3\penalty0 (4):\penalty0 e1602614, Apr.
+  2017.
+\newblock ISSN 2375-2548.
+\newblock \doi{10.1126/sciadv.1602614}.
+\newblock URL \url{http://advances.sciencemag.org/content/3/4/e1602614}.
+
+\bibitem[Schaeffer(2017)]{schaeffer_learning_2017}
+H.~Schaeffer.
+\newblock Learning partial differential equations via data discovery and sparse
+  optimization.
+\newblock \emph{Proceedings of the Royal Society A: Mathematical, Physical and
+  Engineering Science}, 473\penalty0 (2197):\penalty0 20160446, Jan. 2017.
+\newblock ISSN 1364-5021, 1471-2946.
+\newblock \doi{10.1098/rspa.2016.0446}.
+\newblock URL
+  \url{http://rspa.royalsocietypublishing.org/lookup/doi/10.1098/rspa.2016.0446}.
+
+\bibitem[Schaeffer et~al.(2013)Schaeffer, Caflisch, Hauck, and
+  Osher]{schaeffer_sparse_2013}
+H.~Schaeffer, R.~Caflisch, C.~D. Hauck, and S.~Osher.
+\newblock Sparse dynamics for partial differential equations.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 110\penalty0
+  (17):\penalty0 6634--6639, Apr. 2013.
+\newblock ISSN 0027-8424, 1091-6490.
+\newblock \doi{10.1073/pnas.1302752110}.
+\newblock URL \url{http://www.pnas.org/cgi/doi/10.1073/pnas.1302752110}.
+
+\bibitem[Schaeffer et~al.(2017)Schaeffer, Tran, and
+  Ward]{schaeffer_extracting_2017}
+H.~Schaeffer, G.~Tran, and R.~Ward.
+\newblock Extracting {Sparse} {High}-{Dimensional} {Dynamics} from {Limited}
+  {Data}.
+\newblock \emph{arXiv:1707.08528 [math]}, July 2017.
+\newblock URL \url{http://arxiv.org/abs/1707.08528}.
+\newblock arXiv: 1707.08528.
+
+\bibitem[Tran and Ward(2017)]{tran_exact_2017}
+G.~Tran and R.~Ward.
+\newblock Exact {Recovery} of {Chaotic} {Systems} from {Highly} {Corrupted}
+  {Data}.
+\newblock \emph{Multiscale Modeling \& Simulation}, 15\penalty0 (3):\penalty0
+  1108--1129, Jan. 2017.
+\newblock ISSN 1540-3459.
+\newblock \doi{10.1137/16M1086637}.
+\newblock URL \url{https://epubs.siam.org/doi/abs/10.1137/16M1086637}.
+
+\bibitem[van~der Meulen et~al.(2014)van~der Meulen, Schauer, and van
+  Zanten]{van_der_meulen_reversible_2014}
+F.~van~der Meulen, M.~Schauer, and H.~van Zanten.
+\newblock Reversible jump {MCMC} for nonparametric drift estimation for
+  diffusion processes.
+\newblock \emph{Computational Statistics \& Data Analysis}, 71:\penalty0
+  615--632, Mar. 2014.
+\newblock ISSN 0167-9473.
+\newblock \doi{10.1016/j.csda.2013.03.002}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S016794731300090X}.
+
+\bibitem[Verzelen et~al.(2012)Verzelen, Tao, Müller, and
+  {others}]{verzelen_inferring_2012}
+N.~Verzelen, W.~Tao, H.-G. Müller, and {others}.
+\newblock Inferring stochastic dynamics from functional data.
+\newblock \emph{Biometrika}, 99\penalty0 (3):\penalty0 533--550, 2012.
+\newblock URL
+  \url{http://nicolas.verzelen.free.fr/pdf/2012-Ver-Biometrika.pdf}.
+
+\bibitem[Øksendal(2003)]{oksendal_stochastic_2003}
+B.~Øksendal.
+\newblock \emph{Stochastic {Differential} {Equations}: {An} {Introduction} with
+  {Applications}}.
+\newblock Universitext. Springer-Verlag, Berlin Heidelberg, 6 edition, 2003.
+\newblock ISBN 978-3-540-04758-2.
+\newblock URL \url{//www.springer.com/us/book/9783540047582}.
+
+\end{thebibliography}
