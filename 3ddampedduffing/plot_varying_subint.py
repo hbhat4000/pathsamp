@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 # 1) Error plots
 meta_error_list = []
 for i in range(1, 11):
-    with open('./varying_subintervals/tp_11/subint_' + str(i) + '.pkl','rb') as f:
+    with open('./varying_subintervals/tp_51/subint_' + str(i) + '.pkl','rb') as f:
         x, t, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
     meta_error_list.append((x.shape, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param))
 
@@ -29,7 +29,7 @@ plt.grid()
 ax.set_xticks(subint)
 # ax.set_ylim([0., 1.])
 # ax.set_yticks(np.arange(0., 1.1, 0.1))
-plt.savefig('./varying_subintervals/plots/tp_11/hermite.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/plots/tp_51/hermite.eps', format = 'eps', bbox_inches='tight')
 
 # 1b) Error in estimated theta in Ordinary space
 fig = plt.figure()
@@ -40,7 +40,7 @@ plt.grid()
 ax.set_xticks(subint)
 # ax.set_ylim([0., 2.])
 # ax.set_yticks(np.arange(0., 2.1, 0.2))
-plt.savefig('./varying_subintervals/plots/tp_11/ordinary.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/plots/tp_51/ordinary.eps', format = 'eps', bbox_inches='tight')
 
 # 1c) Error in estimated gvec
 fig = plt.figure()
@@ -51,7 +51,7 @@ plt.grid()
 ax.set_xticks(subint)
 # ax.set_ylim([0., 0.05])
 # ax.set_yticks(np.arange(0., 0.06, 0.01))
-plt.savefig('./varying_subintervals/plots/tp_11/gvec.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/plots/tp_51/gvec.eps', format = 'eps', bbox_inches='tight')
 ###################################################################################################
 
 # 2) Comparison of true drift function vs estimated drift function
@@ -104,4 +104,4 @@ for i in range(parval):
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./varying_subintervals/plots/tp_11/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/plots/tp_51/drift_comparison.eps', format = 'eps', bbox_inches='tight')
