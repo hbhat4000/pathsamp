@@ -1,0 +1,32 @@
+\begin{abstract}
+  We develop algorithms to automate discovery of stochastic dynamical system
+  models from noisy, vector-valued time series.  By discovery, we mean 
+  learning both a nonlinear drift vector field and a diagonal diffusion matrix 
+  for an It\^{o} stochastic differential equation in $\mathbb{R}^d$.  We 
+  parameterize the vector field using tensor products of Hermite polynomials,
+  enabling the model to capture highly nonlinear and/or coupled dynamics.
+  We solve the resulting estimation problem using expectation maximization (EM).
+  This involves two steps.  We augment the data via diffusion bridge
+  sampling, with the goal of producing time series observed at a higher
+  frequency than the original data.  With this augmented data,
+  the resulting expected log likelihood maximization problem
+  reduces to a least squares problem.  Through experiments on systems with 
+  dimensions one through eight, we show that this EM approach enables 
+  accurate estimation for multiple time series with possibly irregular 
+  observation times.  We study how the EM method performs as a function of
+  the noise level in the data, the volume of data, and the amount of data
+  augmentation performed.  
+\end{abstract}
+
+Traditional mathematical modeling in the sciences and engineering often has as its goal the development of equations of motion that describe observed phenomena.  Classically, these equations of motion usually took the form of deterministic systems of ordinary or partial differential equations (ODE or PDE, respectively).  Especially in systems of contemporary interest in biology and finance where intrinsic noise must be modeled, we find stochastic differential equations (SDE) used instead of deterministic ones.  Still, these models are often built from first principles, after which the model's predictions (obtained, for instance, by numerical simulation) are compared against observed data.
+
+Recent years have seen a surge of interest in using data to automate discovery of ODE, PDE, and SDE models.  These machine learning approaches complement traditional modeling efforts, using available data to constrain the space of plausible models, and shortening the feedback loop linking model development to prediction and comparison to real observations.  We posit two additional reasons to develop algorithms to learn SDE models.  First, SDE models---including the models considered here---have the capacity to model highly nonlinear, coupled stochastic systems, including systems whose equilibria are non-Gaussian and/or multimodal.  Second, SDE models often allow for interpretability.  Especially if the terms on the right-hand side of the SDE are expressed in terms of commonly used functions (such as polynomials), we can obtain a qualitative understanding of how the system's variables influence, regulate, and/or mediate one other. 
+
+In this paper, we develop an algorithm to learn SDE models from high-dimensional time series.  To our knowledge, this is the most general expectation maximization (EM) approach to learning an SDE with multidimensional drift vector field and diagonal diffusion matrix.  Prior EM approaches were restricted to one-dimensional SDE \cite{ghahramani_learning_1999}, or used a Gaussian process approximation, linear drift approximation, and approximate maximization \cite{ruttor_approximate_2013}.  To develop our method, we use diffusion bridge sampling as in \cite{van_der_meulen_reversible_2014, meulen_adaptive_2017}, which focused on Bayesian nonparametric methods for SDE in $\mathbb{R}^1$.  After augmenting the data using bridge sampling, we are left with a least-squares problem, generalizing the work of \cite{brunton_discovering_2016} from the ODE to the SDE context.
+
+In the literature, variational Bayesian methods are the only other SDE learning methods that have been tested on high-dimensional problems \cite{vrettas_variational_2015}.  These methods use approximations consisting of linear SDE with time-varying coefficients \cite{archambeau_variational_2008}, kernel density estimates \cite{batz_variational_2016}, or Gaussian processes \cite{batz_approximate_2017}.  In contrast, we parameterize the drift vector field using tensor products of Hermite polynomials; as mentioned above, the resulting SDE has much higher capacity than linear and/or Gaussian process models.
+
+Many other techniques explored in the statistical literature focus on scalar SDE \cite{nicolau_nonparametric_2007, muller_empirical_2010, verzelen_inferring_2012, bhat_nonparametric_2016}.
+
+As mentioned, differential equation discovery problems have attracted considerable recent interest.  A variety of methods have been developed to learn ODE \cite{brunton_discovering_2016, schon_probabilistic_2017, chen_network_2017, tran_exact_2017, schaeffer_extracting_2017, schaeffer_learning_2017, quade_sparse_2018} as well as PDE \cite{schaeffer_sparse_2013, raissi_machine_2017, rudy_data-driven_2017, raissi_hidden_2018}.  Unlike many of these works, we do not focus on model selection; if needed, our methods can be combined with model selection procedures developed in the ODE context \cite{mangan_inferring_2016, mangan_model_2017}.
+
