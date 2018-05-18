@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 # 1) Error plots
 meta_error_list = []
 for i in range(1, 11):
-    with open('./varying_subintervals/tp_11/subint_' + str(i) + '.pkl','rb') as f:
+    with open('./varying_subintervals/tp_51/subint_' + str(i) + '.pkl','rb') as f:
         x, t, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
     meta_error_list.append((x.shape, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param))
 
@@ -32,7 +32,7 @@ ax.set_xticks(noise)
 plt.xticks(noise, noise_mapping)
 # ax.set_ylim([0., 1.])
 # ax.set_yticks(np.arange(0., 1.1, 0.1))
-plt.savefig('./varying_subintervals/plots/tp_11/hermite.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/plots/tp_51/hermite.eps', format = 'eps', bbox_inches='tight')
 
 # 1b) Error in estimated theta in Ordinary space
 fig = plt.figure()
@@ -44,7 +44,7 @@ ax.set_xticks(noise)
 # ax.set_ylim([0., 2.])
 # ax.set_yticks(np.arange(0., 2.1, 0.2))
 plt.xticks(noise, noise_mapping)
-plt.savefig('./varying_subintervals/plots/tp_11/ordinary.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/plots/tp_51/ordinary.eps', format = 'eps', bbox_inches='tight')
 
 # 1c) Error in estimated gvec
 fig = plt.figure()
@@ -56,7 +56,7 @@ ax.set_xticks(noise)
 plt.xticks(noise, noise_mapping)
 # ax.set_ylim([0., 0.05])
 # ax.set_yticks(np.arange(0., 0.06, 0.01))
-plt.savefig('./varying_subintervals/plots/tp_11/gvec.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/plots/tp_51/gvec.eps', format = 'eps', bbox_inches='tight')
 ###################################################################################################
 
 # 2) Comparison of true drift function vs estimated drift function
@@ -71,9 +71,9 @@ def index(theta, x):
     index = 0
 
     for d in range(0, 4):
-        for i in range(0, d + 1):
+        for k in range(0, d + 1):
             for j in range(0, d + 1):
-                for k in range(0, d + 1):
+                for i in range(0, d + 1):
                     if (i + j + k == d):
                         y += theta[index] * np.power(x[0, :], i) * np.power(x[1, :], j) * np.power(x[2, :], k)
                         index += 1
@@ -82,8 +82,8 @@ def index(theta, x):
 
 x_sparse = np.arange(-2.0, 2.0, 0.5)
 x_dense = np.arange(-2.0, 2.0, 0.1)
-x1 = np.array((x_sparse, x_sparse, x_sparse, x_sparse))
-x2 = np.array((x_dense, x_dense, x_dense, x_dense))
+x1 = np.array((x_sparse, x_sparse, x_sparse))
+x2 = np.array((x_dense, x_dense, x_dense))
 
 fig, axes = plt.subplots(nrows=1, ncols=3, sharex=True)
 fig.set_figwidth(20)
@@ -109,4 +109,4 @@ for i in range(parval):
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./varying_subintervals/plots/tp_11/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/plots/tp_51/drift_comparison.eps', format = 'eps', bbox_inches='tight')

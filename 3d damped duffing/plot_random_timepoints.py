@@ -14,7 +14,7 @@ for parvalue in range(1, 11):
     titles = [r'$x_0$', r'$x_1$', r'$x_2$']
 
     for i in range(10):
-        y_vals = [x[i, :, 0], x[i, :, 1], x[i, :, 2], x[i, :, 3]]
+        y_vals = [x[i, :, 0], x[i, :, 1], x[i, :, 2]]
         for ax, title, y in zip(axes.flat, titles, y_vals):
             ax.plot(t[i, :], y, label='initial condition '+str(euler_param.ic[i]))
             ax.set_title(title)
@@ -95,9 +95,9 @@ def index(theta, x):
     index = 0
 
     for d in range(0, 4):
-        for i in range(0, d + 1):
+        for k in range(0, d + 1):
             for j in range(0, d + 1):
-                for k in range(0, d + 1):
+                for i in range(0, d + 1):
                     if (i + j + k == d):
                         y += theta[index] * np.power(x[0, :], i) * np.power(x[1, :], j) * np.power(x[2, :], k)
                         index += 1
@@ -106,8 +106,8 @@ def index(theta, x):
 
 x_sparse = np.arange(-2.0, 2.0, 0.5)
 x_dense = np.arange(-2.0, 2.0, 0.1)
-x1 = np.array((x_sparse, x_sparse, x_sparse, x_sparse))
-x2 = np.array((x_dense, x_dense, x_dense, x_dense))
+x1 = np.array((x_sparse, x_sparse, x_sparse))
+x2 = np.array((x_dense, x_dense, x_dense))
 
 fig, axes = plt.subplots(nrows=1, ncols=3, sharex=True)
 fig.set_figwidth(20)
