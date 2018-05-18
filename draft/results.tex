@@ -54,7 +54,7 @@
   frequency than the original data.  With this augmented data,
   the resulting expected log likelihood maximization problem
   reduces to a least squares problem.  Through experiments on systems with 
-  dimensions one through eight, we show that this EM approach enables 
+  dimensions one through three, we show that this EM approach enables 
   accurate estimation for multiple time series with possibly irregular 
   observation times.  We study how the EM method performs as a function of
   the noise level in the data, the volume of data, and the amount of data
@@ -206,7 +206,7 @@ In all examples, we use a fine internal time step to generate the data, but we \
 
 To study how the EM method performs as a function of noise strength, data volume, and data augmentation, we perform four sets of experiments.  When we run EM, we randomly generate the initial guess $\beta^{(0)} \sim \mathcal{N}(\mu=0, \sigma^2=0.5)$.  We set the EM tolerance parameter $\delta = 0.01$.  The only regularization we include is to threshold $\beta$---values less than $0.01$ in absolute value are reset to zero.  Finally, in the MCMC diffusion bridge sampler, we use $10$ burn-in steps and then create an ensemble of size $R=100$.
 
-To quantify error, we use the Frobenius norm of the difference between estimated $\widetilde{\beta}$ and true $\beta$ matrices
+To quantify the error between the estimated $\widetilde{\beta}$ and the true $\beta$, we apply the Frobenius norm:
 \begin{equation}
 \label{eqn:frob}
 \varepsilon = \sqrt{\sum_i \| \beta_{(i)} - \widetilde{\beta}_{(i)} \|^2 }
@@ -295,7 +295,7 @@ the estimated drift more closely approximates the ground truth.  From top to bot
 \end{figure}
 
 \paragraph{Experiment 4: Varying Data Augmentation.}
-We start with $S = 10$ time series with $L+1 = 51$ points each.  Here we vary the number of interleaved diffusion bridge samples: $F=1, ldots, 10$.  For $F=1$, no diffusion bridge is created; the likelihood is computed by applying the Gaussian transition density directly to the observed data.  The results, plotted in Figures \ref{fig:exp4hermite} and \ref{fig:exp4drift}, show that increased data augmentation dramatically improves the quality of estimated drifts.  Though the Frobenius error for the 3D system exceeds $2.6$, Figure \ref{fig:exp4drift} shows that EM's estimates are still accurate.
+We start with $S = 10$ time series with $L+1 = 51$ points each.  Here we vary the number of interleaved diffusion bridge samples: $F=1, \ldots, 10$.  For $F=1$, no diffusion bridge is created; the likelihood is computed by applying the Gaussian transition density directly to the observed data.  The results, plotted in Figures \ref{fig:exp4hermite} and \ref{fig:exp4drift}, show that increased data augmentation dramatically improves the quality of estimated drifts.  Though the Frobenius error for the 3D system exceeds $2.6$, Figure \ref{fig:exp4drift} shows that EM's estimates are still accurate.
 
 We have not plotted results for the scarce data regime where we have $S=10$ time series with $L=11$ points each.  In this regime, data augmentation enables highly accurate estimation for the 2D and 3D systems.  For the 1D system, the observations do not explore phase space properly, leading to poor estimation of the drift.
 
@@ -305,7 +305,7 @@ We have not plotted results for the scarce data regime where we have $S=10$ time
 \includegraphics[height=1.2in]{../2dcode/varying_subintervals/plots/tp_51/hermite.eps}
 \includegraphics[height=1.2in]{../3ddampedduffing/varying_subintervals/plots/tp_51/hermite.eps}
 \end{center}
-\caption{As we increase the length $F$ of the diffusion bridge interleaving observed data points, the quality of estimated drifts improves considerably.}
+\caption{As we increase the length $F$ of the diffusion bridge interleaving observed data points, the quality of estimated drifts improves considerably.  From left to right, we have plotted Frobenius errors (\ref{eqn:frob}) between true and estimated coefficients,for the 1D, 2D, and 3D systems.}
 \label{fig:exp4hermite}
 \end{figure}
 
@@ -313,7 +313,7 @@ We have not plotted results for the scarce data regime where we have $S=10$ time
 \begin{center}
 \includegraphics[height=1.2in]{../3ddampedduffing/varying_subintervals/plots/tp_51/drift_comparison.eps}
 \end{center}
-\caption{Hang on}
+\caption{Though Figure \ref{fig:exp4hermite} shows a Frobenius norm error for the 3D system greater than $\approx 2.6$ at all noise levels, when plotted, the estimated drift functions lie close to the true drift function. The three components of the vector field are plotted as in the third row of Figure \ref{fig:exp1drift}.}
 \label{fig:exp4drift}
 \end{figure}
 
