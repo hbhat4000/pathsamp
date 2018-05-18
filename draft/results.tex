@@ -1,6 +1,8 @@
 \documentclass{article}
 
-\usepackage{nips_2018}
+\usepackage[nonatbib]{nips_2018}
+\usepackage[numbers,sort&compress]{natbib}
+
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 \usepackage{hyperref}       % hyperlinks
@@ -16,6 +18,8 @@
 \newcommand{\btheta}{\ensuremath{\bm{\theta}}}
 \newcommand{\opdiag}{\ensuremath{\operatorname{diag}}}
 \newcommand{\bx}{\ensuremath{\mathbf{x}}}
+\newcommand{\by}{\ensuremath{\mathbf{y}}}
+\newcommand{\bt}{\ensuremath{\mathbf{t}}}
 \newcommand{\bz}{\ensuremath{\mathbf{z}}}
 
 \title{Learning Stochastic Dynamical Systems via Bridge Sampling}
@@ -48,21 +52,27 @@
 The goal of this work is to enable automatic discovery of stochastic differential equations (SDE) from time series data.  
 
 \begin{enumerate}
-\item Literature review.
+\item Literature review. 
+simple, effective procedure for ODE (not SDE): \cite{brunton_discovering_2016, mangan_inferring_2016, mangan_model_2017}
+low-dimensional direct approach with gradient-based optimization (not scalable to higher dim): \cite{bhat_nonparametric_2016}
+diffusion bridges but more complex estimation (not EM!): \cite{van_der_meulen_reversible_2014, meulen_adaptive_2017}
+classical stat approaches: \cite{nicolau_nonparametric_2007, muller_empirical_2010, verzelen_inferring_2012}
+PDE: \cite{schaeffer_sparse_2013, schaeffer_learning_2017, rudy_data-driven_2017}
+compressed sensing: \cite{tran_exact_2017, schaeffer_extracting_2017}
+
 \item What is new and interesting about this work.
 \end{enumerate}
 
 Points to cover:
 \begin{itemize}
-\item data specification
-\item Hermite polynomial and drift function representation
-\item Expectation and maximization formulas assuming data is filled in
-\item Filling data in with Brownian bridge
-\item MCMC iterations of brownian bridge using girsanov likelihood
+\item data specification, DONE
+\item Hermite polynomial and drift function representation, DONE
+\item Expectation and maximization formulas assuming data is filled in, CLOSE2DONE
+\item Filling data in with diffusion bridge, DONE
+\item MCMC iterations of brownian bridge using girsanov likelihood, DONE
 \item how synthetic data is generated
 \item results: 1D, 2D, 3D damped duffing, 3D lorenz
 \item plots: error of theta vs noise, error vs amount of data (number of data points) parametric curves for noise levels, brownian bridge plots for illustration, ...
-\item Note: constant noise case, not inferring the gvec
 \end{itemize}
 
 \section{Problem Setup}
@@ -70,8 +80,7 @@ Let $W_t$ denote Brownian motion in $\mathbb{R}^d$---informally, an increment $d
 \begin{equation} \label{eqn:sde}
 d X_t = f( X_t) dt + \Gamma d W_t.
 \end{equation}
-For rigorous definitions of Brownian motion and SDE, see [Bhattacharya and Waymire 2009, Oksendal 2007].
-The nonlinear vector field $f : \Omega \subset \mathbb{R}^d \to \mathbb{R}^d$ is the \emph{drift} function, and the $d \times d$ matrix $\Gamma$ is the \emph{diffusion} matrix.  To reduce the number of model parameters, we assume $\Gamma = \opdiag \gamma$.
+For rigorous definitions of Brownian motion and SDE, see \cite{bhattacharya_stochastic_2009, oksendal_stochastic_2003}.  The nonlinear vector field $f : \Omega \subset \mathbb{R}^d \to \mathbb{R}^d$ is the \emph{drift} function, and the $d \times d$ matrix $\Gamma$ is the \emph{diffusion} matrix.  To reduce the number of model parameters, we assume $\Gamma = \opdiag \gamma$.
 
 \textbf{Our goal is to develop an algorithm that accurately estimates the functional form of $f$ and the vector $\gamma$ from time series data.}
 
@@ -100,16 +109,20 @@ There are $\binom{m + d - 1}{d-1}$ possibilities for a $d$-dimensional multi-ind
 f_j(x) = \sum_{i=1}^{\widetilde{M}} \beta^j_{(i)} H_{(i)}(x).
 \end{equation}
 
-\paragraph{Data.} We consider our data $\mathbf{x} = \{x_j\}_{j=0}^L$ to be direct observations of $X_t$ at discrete points in time $\mathbf{t} = \{t_j\}_{t=0}^L$.  Note that these time points do not need to be equispaced.  
+\paragraph{Data.} We consider our data $\bx = \{x_j\}_{j=0}^L$ to be direct observations of $X_t$ at discrete points in time $\bt = \{t_j\}_{t=0}^L$.  Note that these time points do not need to be equispaced.  
 
-To achieve our estimation goal, we apply expectation maximization (EM).  We regard $\mathbf{x}$ as the incomplete data.  Let $\Delta t = \frac{1}{L} \sum_{j=1}^{L} (t_j - t_{j-1})$ be the average interobservation spacing.  We think of the missing data $\mathbf{z}$ as data collected at a time scale $h \ll \Delta t$ that is fine enough such that the transition density of (\ref{eqn:sde}) is approximately Gaussian.  To see how this works, let $\mathcal{N}(\mu, \Sigma)$ denote a multivariate normal with mean vector $\mu$ and covariance matrix $\Sigma$.  Now discretize (\ref{eqn:sde}) in time via the Euler-Maruyama method with time step $h > 0$; the result is
+To achieve our estimation goal, we apply expectation maximization (EM).  We regard $\bx$ as the incomplete data.  Let $\Delta t = \max_{j} (t_j - t_{j-1})$ be the maximum interobservation spacing.  We think of the missing data $\bz$ as data collected at a time scale $h \ll \Delta t$ that is fine enough such that the transition density of (\ref{eqn:sde}) is approximately Gaussian.  To see how this works, let $\mathcal{N}(\mu, \Sigma)$ denote a multivariate normal with mean vector $\mu$ and covariance matrix $\Sigma$.  Now discretize (\ref{eqn:sde}) in time via the Euler-Maruyama method with time step $h > 0$; the result is
 \begin{equation} \label{eqn:euler}
 \widetilde{X}_{n+1} = \widetilde{X}_n + f(\widetilde{X}_n) h + h^{1/2} \Gamma Z_{n+1},
 \end{equation}
-where $Z_{n+1} \sim \mathcal{N}(0, I)$ is a standard multivariate normal, independent of $X_n$.  Note that $\widetilde{X}_{n+1} | \widetilde{X}_n = v$ has a $\mathcal{N}(v + f(v) h, h \Gamma^2)$ distribution.  As $h$ decreases, this Gaussian will converge to the true transition density $X_{(n+1)h} | X_{nh} = v$, 
-where $X_t$ refers to the solution of (\ref{eqn:sde}).
+where $Z_{n+1} \sim \mathcal{N}(0, I)$ is a standard multivariate normal, independent of $X_n$.  This implies that
+\begin{equation}
+\label{eqn:condden}
+(\widetilde{X}_{n+1} | \widetilde{X}_n = v) \sim \mathcal{N}(v + f(v) h, h \Gamma^2).
+\end{equation}
+As $h$ decreases, $\widetilde{X}_{n+1} | \widetilde{X}_n = v$---a Gaussian approximation---will converge to the true transition density $X_{(n+1)h} | X_{nh} = v$, where $X_t$ refers to the solution of (\ref{eqn:sde}).
 
-\paragraph{Diffusion Bridge.} To augment or complete the data, we employ diffusion bridge sampling, using a Markov chain Monte Carlo (MCMC) method that goes back to [Roberts and Stramer, 2001; Papaspiliopoulos, Roberts, and Stramer, 2013].  Let us describe this method here.  We suppose our current estimate of $\btheta = (\beta, \gamma)$ is given.  Then the goal is to generate a sample path of (\ref{eqn:sde}) conditioned on both the initial value $x_i$ at time $t_i$, and the final value $x_{i+1}$ at time $t_{i+1}$.  By a sample path, we mean $F-1$ \emph{new} samples $\{z_{i,j}\}_{j=1}^{F-1}$ at times $t_i + j h$ with $h = (t_{i+1} - t_i)/F$.
+\paragraph{Diffusion Bridge.} To augment or complete the data, we employ diffusion bridge sampling, using a Markov chain Monte Carlo (MCMC) method that goes back to \cite{roberts_inference_2001, papaspiliopoulos_data_2013}.  Let us describe our version here.  We suppose our current estimate of $\btheta = (\beta, \gamma)$ is given.  Define the diffusion bridge process to be (\ref{eqn:sde}) conditioned on both the initial value $x_i$ at time $t_i$, and the final value $x_{i+1}$ at time $t_{i+1}$.  The goal is to generate sample paths of this diffusion bridge.  By a sample path, we mean $F-1$ \emph{new} samples $\{z_{i,j}\}_{j=1}^{F-1}$ at times $t_i + j h$ with $h = (t_{i+1} - t_i)/F$.
 
 To generate such a path, we start by drawing a sample from a Brownian bridge with the same diffusion as (\ref{eqn:sde}).  That is, we sample from the SDE
 \begin{equation}
@@ -119,27 +132,44 @@ d\widehat{X}_t = \Gamma dW_t
 conditioned on $\widehat{X}_{t_i} = x_i$ and $\widehat{X}_{t_{i+1}} = x_{i+1}$.  This Brownian bridge can be described explicitly:
 \begin{equation}
 \label{eqn:bbridge}
-\widehat{X}_t = \Gamma W_{t - t_i} + x_i - \frac{t - t_i}{t_{i+1} - t_i} (\Gamma W_{t_{i+1} - t_i} + x_{i} - x_{i+1} )
+\widehat{X}_t = \Gamma (W_{t} - W_{t_i}) + x_i - \frac{t - t_i}{t_{i+1} - t_i} (\Gamma (W_{t_{i+1}} - W_{t_i}) + x_{i} - x_{i+1} )
 \end{equation}
+Here $W_0 = 0$ (almost surely), and $W_t - W_s \sim \mathcal{N}(0, (t-s)I)$ for $t > s \geq 0$. 
 
-
-Let $\mathbf{z}^{(r)}$ denote the $r^\text{th}$ diffusion bridge sample path:
+Let $\mathbb{P}$ denote the law of the diffusion bridge process, and let $\mathbb{Q}$ denote the law of the Brownian bridge (\ref{eqn:bbridge}).  Using Girsanov's theorem \cite{papaspiliopoulos_importance_2012}, we can show that
 \begin{equation}
-z^{(r)} \sim z \, | \, x, \beta^{(k)}
+\label{eqn:ratio}
+\frac{d \mathbb{P}}{d \mathbb{Q}} = C \exp \left( \int_{t_i}^{t_{i+1}} f(\widehat{X}_s)^T \Gamma^{-2} \, d \widehat{X}_s - \frac{1}{2} \int_{t_i}^{t_{i+1}} f(\widehat{X_s})^T \Gamma^{-2} f(\widehat{X_s}) \, ds \right),
 \end{equation}
-The observed and sampled data can be interleaved together to create a time series (completed data)
-$$
-\mathbf{y}^{(r)} = \{y_j^{(r)}\}_{j=1}^N
-$$
-of length $N = LF + 1$.  
+where the constant $C$ depends only on $x_i$ and $x_{i+1}$.  The left-hand side is a Radon-Nikodym derivative, equivalent to a density or likelihood; the ratio of two such likelihoods is the accept/reject ratio in the Metropolis algorithm [Stuart 2010].  
 
-%Specifically, the density is
-%$$
-%\left( \prod_{i=1}^d \frac{1}{\sqrt{2 \pi h \gamma_i^2}} \right)
-%\exp \left( -\frac{1}{2h} (x - v - h \sum_{k=1}^M \beta_k \phi_k(v))^T \Gamma^{-2} (x - v - h \sum_{\ell=1}^M \beta_\ell \phi_\ell(v)) \right).
-%$$
+Putting the above pieces together yields the following Metropolis algorithm to generate diffusion bridge sample paths.  Fix $F \geq 2$ and $i \in \{0, \ldots, L-1\}$.  Assume we have stored the previous Metropolis step, i.e., a path $\bz^{(\ell)} = \{z_{i,j}\}_{j=1}^{F-1}$.
+\begin{enumerate}
+\item Use (\ref{eqn:bbridge}) to generate samples of $\widehat{X}_t$ at times $t_i + j h$, for $j = 1, 2, \ldots, F-1$ and $h = (t_{i+1} - t_i)/F$.  This is the proposal $\bz^\ast = \{z^\ast_{i,j}\}_{j=1}^{F-1}$.
+\item Numerically approximate the integrals in (\ref{eqn:ratio}) to compute the likelihood of the proposal.  Specifically, we compute
+\begin{multline*}
+p(\bz^\ast)/C = \sum_{j=0}^{F-1} f(z^\ast_{i,j})^T \Gamma^{-2} (z^\ast_{i,j+1} - z^\ast_{i,j}) \\ - \frac{h}{4} \sum_{j=0}^{F-1} \left[ f(z^\ast_{i,j})^T \Gamma^{-2} f(z^\ast_{i,j}) + f(z^\ast_{i,j+1})^T \Gamma^{-2} f(z^\ast_{i,j+1}) \right]
+\end{multline*}
+\item Accept the proposal with probability $p(\bz^\ast)/p(\bz^{(\ell)})$---note the factors of $C$ cancel.  If the proposal is accepted, then set $\bz^{(\ell+1)} = \bz^\ast$. Else set $\bz^{(\ell+1)} = \bz^{(\ell)}$.
+\end{enumerate}
+We initialize this algorithm with a Brownian bridge path, run for $10$ burn-in steps, and then use subsequent steps as the diffusion bridge samples we seek. 
 
-\paragraph{EM.} The EM algorithm consists of two steps, computing the expectation of the log likelihood function (on the completed data) and then maximizing it with respect to the parameters $\btheta = (\beta, \gamma)$.
+
+\paragraph{Expectation Maximization (EM).} Let us now give details to justify the intuition expressed above, that employing the diffusion bridge to augment the data on a fine scale will enable estimation.  Let $\bz$ a diffusion bridge sample path.  We interleave this sampled data together with the observed data $\bx$ to create the completed time series
+$$
+\by^{(r)} = \{y_j^{(r)}\}_{j=1}^N,
+$$
+where $N = LF + 1$.  By interleaving, we mean that $y_{1 + i F}^{(r)} = x_i$ for $i = 0, 1, \ldots, L$, and that $y_{1 + j + i F}^{(r)} = z_{i, j}$ for $j = 1, 2, \ldots, F-1$ and $i = 0, 1, \ldots, L-1$.
+
+Let $h_j$ denote the elapsed time between observations $y_j$ and $y_{j+1}$.  Using the completed data, the temporal discretization (\ref{eqn:euler}) of the SDE, the Markov property, and property (\ref{eqn:condden}), we have:
+\begin{align*}
+\log p(\bx, \bz \mid \btheta) &= \log p(\by \mid \btheta) \\
+ &= \sum_{j=1}^{N-1} \log p(y_{j+1} \mid y_j, \btheta) \\
+ &= -\sum_{j=1}^{N-1} \Biggl[ \sum_{i=1}^d \frac{1}{2} \log(2 \pi h_j \gamma_i^2) \\
+ &+ \frac{1}{2h_j} (y_{j+1} - y_j - h_j \sum_{k=1}^{\widetilde{M}} \beta_{(k)} H_{(k)}(y_j))^T \Gamma^{-2} (y_{j+1} - y_j - h_j \sum_{\ell=1}^{\widetilde{M}} \beta_{(\ell)} H_{(\ell)}(y_j)) \Biggr].
+\end{align*}
+
+\paragraph{EM.} The EM algorithm consists of two steps, computing the expectation of the log likelihood function (on the completed data) and then maximizing it with respect to the parameters 
 \begin{enumerate}
 \item Start with an initial guess for the parameters, $\btheta^{(0)}$.
 \item For the expectation (or E) step,
@@ -218,18 +248,9 @@ f(x_1, x_2) & = \sum_{m = 0}^{2} \sum_{i+j = 0}^{i+j = m} \zeta_{i,j} \: \psi_{i
 & = \zeta_{0, 0} H_0(x_1)H_0(x_2) + \zeta_{0, 1}H_0(x_1)H_1(x_2) + \zeta_{1, 0}H_1(x_1)H_0(x_2) + \zeta_{0, 2}H_0(x_1)H_2(x_2) \\ & + \zeta_{2, 0}H_2(x_1)H_0(x_2) + \zeta_{1, 1}H_1(x_1)H_1(x_2) + \zeta_{0, 3}H_0(x_1)H_3(x_2) + \zeta_{3, 0} H_3(x_1)H_0(x_2) \\ & + \zeta_{2, 1} H_2(x_1)H_1(x_2) + \zeta_{1, 2} H_1(x_1)H_2(x_2)
 \end{align*}
 
-\section{Expectation Maximization Steps}
-The data provided is in the form of a time series, $X \in \mathbb{R}^d$ at regular time points $t_l, 0 \leq l \leq L$. 
-Note: EM step in the sampling writeup.
-
-\section{Brownian bridge sampling}
-When the inter-observation time of the observed data $X$ is large, the expectation step becomes less accurate. To mitigate this problem, we can fill in the observed data with a Brownian bridge. We generate many samples of the $N-$dimensional Brownian bridge and accept-reject samples using the Metropolis-Hastings algorithm. The approximation of the likelihood is obtained using the Girsanov likelihood function.
-
-\subsection{Brownian bridge}
-The $\mathbb{R}^N$ dimensional Brownian bridge is defined by the integral:
-\begin{equation}
-I(t) = \int_{0}^{t} \dfrac{1 - t}{1 -T} \: \mathrm{d} W(t)
-\end{equation}
-\subsection{Metropolis Algorithm}
+{\small
+\bibliographystyle{abbrvnat}
+\bibliography{results}
+}
 
 \end{document}
