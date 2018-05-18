@@ -164,7 +164,7 @@ We initialize this MCMC algorithm with a Brownian bridge path and use post-burn-
 \begin{equation*}
 \by^{(r)} = \{y_j^{(r)}\}_{j=1}^N,
 \end{equation*}
-where $N = LF + 1$.  By interleaving, we mean that $y_{1 + i F}^{(r)} = x_i$ for $i = 0, 1, \ldots, L$, and that $y_{1 + j + i F}^{(r)} = z_{i, j}$ for $j = 1, 2, \ldots, F-1$ and $i = 0, 1, \ldots, L-1$.  With this notation, we can more easily express the EM algorithm.  Let us assume that we currently have access to $\btheta^{(k)}$, our estimate of the parameters after $k$ iterations.  If $k=0$, we set $\btheta^{(0)}$ equal to an initial guess.  Then we follow two steps
+where $N = LF + 1$.  By interleaving, we mean that $y_{1 + i F}^{(r)} = x_i$ for $i = 0, 1, \ldots, L$, and that $y_{1 + j + i F}^{(r)} = z_{i, j}$ for $j = 1, 2, \ldots, F-1$ and $i = 0, 1, \ldots, L-1$.  With this notation, we can more easily express the EM algorithm.  Let us assume that we currently have access to $\btheta^{(k)}$, our estimate of the parameters after $k$ iterations.  If $k=0$, we set $\btheta^{(0)}$ equal to an initial guess.  Then we follow two steps:
 \begin{enumerate}
 \item For the expectation step, we first generate an ensemble of $R$ diffusion bridge sample paths.  Interleaving as above, this yields $R$ completed time series $\by^{(r)}$ for $r = 1, \ldots, R$.  In what follows, we will use an average over this ensemble to approximate the expected value.  Let $h_j$ denote the elapsed time between observations $y_j$ and $y_{j+1}$.  Using the completed data, the temporal discretization (\ref{eqneuler}) of the SDE, the Markov property, and property (\ref{eqncondden}), we have
 \begin{align}
@@ -180,20 +180,20 @@ Q(\btheta, \btheta^{(k)}) &= \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\b
 \beta^{(k+1)} &= \arg \max_{\beta} Q( (\beta, \gamma^{(k)}), \btheta^{(k)}) \\
 \gamma^{(k+1)} &= \arg \max_{\gamma} Q( (\beta^{(k+1)}, \gamma), \btheta^{(k)})
 \end{align*}
-The maximization over $\beta$ is a least squares problem.  The solution is given by forming the matrix
+The maximization over $\beta$ is a least squares problem.  Reinterpreting $H$ as a matrix, the solution is given by forming the matrix
 \begin{equation}
 \label{eqnestM}
-\mathcal{M}_{k,\ell} = \frac{1}{R} \sum_{r=1}^{R} \sum_{j=1}^N h_j \phi_k^T (y_{j-1}^{(r)}) \Gamma^{-2} \phi_\ell^T (y_{j-1}^{(r)})
+\mathcal{M}_{k,\ell} = \frac{1}{R} \sum_{r=1}^{R} \sum_{n=1}^{N-1} h_n H_{(k)}^T (y_{n}^{(r)}) \Gamma^{-2} H_{(\ell)} (y_{n}^{(r)})
 \end{equation}
 and the vector
 \begin{equation}
 \label{eqnestrho}
-\rho_k = \frac{1}{R} \sum_{r=1}^{R} \sum_{j=1}^N \phi_k^T (y_{j-1}^{(r)}) \Gamma^{-2} (y_j^{(r)} - y_{j-1}^{(r)}).
+\rho_k = \frac{1}{R} \sum_{r=1}^{R} \sum_{n=1}^{N-1} H_{(k)}^T (y_{n}^{(r)}) \Gamma^{-2} (y_{n+1}^{(r)} - y_{n}^{(r)}).
 \end{equation}
 We then solve the system $\mathcal{M} \beta = \rho$ for $\beta$.  Now that we have $\beta$, we maximize over $\gamma$.  The solution can be obtained in closed form
 \begin{equation}
 \label{eqnestgamma}
-\gamma_i^2 = \frac{1}{R N h} \sum_{r=1}^{R} \sum_{j=1}^N (( y_j^{(r)} - y_{j-1}^{(r)} - h \sum_{\ell=1}^M \beta_\ell \phi_\ell (y_{j-1}^{(r)}) ) \cdot e_i )^2
+\gamma_i^2 = \frac{1}{R N} \sum_{r=1}^{R} \sum_{n=1}^{N-1} h_n^{-1} (( y_{n+1}^{(r)} - y_{n}^{(r)} - h_n \sum_{\ell=1}^{\widetilde{M}} \beta_{(\ell)} H_{(\ell)} (y_{n}^{(r)}) ) \cdot e_i )^2
 \end{equation}
 where $e_i$ is the $i^\text{th}$ canonical basis vector in $\mathbb{R}^d$.
 \end{enumerate}
