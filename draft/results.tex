@@ -179,7 +179,7 @@ Q(\btheta, \btheta^{(k)}) &= \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\b
 \item For the M step, we maximize in stages
 \begin{align*}
 \beta^{(k+1)} &= \arg \max_{\beta} Q( (\beta, \gamma^{(k)}), \btheta^{(k)}) \\
-\gamma^{(k+1}) &= \arg \max_{\gamma} Q( (\beta^{(k+1)}, \gamma), \btheta^{(k)})
+\gamma^{(k+1)} &= \arg \max_{\gamma} Q( (\beta^{(k+1)}, \gamma), \btheta^{(k)})
 \end{align*}
 The maximization over $\beta$ is a least squares problem.  The solution is given by forming the matrix
 \begin{equation}
@@ -213,6 +213,7 @@ To study how the EM method performs as a function of noise strength, data volume
 
 To quantify error, we use the Frobenius norm of the difference between estimated $\widetilde{\beta}$ and true $\beta$ matrices
 \begin{equation}
+\label{eqn:frob}
 \varepsilon = \sqrt{\sum_i \| \beta_{(i)} - \widetilde{\beta}_{(i)} \|^2 }
 \end{equation}
 The $\widetilde{\beta}$ coefficients are the Hermite coefficients of the estimated drift vector field $f$.  For each example system, we compute the true Hermite coefficients $\beta$ by multiplying the true ordinary polynomial coefficients by a change-of-basis matrix that is easily computed.
@@ -225,54 +226,58 @@ dX_t = (-1 + X_t + X_t^2 ) dt + \gamma dW_t.
 
 In two dimensions, we use a stochastic Duffing oscillator with no damping or driving:
 \begin{align*}
-dX_{1,t} &= X_{2,t} dt + \gamma_1 dW_{1,t} \\
-dX_{2,t} &= (-X_{1,t} - X^3_1(t)) dt + \gamma_2 dW_{2,t}
+dX_{0,t} &= X_{1,t} dt + \gamma_0 dW_{0,t} \\
+dX_{1,t} &= (-X_{0,t} - X^3_0(t)) dt + \gamma_1 dW_{1,t}
 \end{align*}
-For the three-dimensional case, we consider two different systems.  The first is a stochastic, damped, driven Duffing oscillator:
+For the three-dimensional case, we consider the stochastic, damped, driven Duffing oscillator:
 \begin{align*}
-dX_{1,t} & = X_{2,t} dt + \gamma_1 dW_{1,t} \\
-dX_{2,t} & = (X_{1,t} - X_{1,t}^3 - 0.3 X_{2,t} + 0.5 \cos (X_{3,t})) dt + \gamma_2 dW_{2,t} \\
-dX_{3,t} & = 1.2 dt + \gamma_3 dW_{3,t}
+dX_{0,t} & = X_{1,t} dt + \gamma_0 dW_{0,t} \\
+dX_{1,t} & = (X_{0,t} - X_{0,t}^3 - 0.3 X_{1,t} + 0.5 \cos (X_{2,t})) dt + \gamma_1 dW_{1,t} \\
+dX_{2,t} & = 1.2 dt + \gamma_2 dW_{2,t}
 \end{align*}
-The second is the stochastic Lorenz system
-\begin{align*}
-dX_{1,t} & = 10 (X_{2,t} - X_{1,t}) dt + \gamma_1 dW_{1,t} \\
-dX_{2,t} & = (X_{1,t} (28 - X_{3,t})) dt + \gamma_2 dW_{2,t} \\
-dX_{3,t} & = (X_{1,t} X_{2,t} - (8/3) X_{3,t}) dt + \gamma_3 dW_{3,t}
-\end{align*}
-In what follows, we refer to these systems as the 1$d$, 2$d$, Duffing, and Lorenz systems.
+In what follows, we refer to these systems as the 1D, 2D, and 3D systems.
 
-%Different variations of the number of time series, number of data points, number of sub intervals and amount of noise in the data is used in the following experiments
-
-\paragraph{Experiment 1: Varying Number of Time Series.} Here we vary data volume by stepping the number $S$ of time series from $S=1$ to $S=10$.  Each time series has length $L+1 = 101$.
+\paragraph{Experiment 1: Varying Number of Time Series.} Here we vary data volume by stepping the number $S$ of time series from $S=1$ to $S=10$.  Each time series has length $L+1 = 101$.  The results, as plotted in Figures \ref{fig:exp1drift} and \ref{fig:exp1hermite}, show that increasing $S$ leads to much better estimates of $\beta$.  As a rule of thumb, the results indicate that at least $S \geq 4$ time series are needed for accurate estimation.
 
 \begin{figure}[th]
-\includegraphics[height=1in]{../1dcode/varying_num_timeseries/plots/hermite.eps}
-\includegraphics[height=1in]{../2dcode/varying_num_timeseries/plots/hermite.eps}
-\includegraphics[height=1in]{../3ddampedduffing/varying_num_timeseries/plots/hermite.eps}
-\includegraphics[height=1in]{../3dlorenz/varying_num_timeseries/plots/hermite.eps}
-\caption{Varying number of time series.}
-\label{fig:exp1}
+\begin{center}
+\includegraphics[height=1.4in]{../1dcode/varying_num_timeseries/plots/drift_comparison.eps}\\
+\includegraphics[height=1.4in]{../2dcode/varying_num_timeseries/plots/drift_comparison.eps}\\
+\includegraphics[height=1.4in]{../3ddampedduffing/varying_num_timeseries/plots/drift_comparison.eps}
+\end{center}
+\caption{As we increase the number $S$ of time series used to learn the drift,
+the estimated drift more closely approximates the ground truth.  From top to bottom, we have plotted estimated and true drifts for the 1D, 2D, and 3D systems.  For the 1D and 2D systems, the true drifts depend on only one variable.  For the $dX_{1,t}$ component of the 3D system, we have plotted the dependence of the drifts on $X_0$ only, keeping $X_1$ and $X_2$ fixed at $0$.}
+\label{fig:exp1drift}
 \end{figure}
 
 \begin{figure}[th]
-\includegraphics[height=1in]{../1dcode/varying_num_timeseries/plots/drift_comparison.eps}
-\includegraphics[height=1in]{../2dcode/varying_num_timeseries/plots/drift_comparison.eps}
-\includegraphics[height=1in]{../3ddampedduffing/varying_num_timeseries/plots/drift_comparison.eps}
-\includegraphics[height=1in]{../3dlorenz/varying_num_timeseries/plots/drift_comparison.eps}
-\caption{Varying number of time series.}
-\label{fig:exp1}
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/varying_num_timeseries/plots/hermite.eps}
+\includegraphics[height=1.2in]{../2dcode/varying_num_timeseries/plots/hermite.eps}
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_num_timeseries/plots/hermite.eps}
+\end{center}
+\caption{As we increase the number $S$ of time series used to learn the drift, the Frobenius norm error between estimated and true drifts---see (\ref{eqn:frob})---decreases significantly.  From left to right, we have plotted results for the 1D, 2D, and 3D systems.}
+\label{fig:exp1hermite}
 \end{figure}
 
-\paragraph{Experiment 2: Varying Length of Time Series.} Here we vary data volume by stepping the length $L+1$ of the time series from $L+1 = 11$ to $L+1 = 101$, keeping the number of time series fixed at $S=10$.
+\paragraph{Experiment 2: Varying Length of Time Series.} Here we vary data volume by stepping the length $L+1$ of the time series from $L+1 = 11$ to $L+1 = 101$, keeping the number of time series fixed at $S=10$.  Also note that in this experiment, observation times strictly between the initial and final times are chosen randomly.  In Figure \ref{fig:exp2drift}, we have plotted the estimated and true drifts for only the 3D system.  Compared with Experiment 1, we see that randomization of the observation times improves estimation.  That is, even with $L+1 = 11$ data points per time series, we obtain accurate estimates.
 
 \begin{figure}[th]
-\includegraphics[height=1in]{../1dcode/random_timepoints/plots/hermite.eps}
-\includegraphics[height=1in]{../2dcode/random_timepoints/plots/hermite.eps}
-\includegraphics[height=1in]{../3ddampedduffing/random_timepoints/plots/hermite.eps}
-\includegraphics[height=1in]{../3dlorenz/random_timepoints/plots/hermite.eps}
-\caption{Varying length of time series.}
-\label{fig:exp2}
+\begin{center}
+\includegraphics[height=1.4in]{../3ddampedduffing/random_timepoints/plots/drift_comparison.eps}
+\end{center}
+\caption{We plot true and estimated drifts for the 3D system as a function of increasing time series length $L$.  The three components of the vector field are plotted as in the third row of Figure \ref{fig:exp1drift}.  The results show that randomization of observation times compensates for a small value of $L$, enabling accurate estimation.}
+\label{fig:exp2drift}
+\end{figure}
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/random_timepoints/plots/hermite.eps}
+\includegraphics[height=1.2in]{../2dcode/random_timepoints/plots/hermite.eps}
+\includegraphics[height=1.2in]{../3ddampedduffing/random_timepoints/plots/hermite.eps}
+\end{center}
+\caption{As we increase the length $L$ of each time series used for learning, the Frobenius norm error between estimated and true drifts---see (\ref{eqn:frob})---decreases significantly.  From left to right, we have plotted results for the 1D, 2D, and 3D systems.}
+\label{fig:exp2hermite}
 \end{figure}
 
 \paragraph{Experiment 3: Varying Noise Strength.} Here we vary the noise strength $\gamma$, stepping from $0.5$ to $0.0001$ while keeping other parameters constant.  Specifically, we take $S=10$ time series each of length $L+1 = 101$.
@@ -280,7 +285,6 @@ In what follows, we refer to these systems as the 1$d$, 2$d$, Duffing, and Loren
 \includegraphics[height=1in]{../1dcode/varying_noise/plots/hermite.eps}
 \includegraphics[height=1in]{../2dcode/varying_noise/plots/hermite.eps}
 \includegraphics[height=1in]{../3ddampedduffing/varying_noise/plots/hermite.eps}
-\includegraphics[height=1in]{../3dlorenz/varying_noise/plots/hermite.eps}
 \caption{Varying noise strength.}
 \label{fig:exp2}
 \end{figure}
@@ -291,10 +295,13 @@ Here we vary the number $F$ of interleaved diffusion bridge samples from $F=1$ t
 \includegraphics[height=1in]{../1dcode/varying_subintervals/plots/tp_51/hermite.eps}
 \includegraphics[height=1in]{../2dcode/varying_subintervals/plots/tp_51/hermite.eps}
 \includegraphics[height=1in]{../3ddampedduffing/varying_subintervals/plots/tp_51/hermite.eps}
-\includegraphics[height=1in]{../3dlorenz/varying_subintervals/plots/tp_51/hermite.eps}
 \caption{Varying length of the diffusion bridge.}
 \label{fig:exp2}
 \end{figure}
+
+\section{Conclusion} We have developed an EM algorithm for estimation of drift functions and diffusion matrices for SDE.  We have demonstrated the conditions under which the algorithm succeeds in estimating SDE.  Specifically, our tests show that with enough data volume and data augmentation, the EM algorithm produces highly accurate results.  In future work, we seek to further test our method on high-dimensional, nonlinear problems, problems with non-constant diffusion matrices, and real experimental data.  As we move to higher-dimensional problems, we will also explore regularization and model selection techniques.
+
+\clearpage
 
 {\small
 \bibliographystyle{abbrvnat}
