@@ -1,0 +1,341 @@
+\documentclass{article}
+
+\usepackage[preprint, nonatbib]{nips_2018}
+\usepackage[numbers,sort&compress]{natbib}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{latexsym, caption, subcaption, verbatim}
+\usepackage{graphicx, bm, algorithm, algpseudocode}
+
+\newcommand{\btheta}{\ensuremath{\bm{\theta}}}
+\newcommand{\opdiag}{\ensuremath{\operatorname{diag}}}
+\newcommand{\bx}{\ensuremath{\mathbf{x}}}
+\newcommand{\by}{\ensuremath{\mathbf{y}}}
+\newcommand{\bt}{\ensuremath{\mathbf{t}}}
+\newcommand{\bz}{\ensuremath{\mathbf{z}}}
+
+\title{Learning Stochastic Dynamical Systems via Bridge Sampling}
+\author{
+ Harish~S. Bhat\\
+ Applied Mathematics Unit\\
+ University of California, Merced\\
+ Merced, CA 95343\\
+ \texttt{hbhat@ucmerced.edu} \\
+ \And
+ Shagun Rawat\\
+ Applied Mathematics Unit\\
+ University of California, Merced\\
+ Merced, CA 95343\\
+ \texttt{srawat2@ucmerced.edu}
+}
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+  We develop algorithms to automate discovery of stochastic dynamical system
+  models from noisy, vector-valued time series.  By discovery, we mean 
+  learning both a nonlinear drift vector field and a diagonal diffusion matrix 
+  for an It\^{o} stochastic differential equation in $\mathbb{R}^d$.  We 
+  parameterize the vector field using tensor products of Hermite polynomials,
+  enabling the model to capture highly nonlinear and/or coupled dynamics.
+  We solve the resulting estimation problem using expectation maximization (EM).
+  This involves two steps.  We augment the data via diffusion bridge
+  sampling, with the goal of producing time series observed at a higher
+  frequency than the original data.  With this augmented data,
+  the resulting expected log likelihood maximization problem
+  reduces to a least squares problem.  Through experiments on systems with 
+  dimensions one through three, we show that this EM approach enables 
+  accurate estimation for multiple time series with possibly irregular 
+  observation times.  We study how the EM method performs as a function of
+  the noise level in the data, the volume of data, and the amount of data
+  augmentation performed.  
+\end{abstract}
+
+\section{Introduction}
+\vspace{-1.5ex}
+
+Traditional mathematical modeling in the sciences and engineering often has as its goal the development of equations of motion that describe observed phenomena.  Classically, these equations of motion usually took the form of deterministic systems of ordinary or partial differential equations (ODE or PDE, respectively).  Especially in systems of contemporary interest in biology and finance where intrinsic noise must be modeled, we find stochastic differential equations (SDE) used instead of deterministic ones.  Still, these models are often built from first principles, after which the model's predictions (obtained, for instance, by numerical simulation) are compared against observed data.
+
+Recent years have seen a surge of interest in using data to automate discovery of ODE, PDE, and SDE models.  These machine learning approaches complement traditional modeling efforts, using available data to constrain the space of plausible models, and shortening the feedback loop linking model development to prediction and comparison to real observations.  We posit two additional reasons to develop algorithms to learn SDE models.  First, SDE models---including the models considered here---have the capacity to model highly nonlinear, coupled stochastic systems, including systems whose equilibria are non-Gaussian and/or multimodal.  Second, SDE models often allow for interpretability.  Especially if the terms on the right-hand side of the SDE are expressed in terms of commonly used functions (such as polynomials), we can obtain a qualitative understanding of how the system's variables influence, regulate, and/or mediate one other. 
+
+In this paper, we develop an algorithm to learn SDE models from high-dimensional time series.  To our knowledge, this is the most general expectation maximization (EM) approach to learning an SDE with multidimensional drift vector field and diagonal diffusion matrix.  Prior EM approaches were restricted to one-dimensional SDE \cite{ghahramani_learning_1999}, or used a Gaussian process approximation, linear drift approximation, and approximate maximization \cite{ruttor_approximate_2013}.  To develop our method, we use diffusion bridge sampling as in \cite{van_der_meulen_reversible_2014, meulen_adaptive_2017}, which focused on Bayesian nonparametric methods for SDE in $\mathbb{R}^1$.  After augmenting the data using bridge sampling, we are left with a least-squares problem, generalizing the work of \cite{brunton_discovering_2016} from the ODE to the SDE context.
+
+In the literature, variational Bayesian methods are the only other SDE learning methods that have been tested on high-dimensional problems \cite{vrettas_variational_2015}.  These methods use approximations consisting of linear SDE with time-varying coefficients \cite{archambeau_variational_2008}, kernel density estimates \cite{batz_variational_2016}, or Gaussian processes \cite{batz_approximate_2017}.  In contrast, we parameterize the drift vector field using tensor products of Hermite polynomials; as mentioned above, the resulting SDE has much higher capacity than linear and/or Gaussian process models.
+
+Many other techniques explored in the statistical literature focus on scalar SDE \cite{nicolau_nonparametric_2007, muller_empirical_2010, verzelen_inferring_2012, bhat_nonparametric_2016}.
+
+As mentioned, differential equation discovery problems have attracted considerable recent interest.  A variety of methods have been developed to learn ODE \cite{brunton_discovering_2016, schon_probabilistic_2017, chen_network_2017, tran_exact_2017, schaeffer_extracting_2017, schaeffer_learning_2017, quade_sparse_2018} as well as PDE \cite{schaeffer_sparse_2013, raissi_machine_2017, rudy_data-driven_2017, raissi_hidden_2018}.  Unlike many of these works, we do not focus on model selection and/or regularization; if needed, our methods can be combined with model selection procedures developed in the ODE context \cite{mangan_inferring_2016, mangan_model_2017}.
+
+\section{Problem Setup}
+\vspace{-1.5ex}
+
+Let $W_t$ denote Brownian motion in $\mathbb{R}^d$---informally, an increment $dW_t$ of this process has a multivariate normal distribution with zero mean vector and covariance matrix $I dt$.  Let $X_t$ denote an $\mathbb{R}^d$-valued stochastic process that evolves according to the It\^{o} SDE
+\begin{equation} \label{eqnsde}
+d X_t = f( X_t) dt + \Gamma d W_t.
+\end{equation}
+For rigorous definitions of Brownian motion and SDE, see \cite{bhattacharya_stochastic_2009, oksendal_stochastic_2003}.  The nonlinear vector field $f : \Omega \subset \mathbb{R}^d \to \mathbb{R}^d$ is the \emph{drift} function, and the $d \times d$ matrix $\Gamma$ is the \emph{diffusion} matrix.  To reduce the number of model parameters, we assume $\Gamma = \opdiag \gamma$.
+
+\emph{Our goal is to develop an algorithm that accurately estimates the functional form of $f$ and the vector $\gamma$ from time series data.}
+
+\paragraph{Parameterization.} We parameterize $f$ using Hermite polynomials.  The $n$-th Hermite polynomial takes the form
+\begin{equation}
+\label{eqnhermdef}
+H_n(x) = (\sqrt{2 \pi} n!)^{-1/2} (-1)^n e^{x^2/2} \dfrac{d^n}{dx^n} e^{-x^2/2}
+\end{equation}
+Let $\langle f, g \rangle_w = \int_{\mathbb{R}} f(x) g(x) \exp(-x^2/2) \, dx$ denote a weighted $L^2$ inner product.  Then, $\langle H_i, H_j \rangle_w = \delta_{ij}$, i.e., the Hermite polynomials are orthonormal with respect to the weighted inner product.  In fact, with respect to this inner product, the Hermite polynomials form an orthonormal basis of $L^2_w(\mathbb{R}) = \{ f \,  \, \langle f, f \rangle_w < \infty \}$.
+
+Now let $\alpha = (\alpha_1, \ldots, \alpha_d) \in \mathbb{Z}^d_+$ denote a multi-index.  We use the notation $|\alpha| = \sum_j \alpha_j$ and $x^\alpha = \prod_j (x_j)^{\alpha_j}$ for $x = (x_1, \ldots, x_d) \in \mathbb{R}^d$.  For $x \in \mathbb{R}^d$ and a multi-index $\alpha$, we also define
+\begin{equation}
+\label{eqnhermmultiindex}
+H_\alpha(x) = \prod_{j=1}^d H_{\alpha_j}(x_j).
+\end{equation}
+We write $f(x) = (f_1(x), \ldots f_d(x))$ and then parameterize each component
+\begin{equation}
+\label{eqnparam1}
+f_j(x) = \sum_{m=0}^M \sum_{|\alpha|=m} \beta^j_\alpha H_\alpha(x).
+\end{equation}
+We see that the maximum degree of $H_\alpha(x)$ is $|\alpha|$.  Hence we think of the double sum in (\ref{eqnparam1}) as first summing over degrees and then summing over all terms with a fixed maximum degree.  We say maximum degree because, for instance, $H_2(z) = (z^2-1)/(\sqrt{2 \pi} 2)^{1/2}$ contains both degree $2$ and degree $0$ terms.
+
+There are $\binom{m + d - 1}{d-1}$ possibilities for a $d$-dimensional multi-index $\alpha$ such that $|\alpha| = m$.  Summing this from $m=0$ to $M$, there are $\widetilde{M} = \binom{M+d}{d}$ total multi-indices in the double sum in (\ref{eqnparam1}).  Let $(i)$ denote the $i$-th multi-index according to some ordering.  Then we can write
+\begin{equation}
+\label{eqnparam2}
+f_j(x) = \sum_{i=1}^{\widetilde{M}} \beta^j_{(i)} H_{(i)}(x).
+\end{equation}
+Essentially, we parameterize $f$ using tensor products of Hermite polynomials.
+
+\paragraph{Data.} We consider our data $\bx = \{x_j\}_{j=0}^L$ to be direct observations of $X_t$ at discrete points in time $\bt = \{t_j\}_{t=0}^L$.  Note that these time points do not need to be equispaced.  In the derivation that follows, we will consider the data $(\bt, \bx)$ to be one time series.  Later, we indicate how our methods generalize naturally to multiple time series, i.e., repeated observations of the same system.
+
+To achieve our estimation goal, we apply expectation maximization (EM).  We regard $\bx$ as the incomplete data.  Let $\Delta t = \max_{j} (t_j - t_{j-1})$ be the maximum interobservation spacing.  We think of the missing data $\bz$ as data collected at a time scale $h \ll \Delta t$ fine enough such that the transition density of (\ref{eqnsde}) is approximately Gaussian.  To see how this works, let $\mathcal{N}(\mu, \Sigma)$ denote a multivariate normal with mean vector $\mu$ and covariance matrix $\Sigma$.  Now discretize (\ref{eqnsde}) in time via the Euler-Maruyama method with time step $h > 0$; the result is
+\begin{equation} \label{eqneuler}
+\widetilde{X}_{n+1} = \widetilde{X}_n + f(\widetilde{X}_n) h + h^{1/2} \Gamma Z_{n+1},
+\end{equation}
+where $Z_{n+1} \sim \mathcal{N}(0, I)$ is a standard multivariate normal, independent of $X_n$.  This implies that
+\begin{equation}
+\label{eqncondden}
+(\widetilde{X}_{n+1} | \widetilde{X}_n = v) \sim \mathcal{N}(v + f(v) h, h \Gamma^2).
+\end{equation}
+As $h$ decreases, $\widetilde{X}_{n+1} | \widetilde{X}_n = v$---a Gaussian approximation---will converge to the true transition density $X_{(n+1)h} | X_{nh} = v$, where $X_t$ refers to the solution of (\ref{eqnsde}).
+
+\paragraph{Diffusion Bridge.} To augment or complete the data, we employ diffusion bridge sampling, using a Markov chain Monte Carlo (MCMC) method that goes back to \cite{roberts_inference_2001, papaspiliopoulos_data_2013}.  Let us describe our version here.  We suppose our current estimate of $\btheta = (\beta, \gamma)$ is given.  Define the diffusion bridge process to be (\ref{eqnsde}) conditioned on both the initial value $x_i$ at time $t_i$, and the final value $x_{i+1}$ at time $t_{i+1}$.  The goal is to generate sample paths of this diffusion bridge.  By a sample path, we mean $F-1$ \emph{new} samples $\{z_{i,j}\}_{j=1}^{F-1}$ at times $t_i + j h$ with $h = (t_{i+1} - t_i)/F$.
+
+To generate such a path, we start by drawing a sample from a Brownian bridge with the same diffusion as (\ref{eqnsde}).  That is, we sample from the SDE
+\begin{equation}
+\label{eqnbbridgesde}
+d\widehat{X}_t = \Gamma dW_t
+\end{equation}
+conditioned on $\widehat{X}_{t_i} = x_i$ and $\widehat{X}_{t_{i+1}} = x_{i+1}$.  This Brownian bridge can be described explicitly
+\begin{equation}
+\label{eqnbbridge}
+\widehat{X}_t = \Gamma (W_{t} - W_{t_i}) + x_i - \frac{t - t_i}{t_{i+1} - t_i} (\Gamma (W_{t_{i+1}} - W_{t_i}) + x_{i} - x_{i+1} )
+\end{equation}
+Here $W_0 = 0$ (almost surely), and $W_t - W_s \sim \mathcal{N}(0, (t-s)I)$ for $t > s \geq 0$. 
+
+Let $\mathbb{P}$ denote the law of the diffusion bridge process, and let $\mathbb{Q}$ denote the law of the Brownian bridge (\ref{eqnbbridge}).  Using Girsanov's theorem \cite{papaspiliopoulos_importance_2012}, we can show that
+\begin{equation}
+\label{eqnratio}
+\frac{d \mathbb{P}}{d \mathbb{Q}} = C \exp \left( \int_{t_i}^{t_{i+1}} f(\widehat{X}_s)^T \Gamma^{-2} \, d \widehat{X}_s - \frac{1}{2} \int_{t_i}^{t_{i+1}} f(\widehat{X_s})^T \Gamma^{-2} f(\widehat{X_s}) \, ds \right),
+\end{equation}
+where the constant $C$ depends only on $x_i$ and $x_{i+1}$.  The left-hand side is a Radon-Nikodym derivative, equivalent to a density or likelihood; the ratio of two such likelihoods is the accept/reject ratio in the Metropolis algorithm 
+\cite{stuart_inverse_2010}.
+
+Putting the above pieces together yields the following Metropolis algorithm to generate diffusion bridge sample paths.  Fix $F \geq 2$ and $i \in \{0, \ldots, L-1\}$.  Assume we have stored the previous Metropolis step, i.e., a path $\bz^{(\ell)} = \{z_{i,j}^{(\ell)}\}_{j=1}^{F-1}$.
+\begin{enumerate}
+\item Use (\ref{eqnbbridge}) to generate samples of $\widehat{X}_t$ at times $t_i + j h$, for $j = 1, 2, \ldots, F-1$ and $h = (t_{i+1} - t_i)/F$.  This is the proposal $\bz^\ast = \{z^\ast_{i,j}\}_{j=1}^{F-1}$.
+\item Numerically approximate the integrals in (\ref{eqnratio}) to compute the likelihood of the proposal.  Specifically, we compute
+\begin{multline*}
+p(\bz^\ast)/C = \sum_{j=0}^{F-1} f(z^\ast_{i,j})^T \Gamma^{-2} (z^\ast_{i,j+1} - z^\ast_{i,j}) \\ - \frac{h}{4} \sum_{j=0}^{F-1} \left[ f(z^\ast_{i,j})^T \Gamma^{-2} f(z^\ast_{i,j}) + f(z^\ast_{i,j+1})^T \Gamma^{-2} f(z^\ast_{i,j+1}) \right]
+\end{multline*}
+We have discretized the stochastic $d\widehat{X}_s$ integral using It\^{o}'s definition, and we have discretized the ordinary $ds$ integral using the trapezoidal rule.
+\item Accept the proposal with probability $p(\bz^\ast)/p(\bz^{(\ell)})$---note the factors of $C$ cancel.  If the proposal is accepted, then set $\bz^{(\ell+1)} = \bz^\ast$. Else set $\bz^{(\ell+1)} = \bz^{(\ell)}$.
+\end{enumerate}
+We initialize this MCMC algorithm with a Brownian bridge path and use post-burn-in steps as the diffusion bridge samples we seek. 
+
+\paragraph{Expectation Maximization (EM).} Let us now give details to justify the intuition expressed above, that employing the diffusion bridge to augment the data on a fine scale will enable estimation.  Let $\bz^{(r)} = \{z_{i,j}^{(r)}\}_{j=1}^{F-1}$ be the $r$-th diffusion bridge sample path.  We interleave this sampled data together with the observed data $\bx$ to create the completed time series
+\begin{equation*}
+\by^{(r)} = \{y_j^{(r)}\}_{j=1}^N,
+\end{equation*}
+where $N = LF + 1$.  By interleaving, we mean that $y_{1 + i F}^{(r)} = x_i$ for $i = 0, 1, \ldots, L$, and that $y_{1 + j + i F}^{(r)} = z_{i, j}$ for $j = 1, 2, \ldots, F-1$ and $i = 0, 1, \ldots, L-1$.  With this notation, we can more easily express the EM algorithm.  Let us assume that we currently have access to $\btheta^{(k)}$, our estimate of the parameters after $k$ iterations.  If $k=0$, we set $\btheta^{(0)}$ equal to an initial guess.  Then we follow two steps:
+\begin{enumerate}
+\item For the expectation (E) step, we first generate an ensemble of $R$ diffusion bridge sample paths.  Interleaving as above, this yields $R$ completed time series $\by^{(r)}$ for $r = 1, \ldots, R$.  In what follows, we will use an average over this ensemble to approximate the expected value.  Let $h_j$ denote the elapsed time between observations $y_j$ and $y_{j+1}$.  Using the completed data, the temporal discretization (\ref{eqneuler}) of the SDE, the Markov property, and property (\ref{eqncondden}), we have:
+\begin{align}
+\label{eqnqfun}
+Q(\btheta, \btheta^{(k)}) &= \mathbb{E}_{\bz \mid \bx, \btheta^{(k)}} [\log p(\bx, \bz \mid \btheta)] \\
+ &\approx \frac{1}{R} \sum_{r=1}^R \log p(\by^{(r)} \mid \btheta) \nonumber \\
+ &= \frac{1}{R} \sum_{r=1}^R \sum_{n=1}^{N-1} \log p(y_{n+1}^{(r)} \mid y_n^{(r)}, \btheta) \nonumber \\
+ &= -\frac{1}{R} \sum_{r=1}^R \sum_{n=1}^{N-1} \Biggl[ \sum_{j=1}^d \frac{1}{2} \log(2 \pi h_n \gamma_j^2) \nonumber \\
+ &\qquad + \frac{1}{2h_n} \biggl\| \Gamma^{-1} \Bigl(y_{n+1}^{(r)} - y_n^{(r)} - h_n \sum_{\ell=1}^{\widetilde{M}} \beta_{(\ell)} H_{(\ell)}\bigl(y_n^{(r)}\bigr)\Bigr) \biggr\|_2^2 \Biggr].
+\end{align}
+\item For the maximization (M) step, we carry out:
+\begin{equation*}
+\btheta^{(k+1)} = \arg \max_{\btheta} Q( \btheta, \btheta^{(k)}) 
+\end{equation*}
+Note that $y_j^{(r)} \in \mathbb{R}^d$---we denote the $i$-th component by $y_j^{(r),i}$.  We find $\beta^{(k+1)}$ by solving $\mathcal{M} \beta = \rho$ where $\mathcal{M}$ is the $\widetilde{M} \times \widetilde{M}$ matrix
+\begin{equation}
+\label{eqnestM}
+\mathcal{M}_{k,\ell} = \frac{1}{R} \sum_{r=1}^{R} \sum_{n=1}^{N-1} h_n H_{(k)} (y_{n}^{(r)}) H_{(\ell)} (y_{n}^{(r)}),
+\end{equation}
+and $\rho$ is the $\widetilde{M} \times d$ matrix
+\begin{equation}
+\label{eqnestrho}
+\rho_{k, i} = \frac{1}{R} \sum_{r=1}^{R} \sum_{n=1}^{N-1} H_{(k)} (y_{n}^{(r)}) (y_{n+1}^{(r), i} - y_{n}^{(r), i}).
+\end{equation}
+We find $\gamma^{(k+1)}$ by computing
+\begin{equation}
+\label{eqnestgamma}
+\gamma_i^2 = \frac{1}{R (N-1)} \sum_{r=1}^{R} \sum_{n=1}^{N-1} h_n^{-1} ( y_{n+1}^{(r), i} - y_{n}^{(r), i} - h_n \sum_{\ell=1}^{\widetilde{M}} \beta_{(\ell)}^i H_{(\ell)} (y_{n}^{(r)}) )^2.
+\end{equation}
+Here $\beta_{(\ell)}^i$ denotes the $\ell$-th row and $i$-th column of the $\beta^{(k+1)}$ matrix.  We then set $\btheta^{(k+1)} = (\beta^{(k+1)}, \gamma^{(k+1)})$.
+\end{enumerate}
+We iterate the above two steps until $\| \btheta^{(k+1)} - \btheta^{(k)} \|/\| \btheta^{(k)} \| < \delta$ for some tolerance $\delta > 0$.
+
+When the data consists of multiple time series $\{ \bt^{(i)}, \bx^{(i)} \}_{i=1}^S$, everything scales accordingly.  For instance, we create an ensemble of $R$ diffusion bridge samples for each of the $S$ time series.  If we index the resulting completed time series appropriately, we simply replace $R$ by $RS$ in (\ref{eqnestM}), (\ref{eqnestrho}), and (\ref{eqnestgamma}) and keep everything else the same.
+
+There are three sources of error in the above algorithm.  The first relates to replacing the expectation by a sample average; the induced error should, by the law of large numbers, decrease as $R^{-1/2}$.  The second stems from the approximate nature of the computed diffusion bridge samples---as indicated above, we use numerical integration to approximate the Girsanov likelihood.  The third source of error is in using the Gaussian transition density to approximate the true transition density of the SDE.  Both the second and third sources of error vanish in the $F \to \infty$ limit \cite{kloeden_numerical_2011}.
+
+\section{Experiments}
+\vspace{-1.5ex}
+
+We present a series of increasingly higher-dimensional experiments with synthetic data.  To generate this data, we start with a known stochastic dynamical system of the form (\ref{eqnsde}).  Using Euler-Maruyama time stepping starting from a randomly chosen initial condition, we march forward in time from $t=0$ to a final time $t=10$. 
+
+In all examples, we step forward internally at a time step of $h = 0.0001$, but for the purposes of estimation, we only use data sampled every $0.1$ units of time, discarding 99.9\% of the simulated trajectory.  We use a fine internal time step to reduce, to the extent possible, numerical error in the simulated data.  We save the data on a coarse time scale to test the proposed EM algorithm.
+
+To study how the EM method performs as a function of noise strength, data volume, and data augmentation, we perform four sets of experiments.  When we run EM, we randomly generate the initial guess $\beta^{(0)} \sim \mathcal{N}(\mu=0, \sigma^2=0.5)$.  We set the EM tolerance parameter $\delta = 0.01$.  The only regularization we include is to threshold $\beta$---values less than $0.01$ in absolute value are reset to zero.  Finally, in the MCMC diffusion bridge sampler, we use $10$ burn-in steps and then create an ensemble of size $R=100$.
+
+To quantify the error between the estimated $\widetilde{\beta}$ and the true $\beta$, we apply the Frobenius norm:
+\begin{equation}
+\label{eqn:frob}
+\varepsilon = \sqrt{\sum_i \| \beta_{(i)} - \widetilde{\beta}_{(i)} \|^2 }
+\end{equation}
+The $\widetilde{\beta}$ coefficients are the Hermite coefficients of the estimated drift vector field $f$.  For each example system, we compute the true Hermite coefficients $\beta$ by multiplying the true ordinary polynomial coefficients by a change-of-basis matrix that is easily computed.
+
+We test the method using stochastic systems in dimensions $d= 1, 2, 3$.  In 1D, we use
+\begin{equation*}
+dX_t = (1 + X_t - X_t^2 ) dt + \gamma dW_t.
+\end{equation*}
+
+In 2D, we use a stochastic Duffing oscillator with no damping or driving:
+\begin{equation*}
+dX_{0,t} = X_{1,t} dt + \gamma_0 dW_{0,t}, \qquad
+dX_{1,t} = (-X_{0,t} - X^3_{0,t}) dt + \gamma_1 dW_{1,t}
+\end{equation*}
+For the 3D case, we consider the stochastic, damped, driven Duffing oscillator:
+\begin{align*}
+dX_{0,t} & = X_{1,t} dt + \gamma_0 dW_{0,t} \\
+dX_{1,t} & = (X_{0,t} - X_{0,t}^3 - 0.3 X_{1,t} + 0.5 \cos (X_{2,t})) dt + \gamma_1 dW_{1,t} \\
+dX_{2,t} & = 1.2 dt + \gamma_2 dW_{2,t}
+\end{align*}
+In what follows, we refer to these systems as the 1D, 2D, and 3D systems.
+
+\vspace{-1.5ex}
+\paragraph{Experiment 1: Varying Number of Time Series.} Here we vary data volume by stepping the number $S$ of time series from $S=1$ to $S=10$.  Each time series has length $L+1 = 101$.  The results, as plotted in Figures \ref{fig:exp1drift} and \ref{fig:exp1hermite}, show that increasing $S$ leads to much better estimates of $\beta$.  As a rule of thumb, the results indicate that at least $S \geq 4$ time series are needed for accurate estimation.
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/varying_num_timeseries/plots/drift_comparison.eps} \includegraphics[height=1.2in]{../2dcode/varying_num_timeseries/plots/drift_comparison.eps}\\
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_num_timeseries/plots/drift_comparison.eps}
+\end{center}
+\caption{As we increase the number $S$ of time series used to learn the drift,
+the estimated drift more closely approximates the ground truth.  From top to bottom, left to right, we have plotted estimated and true drifts for the 1D, 2D, and 3D systems.  For the 1D and 2D systems, the true drifts depend on only one variable.  For the $dX_{1,t}$ component of the 3D system, we have plotted the dependence of the drifts on $X_0$ only, keeping $X_1$ and $X_2$ fixed at $0$.}
+\label{fig:exp1drift}
+\end{figure}
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/varying_num_timeseries/plots/hermite.eps}
+\includegraphics[height=1.2in]{../2dcode/varying_num_timeseries/plots/hermite.eps}
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_num_timeseries/plots/hermite.eps}
+\end{center}
+\caption{As we increase the number $S$ of time series used to learn the drift, the Frobenius norm error between estimated and true drifts---see (\ref{eqn:frob})---decreases significantly.  From left to right, we have plotted results for the 1D, 2D, and 3D systems.}
+\label{fig:exp1hermite}
+\end{figure}
+
+\vspace{-1.5ex}
+\paragraph{Experiment 2: Varying Length of Time Series.} Here we vary data volume by stepping the length $L+1$ of the time series from $L+1 = 11$ to $L+1 = 101$, keeping the number of time series fixed at $S=10$.  Also note that in this experiment, observation times strictly between the initial and final times are chosen randomly.  In Figure \ref{fig:exp2drift}, we have plotted the estimated and true drifts for only the 3D system; in Figure \ref{fig:exp2hermite}, we have plotted the error (\ref{eqn:frob}) for all three systems.  Comparing with Experiment 1, we see that randomization of the observation times improves estimation.  That is, even with $L+1 = 11$ data points per time series, we obtain accurate estimates.
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.4in]{../3ddampedduffing/random_timepoints/plots/drift_comparison.eps}
+\end{center}
+\caption{We plot true and estimated drifts for the 3D system as a function of increasing time series length $L$.  The three components of the vector field are plotted as in the third row of Figure \ref{fig:exp1drift}.  The results show that randomization of observation times compensates for a small value of $L$, enabling accurate estimation.}
+\label{fig:exp2drift}
+\end{figure}
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/random_timepoints/plots/hermite.eps}
+\includegraphics[height=1.2in]{../2dcode/random_timepoints/plots/hermite.eps}
+\includegraphics[height=1.2in]{../3ddampedduffing/random_timepoints/plots/hermite.eps}
+\end{center}
+\caption{As we increase the length $L$ of each time series used for learning, the Frobenius norm error between estimated and true drifts---see (\ref{eqn:frob})---decreases significantly.  From left to right, we have plotted results for the 1D, 2D, and 3D systems.}
+\label{fig:exp2hermite}
+\end{figure}
+
+\vspace{-1.5ex}
+\paragraph{Experiment 3: Varying Noise Strength.} Here we vary the noise strength $\gamma$, stepping from $0.5$ to $0.0001$ while keeping other parameters constant.  Specifically, we take $S=10$ time series each of length $L+1 = 101$.  In Figure \ref{fig:exp3hermite}, we have plotted Frobenius errors for all three systems.  Though the error in the estimated coefficients for the 3D system may seem large, the estimated and true drift functions are close---see Figure \ref{fig:exp3drift}.
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/varying_noise/plots/hermite.eps}
+\includegraphics[height=1.2in]{../2dcode/varying_noise/plots/hermite.eps}
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_noise/plots/hermite.eps}
+\end{center}
+\caption{Varying the strength of the noise in the simulated data alters the quality of estimated drift coefficients, quantified using the Frobenius error (\ref{eqn:frob}).  We proceed from left to right.  For the 1D and 2D systems, the maximum noise strength of $0.5$ remains below the magnitude of the drift field coefficients. For these systems, as the noise strength decreases, the error drops close to zero.  For the 3D system, the maximum noise strength of $0.5$ is greater than or equal to two of the drift field coefficients, leading to apparently decreased performance---however, see Figure \ref{fig:exp3drift}.}
+\label{fig:exp3hermite}
+\end{figure}
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.4in]{../3ddampedduffing/varying_noise/plots/drift_comparison.eps}
+\end{center}
+\caption{Though Figure \ref{fig:exp3hermite} shows a Frobenius norm error for the 3D system greater than $\approx 1.8$ at all noise levels, when plotted, the estimated drift functions lie close to the true drift function. The three components of the vector field are plotted as in the third row of Figure \ref{fig:exp1drift}.}
+\label{fig:exp3drift}
+\end{figure}
+
+\vspace{-1.5ex}
+\paragraph{Experiment 4: Varying Data Augmentation.}
+We start with $S = 10$ time series with $L+1 = 51$ points each.  Here we vary the number of interleaved diffusion bridge samples: $F=1, \ldots, 10$.  For $F=1$, no diffusion bridge is created; the likelihood is computed by applying the Gaussian transition density directly to the observed data.  The results, plotted in Figures \ref{fig:exp4hermite} and \ref{fig:exp4drift}, show that increased data augmentation dramatically improves the quality of estimated drifts.  Though the Frobenius error for the 3D system exceeds $2.6$, Figure \ref{fig:exp4drift} shows that EM's estimates are still accurate.
+
+We have not plotted results for the scarce data regime where we have $S=10$ time series with $L=11$ points each.  In this regime, data augmentation enables highly accurate estimation for the 2D and 3D systems.  For the 1D system, the observations do not explore phase space properly, leading to poor estimation of the drift.
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../1dcode/varying_subintervals/plots/tp_51/hermite.eps}
+\includegraphics[height=1.2in]{../2dcode/varying_subintervals/plots/tp_51/hermite.eps}
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_subintervals/plots/tp_51/hermite.eps}
+\end{center}
+\caption{As we increase the length $F$ of the diffusion bridge interleaving observed data points, the quality of estimated drifts improves considerably.  From left to right, we have plotted Frobenius errors (\ref{eqn:frob}) between true and estimated coefficients,for the 1D, 2D, and 3D systems.}
+\label{fig:exp4hermite}
+\end{figure}
+
+\begin{figure}[th]
+\begin{center}
+\includegraphics[height=1.2in]{../3ddampedduffing/varying_subintervals/plots/tp_51/drift_comparison.eps}
+\end{center}
+\caption{Though Figure \ref{fig:exp4hermite} shows a Frobenius norm error for the 3D system greater than $\approx 2.6$ at all noise levels, when plotted, the estimated drift functions lie close to the true drift function. The three components of the vector field are plotted as in the third row of Figure \ref{fig:exp1drift}.}
+\label{fig:exp4drift}
+\end{figure}
+
+\vspace{-1.5ex}
+\section{Conclusion}
+\vspace{-1.5ex}
+
+We have developed an EM algorithm for estimation of drift functions and diffusion matrices for SDE.  We have demonstrated the conditions under which the algorithm succeeds in estimating SDE.  Specifically, our tests show that with enough data volume and data augmentation, the EM algorithm produces highly accurate results.  In future work, we seek to further test our method on high-dimensional, nonlinear problems, problems with non-constant diffusion matrices, and real experimental data.  As we move to higher-dimensional problems, we will also explore regularization and model selection techniques.
+
+\clearpage
+
+{\small
+\bibliographystyle{abbrvnat}
+\bibliography{BhatRawat2018}
+}
+
+\end{document}
