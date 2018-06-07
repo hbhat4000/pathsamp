@@ -1,5 +1,6 @@
 import numpy as np
 import pickle
+from error_plots import error_plots as ep
 from matplotlib import pyplot as plt
 
 # 1) Error plots
@@ -10,46 +11,14 @@ for i in range(1, 11):
     meta_error_list.append((x.shape, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param))
 
 parval = 10
-error_plot = np.zeros((3, parval))
-ts = np.zeros(parval)
+ts_mapping = []
 for i in range(parval):
-    ts[i] = meta_error_list[i][0][0]
-    error_plot[0, i] = meta_error_list[i][6][1]
-    error_plot[1, i] = meta_error_list[i][6][0]
-    error_plot[2, i] = np.sqrt(np.sum(np.square(np.abs(meta_error_list[i][6][4]))))
+    ts_mapping.append(int(meta_error_list[i][0][0]))
 
-# 1a) Error in estimated theta in Hermite space
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(ts, error_plot[0, ])
-plt.title('Frobenius norm error in estimated theta in Hermite space')
-plt.grid()
-ax.set_xticks(ts)
-# ax.set_ylim([0., 1.])
-# ax.set_yticks(np.arange(0., 1.1, 0.1))
-plt.savefig('./varying_num_timeseries/plots/hermite.eps', format = 'eps', bbox_inches='tight')
+exp = 'varying_num_timeseries'
+threshold = np.array([0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
+ep(exp, meta_error_list, parval, ts_mapping, threshold)
 
-# 1b) Error in estimated theta in Ordinary space
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(ts, error_plot[1, ])
-plt.title('Frobenius norm error in estimated theta in Ordinary space')
-plt.grid()
-ax.set_xticks(ts)
-# ax.set_ylim([0., 2.])
-# ax.set_yticks(np.arange(0., 2.1, 0.2))
-plt.savefig('./varying_num_timeseries/plots/ordinary.eps', format = 'eps', bbox_inches='tight')
-
-# 1c) Error in estimated gvec
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(ts, np.abs(error_plot[2, ]))
-plt.title('Frobenius norm error in estimated gvec')
-plt.grid()
-ax.set_xticks(ts)
-# ax.set_ylim([0., 0.05])
-# ax.set_yticks(np.arange(0., 0.06, 0.01))
-plt.savefig('./varying_num_timeseries/plots/gvec.eps', format = 'eps', bbox_inches='tight')
 ###################################################################################################
 
 # 2) Comparison of true drift function vs estimated drift function
@@ -63,10 +32,10 @@ fig = plt.figure()
 ax = fig.gca()
 plt.plot(x1, f(np.array(meta_error_list[0][4].ordinary), x1), 'bo', label='true drift')
 for i in range(parval):
-    plt.plot(x2, f(np.array(meta_error_list[i][3].ordinary), x2), label='num timeseries = '+str(ts[i]))
+    plt.plot(x2, f(np.array(meta_error_list[i][3].ordinary), x2)) #, label='num timeseries = '+str(ts[i]))
 
 plt.axis([-2.0, 5.0, -50.0, 50.0])
-plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
+# plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.title('Comparison of true drift function vs estimated drift functions')
 plt.grid()
 plt.savefig('./varying_num_timeseries/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
