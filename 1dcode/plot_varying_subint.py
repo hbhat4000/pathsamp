@@ -16,8 +16,7 @@ for i in range(parval):
     int_mapping.append(int(meta_error_list[i][7].numsubintervals))
 
 exp = 'varying_subintervals/tp_11'
-threshold = 0.6
-
+threshold = np.array([0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
 ep(exp, meta_error_list, parval, int_mapping, threshold)
 
 ###################################################################################################

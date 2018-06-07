@@ -36,7 +36,7 @@ for i in range(parval):
     tp_mapping.append(int(meta_error_list[i][0][1]))
 
 exp = 'random_timepoints'
-threshold = 0.2
+threshold = np.array([0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
 
 ep(exp, meta_error_list, parval, tp_mapping, threshold)
 

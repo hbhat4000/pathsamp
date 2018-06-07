@@ -2,6 +2,8 @@ import numpy as np
 import pickle
 from matplotlib import pyplot as plt
 import newbridge as nb
+import parameters as prm
+from error_plots import error_plots as ep
 
 # 1) Data used
 for parvalue in range(1, 11):
@@ -38,49 +40,15 @@ for i in range(1, 11):
     meta_error_list.append((x.shape, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param))
 
 parval = meta_error_list[0][0][0]
-error_plot = np.zeros((3, parval))
-numpoints = np.zeros(parval)
-
+tp_mapping = []
 for i in range(parval):
-    numpoints[i] = meta_error_list[i][0][1]
-    # error_plot[0, i] = np.sqrt(np.sum(np.square(np.abs(nb.theta_sparsity(meta_error_list[i][3].hermite) - meta_error_list[i][4].hermite))))
-    # error_plot[1, i] = np.sqrt(np.sum(np.square(np.abs(nb.theta_sparsity(meta_error_list[i][3].ordinary) - meta_error_list[i][4].ordinary))))
-    error_plot[0, i] = meta_error_list[i][6][1]
-    error_plot[1, i] = meta_error_list[i][6][0]
-    error_plot[2, i] = np.sqrt(np.sum(np.square(np.abs(meta_error_list[i][6][4])), axis=0))
+    tp_mapping.append(int(meta_error_list[i][0][1]))
 
-# 2a) Error in estimated theta in Hermite space
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(numpoints, error_plot[0, ])
-plt.title('Frobenius norm error in estimated theta in Hermite space')
-plt.grid()
-ax.set_xticks(numpoints)
-# ax.set_ylim([0., 1.])
-# ax.set_yticks(np.arange(0., 1.1, 0.1))
-plt.savefig('./random_timepoints/plots/hermite.eps', format = 'eps', bbox_inches='tight')
+exp = 'random_timepoints'
+threshold = np.array([0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
 
-# 2b) Error in estimated theta in Ordinary space
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(numpoints, error_plot[1, ])
-plt.title('Frobenius norm error in estimated theta in Ordinary space')
-plt.grid()
-# ax.set_ylim([0., 2.])
-# ax.set_yticks(np.arange(0., 2.1, 0.2))
-ax.set_xticks(numpoints)
-plt.savefig('./random_timepoints/plots/ordinary.eps', format = 'eps', bbox_inches='tight')
+ep(exp, meta_error_list, parval, tp_mapping, threshold)
 
-# 2c) Error in estimated gvec
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(numpoints, error_plot[2, ])
-plt.title('Frobenius norm error in estimated gvec')
-plt.grid()
-ax.set_xticks(numpoints)
-# ax.set_ylim([0., 0.05])
-# ax.set_yticks(np.arange(0., 0.06, 0.01))
-plt.savefig('./random_timepoints/plots/gvec.eps', format = 'eps', bbox_inches='tight')
 ###################################################################################################
 
 # 3) Comparison of true drift function vs estimated drift function
@@ -94,7 +62,7 @@ def index(theta, x):
     y = np.zeros((x.shape[1]))
     index = 0
 
-    for d in range(0, 4):
+    for d in range(0, prm.num_hermite_terms):
         for k in range(0, d + 1):
             for j in range(0, d + 1):
                 for i in range(0, d + 1):

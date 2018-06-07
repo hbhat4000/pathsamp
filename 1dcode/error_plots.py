@@ -11,8 +11,6 @@ def compute_error(estimated, true, errors_computed, threshold):
     errors = []
     estimated = theta_sparsity(estimated, threshold)
     true = theta_sparsity(true, threshold)
-    print(estimated)
-    print(true)
 
     # regression metric
     # L1 norm
@@ -33,7 +31,6 @@ def compute_error(estimated, true, errors_computed, threshold):
     # false negative => true was zero and estimated was non-zero
     FN = np.sum(np.logical_and(true == 0., estimated != 0.))
 
-    print(TP, TN, FP, FN)
     # precision = true positives / total estimated positives {TP / (TP + FP)}
     if (errors_computed[2]):
         errors.append(TP / (TP + FP))

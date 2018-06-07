@@ -13,7 +13,7 @@ for i in range(8):
 parval = 8
 noise_mapping = (0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001)
 exp = 'varying_noise'
-threshold = 0.2
+threshold = np.array([0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
 
 ep(exp, meta_error_list, parval, noise_mapping, threshold)
 
