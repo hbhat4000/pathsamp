@@ -21,8 +21,6 @@ for test in test_names:
 		meta_list.append((errors, x.shape, em_param, sim_param))
 	test_list.append(meta_list)
 
-# wfile = open('tables_results.txt', 'w')
-
 # 1) Hermite errors
 print('\n ####################################################################################### \n')
 print('1) Hermite errors')

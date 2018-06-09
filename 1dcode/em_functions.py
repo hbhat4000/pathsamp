@@ -2,6 +2,7 @@ import numpy as np
 import parameters as prm
 from polynomial_functions import hermite_basis as hermite_basis
 from joblib import Parallel, delayed
+from sklearn import linear_model
 
 # comparing EM with bridge sampling against vanilla lasso regression
 def comparison(x, threshold, method_type = 'lasso'):

@@ -1,25 +1,28 @@
 import numpy as np
 import pickle
-from matplotlib import pyplot as plt
-import newbridge as nb
-import parameters as prm
 from error_plots import error_plots as ep
+from matplotlib import pyplot as plt
 
 # 1) Error plots
 meta_error_list = []
 for i in range(1, 11):
-    with open('./varying_subintervals/tp_51/subint_' + str(i) + '.pkl','rb') as f:
-        x, t, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
-    meta_error_list.append((x.shape, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param))
+    with open('./varying_subintervals/tp_11/subint_' + str(i) + '.pkl','rb') as f:
+        x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
+    meta_error_list.append((x.shape, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param))
 
 parval = 10
 int_mapping = []
-for i in range(parval):
-    int_mapping.append(int(meta_error_list[i][7].numsubintervals))
+hermite_errors = []
+ordinary_errors = []
 
-exp = 'varying_subintervals/tp_51'
-threshold = np.array([0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
-ep(exp, meta_error_list, parval, int_mapping, threshold)
+for i in range(parval):
+    int_mapping.append(int(meta_error_list[i][6].numsubintervals))
+    hermite_errors.append(meta_error_list[i][5])
+    ordinary_errors.append(meta_error_list[i][4])
+
+exp = 'varying_subintervals/tp_11'
+threshold = meta_error_list[0][3]
+ep(exp, hermite_errors, ordinary_errors, parval, int_mapping, threshold)
 
 ###################################################################################################
 
@@ -54,15 +57,15 @@ fig.set_figheight(5)
 titles = [r'$x_0$', r'$x_1$']
 
 for i in range(parval):
-    f2 = f(np.array(meta_error_list[i][3].ordinary), x2)
-    f1 = f(np.array(meta_error_list[i][4].ordinary), x1)
-    y_vals_2 = [f2[0, :], f2[1, :]]
-    y_vals_1 = [f1[0, :], f1[1, :]]
+    f_true = f(np.array(meta_error_list[i][2].ordinary), x_true)
+    f_est = f(np.array(meta_error_list[i][1].ordinary), x_est)
+    y_vals_true = [f_true[0, :], f_true[1, :]]
+    y_vals_est = [f_est[0, :], f_est[1, :]]
 
-    for ax, title, y1, y2 in zip(axes.flat, titles, y_vals_1, y_vals_2):
+    for ax, title, y_true, y_est in zip(axes.flat, titles, y_vals_true, y_vals_est):
         if (i == 0): 
-            ax.plot(x1[0, :], y1, 'bo', label='true drift')
-        ax.plot(x2[0, :], y2, label='num subintervals = '+str(meta_error_list[i][7].numsubintervals))
+            ax.plot(x_true[0, :], y_true, 'bo', label='true drift')
+        ax.plot(x_est[0, :], y_est, label='num subintervals = '+str(meta_error_list[i][6].numsubintervals))
         ax.set_title(title)
         ax.grid(True)
         ax.set_xticks(np.arange(-2, 3, 1))

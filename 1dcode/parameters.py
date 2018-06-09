@@ -1,12 +1,9 @@
 import numpy as np
-import data_creation as dc
 import polynomial_functions as pfn
-
-def choose(degree, dim):
-	return np.math.factorial(degree) / (np.math.factorial(dim) * np.math.factorial(degree - dim))
+import scipy.special
 
 def find_dof(degree, dim):
-	return int(choose(degree + dim - 1, dim))
+	return int(scipy.special.binom(degree + dim - 1, dim))
 
 num_hermite_terms = 4
 dim = 1
