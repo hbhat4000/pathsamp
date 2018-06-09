@@ -14,12 +14,14 @@ parval = 8
 noise_mapping = (0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001)
 exp = 'varying_noise'
 threshold = meta_error_list[0][3]
-hermite_errors = []
-ordinary_errors = []
+hermite_errors = np.zeros((threshold.shape[0], 6, parval))
+ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
 
-for i in range(parval):
-    hermite_errors.append(meta_error_list[i][5])
-    ordinary_errors.append(meta_error_list[i][4])
+for th in range(threshold.shape[0]):
+	for fn in range(6):
+		for val in range(parval):
+			hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
+			ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
 
 ep(exp, hermite_errors, ordinary_errors, parval, noise_mapping, threshold)
 
