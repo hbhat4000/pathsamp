@@ -12,13 +12,18 @@ for i in range(1, 11):
 
 parval = 10
 ts_mapping = []
-hermite_errors = []
-ordinary_errors = []
 
 for i in range(parval):
     ts_mapping.append(int(meta_error_list[i][0][0]))
-    hermite_errors.append(meta_error_list[i][5])
-    ordinary_errors.append(meta_error_list[i][4])
+
+hermite_errors = np.zeros((threshold.shape[0], 6, parval))
+ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
+
+for th in range(threshold.shape[0]):
+	for fn in range(6):
+		for val in range(parval):
+			hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
+			ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
 
 exp = 'varying_num_timeseries'
 threshold = meta_error_list[0][3]

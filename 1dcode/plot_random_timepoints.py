@@ -19,7 +19,7 @@ for i in range(1, 11):
         plt.plot(t[j, :], x[j, :, 0], label='initial condition ' + str(euler_param.ic[j]))
 
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-    plt.title('Observed data used for random time point experiments, number of time steps = ' + str(parvalue*10+1))
+    plt.title('Observed data used for random time point experiments, number of time steps = ' + str(i*10+1))
     plt.grid()
     plt.savefig('./random_timepoints/plots/rand_' + str(i*10+1) + '.eps', format = 'eps', bbox_inches='tight')
 
@@ -28,13 +28,18 @@ for i in range(1, 11):
 # 2) Error plots
 parval = meta_error_list[0][0][0]
 tp_mapping = []
-hermite_errors = []
-ordinary_errors = []
 
 for i in range(parval):
     tp_mapping.append(int(meta_error_list[i][0][1]))
-    hermite_errors.append(meta_error_list[i][5])
-    ordinary_errors.append(meta_error_list[i][4])
+
+hermite_errors = np.zeros((threshold.shape[0], 6, parval))
+ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
+
+for th in range(threshold.shape[0]):
+    for fn in range(6):
+        for val in range(parval):
+            hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
+            ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
 
 exp = 'random_timepoints'
 threshold = meta_error_list[0][3]

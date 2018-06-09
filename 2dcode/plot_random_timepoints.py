@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 from error_plots import error_plots as ep
 from matplotlib import pyplot as plt
+import parameters as prm
 
 # 1) Data used
 meta_error_list = []
@@ -36,13 +37,18 @@ for i in range(1, 11):
 # 2) Error plots
 parval = meta_error_list[0][0][0]
 tp_mapping = []
-hermite_errors = []
-ordinary_errors = []
 
 for i in range(parval):
     tp_mapping.append(int(meta_error_list[i][0][1]))
-    hermite_errors.append(meta_error_list[i][5])
-    ordinary_errors.append(meta_error_list[i][4])
+
+hermite_errors = np.zeros((threshold.shape[0], 6, parval))
+ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
+
+for th in range(threshold.shape[0]):
+    for fn in range(6):
+        for val in range(parval):
+            hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
+            ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
 
 exp = 'random_timepoints'
 threshold = meta_error_list[0][3]
@@ -73,8 +79,8 @@ def index(theta, x):
 
 x_sparse = np.arange(-2.0, 2.0, 0.5)
 x_dense = np.arange(-2.0, 2.0, 0.1)
-x1 = np.array((x_sparse, x_sparse))
-x2 = np.array((x_dense, x_dense))
+x_true = np.array((x_sparse, x_sparse))
+x_est = np.array((x_dense, x_dense))
 
 fig, axes = plt.subplots(nrows=1, ncols=2, sharex=True)
 fig.set_figwidth(15)

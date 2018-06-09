@@ -2,25 +2,31 @@ import numpy as np
 import pickle
 from error_plots import error_plots as ep
 from matplotlib import pyplot as plt
+import parameters as prm
 
 # 1) Error plots
 meta_error_list = []
 for i in range(1, 11):
-    with open('./varying_subintervals/tp_11/subint_' + str(i) + '.pkl','rb') as f:
+    with open('./varying_subintervals/tp_51/subint_' + str(i) + '.pkl','rb') as f:
         x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
     meta_error_list.append((x.shape, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param))
 
 parval = 10
 int_mapping = []
-hermite_errors = []
-ordinary_errors = []
 
 for i in range(parval):
     int_mapping.append(int(meta_error_list[i][6].numsubintervals))
-    hermite_errors.append(meta_error_list[i][5])
-    ordinary_errors.append(meta_error_list[i][4])
 
-exp = 'varying_subintervals/tp_11'
+hermite_errors = np.zeros((threshold.shape[0], 6, parval))
+ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
+
+for th in range(threshold.shape[0]):
+    for fn in range(6):
+        for val in range(parval):
+            hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
+            ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
+
+exp = 'varying_subintervals/tp_51'
 threshold = meta_error_list[0][3]
 ep(exp, hermite_errors, ordinary_errors, parval, int_mapping, threshold)
 
@@ -48,8 +54,8 @@ def index(theta, x):
 
 x_sparse = np.arange(-2.0, 2.0, 0.5)
 x_dense = np.arange(-2.0, 2.0, 0.1)
-x1 = np.array((x_sparse, x_sparse))
-x2 = np.array((x_dense, x_dense))
+x_true = np.array((x_sparse, x_sparse))
+x_est = np.array((x_dense, x_dense))
 
 fig, axes = plt.subplots(nrows=1, ncols=2, sharex=True)
 fig.set_figwidth(15)

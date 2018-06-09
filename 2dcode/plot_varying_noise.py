@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 from error_plots import error_plots as ep
 from matplotlib import pyplot as plt
+import parameters as prm
 
 # 1) Error plots
 meta_error_list = []
@@ -49,8 +50,8 @@ def index(theta, x):
 
 x_sparse = np.arange(-2.0, 2.0, 0.5)
 x_dense = np.arange(-2.0, 2.0, 0.1)
-x1 = np.array((x_sparse, x_sparse))
-x2 = np.array((x_dense, x_dense))
+x_true = np.array((x_sparse, x_sparse))
+x_est = np.array((x_dense, x_dense))
 
 fig, axes = plt.subplots(nrows=1, ncols=2, sharex=True)
 fig.set_figwidth(15)
