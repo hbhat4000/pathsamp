@@ -1,10 +1,10 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q std.q
+#$ -q appliedmath.q
 #$ -cwd
 #$ -N EM_sint_1d
 #$ -t 1-10
-#$ -tc 10
+#$ -tc 1
 #$ -j y
 #$ -o ./varying_subintervals/em.qlog
 #$ -l mem_free=64G

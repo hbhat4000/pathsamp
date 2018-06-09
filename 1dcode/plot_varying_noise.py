@@ -7,15 +7,21 @@ from matplotlib import pyplot as plt
 meta_error_list = []
 for i in range(8):
     with open('./varying_noise/noise_' + str(i) + '.pkl','rb') as f:
-        x, t, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
-    meta_error_list.append((x.shape, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param))
+        x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
+    meta_error_list.append((x.shape, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, sim_param))
 
 parval = 8
 noise_mapping = (0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001)
 exp = 'varying_noise'
-threshold = np.array([0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
+threshold = meta_error_list[0][3]
+hermite_errors = []
+ordinary_errors = []
 
-ep(exp, meta_error_list, parval, noise_mapping, threshold)
+for i in range(parval):
+    hermite_errors.append(meta_error_list[i][5])
+    ordinary_errors.append(meta_error_list[i][4])
+
+ep(exp, hermite_errors, ordinary_errors, parval, noise_mapping, threshold)
 
 ################################################################################################
 
@@ -28,9 +34,9 @@ x2 = np.arange(-2.0, 5.0, 0.1)
 
 fig = plt.figure()
 ax = fig.gca()
-plt.plot(x1, f(np.array(meta_error_list[0][4].ordinary), x1), 'bo', label='true drift')
+plt.plot(x1, f(np.array(meta_error_list[0][2].ordinary), x1), 'bo', label='true drift')
 for i in range(parval):
-    plt.plot(x2, f(np.array(meta_error_list[i][3].ordinary), x2), label='noise = '+str(meta_error_list[i][10].gvec[0]))
+    plt.plot(x2, f(np.array(meta_error_list[i][1].ordinary), x2), label='noise = '+str(meta_error_list[i][6].gvec[0]))
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.title('Comparison of true drift function vs estimated drift functions')

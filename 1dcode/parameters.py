@@ -1,6 +1,6 @@
 import numpy as np
 import data_creation as dc
-import newbridge as nb
+import polynomial_functions as pfn
 
 def choose(degree, dim):
 	return np.math.factorial(degree) / (np.math.factorial(dim) * np.math.factorial(degree - dim))
@@ -47,11 +47,7 @@ class theta_transformations:
 	def __init__(self, theta, theta_type=None):
 		if theta_type is 'ordinary':
 			self.ordinary = theta
-			self.hermite = nb.ordinary_to_hermite(theta)
-			self.sparse_ordinary = nb.theta_sparsity(self.ordinary)
-			self.sparse_hermite = nb.theta_sparsity(self.hermite)
+			self.hermite = pfn.ordinary_to_hermite(theta)
 		if theta_type is 'hermite':
-			self.ordinary = nb.hermite_to_ordinary(theta)
+			self.ordinary = pfn.hermite_to_ordinary(theta)
 			self.hermite = theta
-			self.sparse_ordinary = nb.theta_sparsity(self.ordinary)
-			self.sparse_hermite = nb.theta_sparsity(self.hermite)
