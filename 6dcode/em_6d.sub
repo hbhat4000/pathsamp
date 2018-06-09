@@ -2,11 +2,9 @@
 #$ -S /bin/bash
 #$ -q appliedmath.q
 #$ -cwd
-#$ -N EM_noise_6d
-#$ -t 1-8
-#$ -tc 1
+#$ -N EM_6d
 #$ -j y
-#$ -o ./varying_noise/em.qlog
+#$ -o em_6d.qlog
 #$ -l mem_free=64G
 #
 # This submission file will run a simple set of commands. All stdout will
@@ -17,5 +15,4 @@
 # run. For more info on this script, cat /usr/local/bin/merced_node_print.
 #
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/hbhat/lib64:/home/hbhat/lib
-/home/hbhat/anaconda3/bin/python EM_noise.py
-
+/home/hbhat/anaconda3/bin/python EM_6d.py
