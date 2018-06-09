@@ -4,7 +4,7 @@
 #$ -cwd
 #$ -N EM_2d
 #$ -j y
-#$ -o ./varying_noise/em_2d.qlog
+#$ -o em_2d.qlog
 #$ -l mem_free=64G
 #
 # This submission file will run a simple set of commands. All stdout will

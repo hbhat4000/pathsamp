@@ -1,6 +1,6 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q std.q
+#$ -q gpu.q
 #$ -cwd
 #$ -N data_1d
 #$ -t 1-8

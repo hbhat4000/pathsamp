@@ -1,6 +1,6 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q appliedmath.q
+#$ -q std.q
 #$ -cwd
 #$ -N EM_sint_2d
 #$ -t 1-10

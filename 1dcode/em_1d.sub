@@ -2,7 +2,7 @@
 #$ -S /bin/bash
 #$ -q appliedmath.q
 #$ -cwd
-#$ -N EM_sint_1d
+#$ -N EM_1d
 #$ -j y
 #$ -o em_1d.qlog
 #$ -l mem_free=64G

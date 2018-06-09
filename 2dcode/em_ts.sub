@@ -1,6 +1,6 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q appliedmath.q
+#$ -q gpu.q
 #$ -cwd
 #$ -N EM_ts_2d
 #$ -t 1-10
