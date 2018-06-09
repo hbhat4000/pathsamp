@@ -44,11 +44,11 @@ error_list, theta_list, gammavec_list = em(x, t, em_param, data_param)
 estimated_theta = prm.theta_transformations(theta=theta_list[-1], theta_type='hermite')
 true_theta = prm.theta_transformations(theta=dc.true_theta(sim_param), theta_type='ordinary')
 
-print("\n Estimated ordinary: ", np.transpose(estimated_theta.ordinary), "\n Estimated hermite: ", np.transpose(estimated_theta.hermite))
+print("\n Estimated ordinary: ", np.transpose(estimated_theta.ordinary), "\n True ordinary: ", np.transpose(true_theta.ordinary))
 
-print("True ordinary: ", np.transpose(true_theta.ordinary), "\n True hermite: ", np.transpose(true_theta.hermite))
+print("\n Estimated hermite: ", np.transpose(estimated_theta.hermite), "\n True hermite: ", np.transpose(true_theta.hermite))
 
-thresold = np.array([0., 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
+threshold = np.array([0., 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
 ordinary_errors = []
 hermite_errors = []
 for th in threshold:

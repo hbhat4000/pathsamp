@@ -47,7 +47,9 @@ def index_mapping():
     for d in range(0, prm.num_hermite_terms):
         for i in range(0, d + 1):
             if (i == d):
-                index_set = (i)
+                # fix for the 1d tuple. it should be just (i) but that is not scriptable, so (i, 0)
+                # just to make it scriptable for the 1d case
+                index_set = (i, 0.)
                 index_map[index_set] = index
                 index += 1
 

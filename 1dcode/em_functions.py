@@ -108,9 +108,9 @@ def mcmc(allx, allt, d_param, em_param, path_index, step_index):
 
         samples = xcur
         pp = hermite_basis(samples[:(-1)])
-        mmat = mmat + tdiff * np.matmul(pp.T, pp) / em_param.mcmcpaths
-        rvec = rvec + np.matmul((np.diff(samples, axis = 0)).T, pp) / em_param.mcmcpaths
-        gammavec = gammavec + np.sum(np.square(np.diff(samples, axis = 0) - tdiff * np.matmul(Hmat, d_param.theta)), axis = 0) / (tdiff * em_param.mcmcpaths * em_param.numsubintervals * (allx.shape[1] - 1))
+        mmat += tdiff * np.matmul(pp.T, pp) / em_param.mcmcpaths
+        rvec += np.matmul((np.diff(samples, axis = 0)).T, pp) / em_param.mcmcpaths
+        gammavec += np.sum(np.square(np.diff(samples, axis = 0) - tdiff * np.matmul(pp, d_param.theta)), axis = 0) / (tdiff * em_param.mcmcpaths * (em_param.numsubintervals * (allx.shape[1] - 1) + 1))
 
     meanSample = np.mean(arsamp)
     
