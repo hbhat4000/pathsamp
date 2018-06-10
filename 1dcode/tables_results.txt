@@ -1,7 +1,0 @@
-
- ####################################################################################### 
-1) Hermite errors 
-1a) Error comparison for varying time points 
-1b) Error comparison for varying number of subintervals 
-1c) Error comparison for varying number of time series 
-1d) Error comparison for varying noise 
