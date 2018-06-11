@@ -85,4 +85,4 @@ for i in range(parval):
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./varying_subintervals/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_subintervals/tp_11/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')

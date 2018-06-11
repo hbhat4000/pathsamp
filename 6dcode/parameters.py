@@ -5,9 +5,53 @@ import scipy.special
 def find_dof(degree, dim):
 	return int(scipy.special.binom(degree + dim - 1, dim))
 
+def index_mapping(terms):
+    index = 0
+    index_map = {}
+
+    for d in range(0, terms):
+        for n in range(0, d + 1):
+            for m in range(0, d + 1):
+                for l in range(0, d + 1):
+                    for k in range(0, d + 1):
+                        for j in range(0, d + 1):
+                            for i in range(0, d + 1):
+                                if (i + j + k + l + m + n == d):
+                                    index_set = (i, j, k, l, m, n)
+                                    index_map[index_set] = index
+                                    index += 1
+
+    return index_map
+
+def h2o_simple_transformation(terms):
+    mat = np.zeros((terms, terms))
+    mat[0, 0] = 0.63161877774606470129
+    mat[1, 1] = 0.63161877774606470129
+    mat[2, 2] = 0.44662192086900116570
+    mat[0, 2] = -mat[2, 2]
+    mat[3, 3] = 0.25785728623970555997
+    mat[1, 3] = -3 * mat[3, 3]
+
+    return mat
+
+# for the dim-dimensional, terms-hermite terms case, creating the transformation matrix for
+# any index mapping provided
+def h2o_transformation_matrix(dim, dof, index_map, h2o_mat):
+    transformation = np.full((dof, dof), 1.)
+
+    for row_index in index_map:
+        for col_index in index_map:
+            for d in range(dim):
+                transformation[index_map[row_index], index_map[col_index]] *= h2o_mat[row_index[d], col_index[d]]
+                
+    return transformation
+
 num_hermite_terms = 4
 dim = 6
 dof = find_dof(num_hermite_terms, dim)
+index_map = index_mapping(num_hermite_terms)
+h2o_mat = h2o_simple_transformation(num_hermite_terms)
+transformation = h2o_transformation_matrix(dim, dof, index_map, h2o_mat)
 
 class em:
     def __init__(self, tol, burninpaths, mcmcpaths, numsubintervals, niter, dt):

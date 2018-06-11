@@ -4,11 +4,10 @@ import parameters as prm
 # defines polynomial basis functions {1, x, x^2, x^3}
 def polynomial_basis(x):
     theta = np.full((x.shape[0], prm.dof), 1.)
-    index_map = index_mapping()
 
-    for index in index_map:
+    for index in prm.index_map:
         for d in range(prm.dim):
-            theta[:, index_map[index]] *= np.power(x[:, d], index[d])
+            theta[:, prm.index_map[index]] *= np.power(x[:, d], index[d])
 
     return theta
 
@@ -28,71 +27,26 @@ def H(x, degree):
 # dof is the number of degrees of freedom, i.e., the number of basis functions.
 def hermite_basis(x):
     theta = np.full((x.shape[0], prm.dof), 1.)
-    index_map = index_mapping()
 
     Hcached = np.zeros((x.shape[0], x.shape[1], prm.num_hermite_terms))
     for d in range(prm.num_hermite_terms):
         Hcached[:, :, d] = H(x, d)
 
-    for index in index_map:
+    for index in prm.index_map:
         for d in range(prm.dim):
-            theta[:, index_map[index]] *= Hcached[:, d, index[d]]
+            theta[:, prm.index_map[index]] *= Hcached[:, d, index[d]]
 
     return theta
 
-def index_mapping():
-    index = 0
-    index_map = {}
-
-    for d in range(0, prm.num_hermite_terms):
-        for n in range(0, d + 1):
-            for m in range(0, d + 1):
-                for l in range(0, d + 1):
-                    for k in range(0, d + 1):
-                        for j in range(0, d + 1):
-                            for i in range(0, d + 1):
-                                if (i + j + k + l + m + n == d):
-                                    index_set = (i, j, k, l, m, n)
-                                    index_map[index_set] = index
-                                    index += 1
-
-    return index_map
-
-def h2o_simple_transformation():
-    mat = np.zeros((prm.num_hermite_terms, prm.num_hermite_terms))
-    mat[0, 0] = 0.63161877774606470129
-    mat[1, 1] = 0.63161877774606470129
-    mat[2, 2] = 0.44662192086900116570
-    mat[0, 2] = -mat[2, 2]
-    mat[3, 3] = 0.25785728623970555997
-    mat[1, 3] = -3 * mat[3, 3]
-
-    return mat
-
-# for the dim-dimensional, terms-hermite terms case, creating the transformation matrix for
-# any index mapping provided
-def h2o_transformation_matrix():
-    transformation = np.full((prm.dof, prm.dof), 1.)
-    index_map = index_mapping()
-    mat = h2o_simple_transformation()
-
-    for row_index in index_map:
-        for col_index in index_map:
-            for d in range(prm.dim):
-                transformation[index_map[row_index], index_map[col_index]] *= mat[row_index[d], col_index[d]]
-                
-    return transformation
-
 # converting theta is hermite space to ordianry space using the transformation matrix
 def hermite_to_ordinary(theta):
-    transformation = h2o_transformation_matrix() 
-    ordinary_theta = np.matmul(transformation, theta)
+    ordinary_theta = np.matmul(prm.transformation, theta)
     return ordinary_theta
 
 # converting theta is ordinary space to hermite space using the inverse of transformation matrix
 def ordinary_to_hermite(theta):
-    transformation = np.linalg.inv(h2o_transformation_matrix())
-    hermite_theta = np.matmul(transformation, theta)
+    inv_transformation = np.linalg.inv(prm.transformation)
+    hermite_theta = np.matmul(inv_transformation, theta)
     return hermite_theta
 
 # hard thresholding for theta using a threshold

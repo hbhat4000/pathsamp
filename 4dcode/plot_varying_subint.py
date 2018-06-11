@@ -1,62 +1,35 @@
 import numpy as np
 import pickle
-import newbridge as nb
+from error_plots import error_plots as ep
 from matplotlib import pyplot as plt
+import parameters as prm
 
 # 1) Error plots
 meta_error_list = []
 for i in range(1, 11):
-    with open('./varying_subintervals/tp_51/subint_' + str(i) + '.pkl','rb') as f:
-        x, t, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
-    meta_error_list.append((x.shape, error_list, theta_list, estimated_theta, true_theta, inferred_gvec, errors, em_param, data_param, euler_param, sim_param))
+    with open('./varying_subintervals/tp_11/subint_' + str(i) + '.pkl','rb') as f:
+        x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
+    meta_error_list.append((x.shape, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param))
 
 parval = 10
-error_plot = np.zeros((3, parval))
-noise = np.zeros(parval)
+int_mapping = []
 
 for i in range(parval):
-    noise[i] = i
-    error_plot[0, i] = meta_error_list[i][6][1]
-    error_plot[1, i] = meta_error_list[i][6][0]
-    error_plot[2, i] = np.sqrt(np.sum(np.square(np.abs(meta_error_list[i][6][4])), axis=0))
+    int_mapping.append(int(meta_error_list[i][6].numsubintervals))
 
-noise_mapping = (0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001)
+hermite_errors = np.zeros((threshold.shape[0], 6, parval))
+ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
 
-# 1a) Error in estimated theta in Hermite space
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(noise, error_plot[0, ])
-plt.title('Frobenius norm error in estimated theta in Hermite space')
-plt.grid()
-ax.set_xticks(noise)
-plt.xticks(noise, noise_mapping)
-# ax.set_ylim([0., 1.])
-# ax.set_yticks(np.arange(0., 1.1, 0.1))
-plt.savefig('./varying_subintervals/plots/tp_51/hermite.eps', format = 'eps', bbox_inches='tight')
+for th in range(threshold.shape[0]):
+    for fn in range(6):
+        for val in range(parval):
+            hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
+            ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
 
-# 1b) Error in estimated theta in Ordinary space
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(noise, error_plot[1, ])
-plt.title('Frobenius norm error in estimated theta in Ordinary space')
-plt.grid()
-ax.set_xticks(noise)
-# ax.set_ylim([0., 2.])
-# ax.set_yticks(np.arange(0., 2.1, 0.2))
-plt.xticks(noise, noise_mapping)
-plt.savefig('./varying_subintervals/plots/tp_51/ordinary.eps', format = 'eps', bbox_inches='tight')
+exp = 'varying_subintervals/tp_11'
+threshold = meta_error_list[0][3]
+ep(exp, hermite_errors, ordinary_errors, parval, int_mapping, threshold)
 
-# 1c) Error in estimated gvec
-fig = plt.figure()
-ax = fig.gca()
-plt.plot(noise, error_plot[2, ])
-plt.title('Frobenius norm error in estimated gvec')
-plt.grid()
-ax.set_xticks(noise)
-plt.xticks(noise, noise_mapping)
-# ax.set_ylim([0., 0.05])
-# ax.set_yticks(np.arange(0., 0.06, 0.01))
-plt.savefig('./varying_subintervals/plots/tp_51/gvec.eps', format = 'eps', bbox_inches='tight')
 ###################################################################################################
 
 # 2) Comparison of true drift function vs estimated drift function
@@ -83,24 +56,24 @@ def index(theta, x):
 
 x_sparse = np.arange(-2.0, 2.0, 0.5)
 x_dense = np.arange(-2.0, 2.0, 0.1)
-x1 = np.array((x_sparse, x_sparse, x_sparse, x_sparse))
-x2 = np.array((x_dense, x_dense, x_dense, x_dense))
+x_true = np.array((x_sparse, x_sparse, x_sparse, x_sparse))
+x_est = np.array((x_dense, x_dense, x_dense, x_dense))
 
 fig, axes = plt.subplots(nrows=2, ncols=2, sharex=True)
-fig.set_figwidth(15)
+fig.set_figwidth(20)
 fig.set_figheight(10)
 titles = [r'$x_0$', r'$x_1$', r'$x_2$', r'$x_3$']
 
 for i in range(parval):
-    f2 = f(np.array(meta_error_list[i][3].ordinary), x2)
-    f1 = f(np.array(meta_error_list[i][4].ordinary), x1)
-    y_vals_2 = [f2[0, :], f2[1, :], f2[2, :], f2[3, :]]
-    y_vals_1 = [f1[0, :], f1[1, :], f1[2, :], f1[3, :]]
+    f_true = f(np.array(meta_error_list[i][2].ordinary), x_true)
+    f_est = f(np.array(meta_error_list[i][1].ordinary), x_est)
+    y_vals_true = [f_true[0, :], f_true[1, :], f_true[2, :], f_true[3, :]]
+    y_vals_est = [f_est[0, :], f_est[1, :], f_est[2, :], f_est[3, :]]
 
-    for ax, title, y1, y2 in zip(axes.flat, titles, y_vals_1, y_vals_2):
+    for ax, title, y_true, y_est in zip(axes.flat, titles, y_vals_true, y_vals_est):
         if (i == 0):
-            ax.plot(x1[0, :], y1, 'bo', label='true drift')
-        ax.plot(x2[0, :], y2, label='num intervals = '+str(meta_error_list[i][7].numsubintervals))
+            ax.plot(x_true[0, :], y_true, 'bo', label='true drift')
+        ax.plot(x_true[0, :], y_est, label='num intervals = '+str(meta_error_list[i][6].numsubintervals))
         ax.set_title(title)
         ax.grid(True)
         ax.set_xticks(np.arange(-2., 3., 1.))

@@ -1,2 +1,0 @@
-/home/data/srawat2/pathsamp/1dcode/data_creation.py:10: RuntimeWarning: overflow encountered in power
-  derivatives[:, 0] = sim_param.alpha + sim_param.beta * x[:, 0] + sim_param.gamma * np.power(x[:, 0], 2)

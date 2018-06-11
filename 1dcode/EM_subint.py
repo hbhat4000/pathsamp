@@ -16,8 +16,8 @@ with open('./data/noise_2.pkl','rb') as f:
 # picking 10 timeseries and the coarseness of the observed data
 # 0::100 for 11 time points
 # 0::20 for 51 time points
-x = allx[:, 0::100, :] # picking every 20th term to get a total of 51 time points
-t = allt[:, 0::100] # 51 time points, coarse data
+x = allx[:, 0::20, :] # picking every 20th term to get a total of 51 time points
+t = allt[:, 0::20] # 51 time points, coarse data
 
 data_param = prm.data(theta = 0.5 * np.random.rand(prm.dof, prm.dim), gvec = sim_param.gvec)
 
@@ -49,6 +49,6 @@ for th in threshold:
 print("\n")
 
 # save to file
-with open('./varying_subintervals/tp_11/subint_' + str(parvalue) + '.pkl','wb') as f:
+with open('./varying_subintervals/tp_51/subint_' + str(parvalue) + '.pkl','wb') as f:
     pickle.dump([x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param], f)
 

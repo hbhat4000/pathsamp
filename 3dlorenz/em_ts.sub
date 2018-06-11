@@ -1,6 +1,6 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q fast.q
+#$ -q std.q
 #$ -cwd
 #$ -N EM_ts_3dl
 #$ -t 1-10

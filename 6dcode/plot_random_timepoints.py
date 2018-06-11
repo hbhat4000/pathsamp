@@ -30,7 +30,7 @@ for i in range(1, 11):
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
     plt.title('Observed data used for random time point experiments, number of time steps = ' + str(i*10+1))
     plt.grid()
-    plt.savefig('./random_timepoints/plots/data/rand_' + str(i*10+1) + '.eps', format = 'eps', bbox_inches='tight')
+    plt.savefig('./random_timepoints/plots/rand_' + str(i*10+1) + '.eps', format = 'eps', bbox_inches='tight')
 
 ################################################################################################
 
@@ -68,7 +68,7 @@ def index(theta, x):
     y = np.zeros((x.shape[1]))
     index = 0
 
-    for d in range(0, 4):
+    for d in range(0, prm.num_hermite_terms):
         for n in range(0, d + 1):
             for m in range(0, d + 1):
                 for l in range(0, d + 1):
@@ -110,4 +110,4 @@ for i in range(parval):
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./random_timepoints/plots/error/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./random_timepoints/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')

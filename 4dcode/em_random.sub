@@ -1,10 +1,10 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q std.q
+#$ -q gpu.q
 #$ -cwd
 #$ -N EM_rand_4d
 #$ -t 1-10
-#$ -tc 10
+#$ -tc 1
 #$ -j y
 #$ -o ./random_timepoints/em.qlog
 #$ -l mem_free=64G

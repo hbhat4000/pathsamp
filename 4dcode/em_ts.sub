@@ -4,7 +4,7 @@
 #$ -cwd
 #$ -N EM_ts_4d
 #$ -t 1-10
-#$ -tc 10
+#$ -tc 1
 #$ -j y
 #$ -o ./varying_num_timeseries/em.qlog
 #$ -l mem_free=64G

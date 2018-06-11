@@ -1,10 +1,10 @@
 #! /bin/bash
 #$ -S /bin/bash
-#$ -q std.q
+#$ -q appliedmath.q
 #$ -cwd
 #$ -N EM_noise_8d
 #$ -t 1-8
-#$ -tc 8
+#$ -tc 1
 #$ -j y
 #$ -o ./varying_noise/em.qlog
 #$ -l mem_free=64G
