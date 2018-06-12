@@ -20,6 +20,6 @@ for parvalue in range(8):
         plt.plot(t[i, :], x[i, :, 0], label='initial condition ' + str(euler_param.ic[i]))
 
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-    plt.title('Observed data used for experiments, noise = ' + str(noise_mapping[parvalue]))
+    plt.title('Observed data used for experiments in 1D, noise = ' + str(noise_mapping[parvalue]))
     plt.grid()
-    plt.savefig('./data/plots/noise_' + str(parvalue) + '.eps', format = 'eps', bbox_inches='tight')
+    plt.savefig('./data/plots/noise_' + str(parvalue) + '.pdf', format = 'pdf', bbox_inches='tight')

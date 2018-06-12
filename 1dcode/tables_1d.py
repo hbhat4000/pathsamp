@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 
-test_names = ['./random_timepoints/rand_', './varying_subintervals/tp_11/subint_', './varying_num_timeseries/ts_', './varying_noise/noise_']
+test_names = ['./random_timepoints/rand_', './varying_subintervals/subint_', './varying_num_timeseries/ts_', './varying_noise/noise_']
 
 test_list = []
 for test in test_names:
@@ -17,11 +17,11 @@ for test in test_names:
 			parvalue = i
 
 		with open(test + str(parvalue) + '.pkl', 'rb') as f:
-			x, _, _, _, _, _, _, errors, em_param, _, _, sim_param = pickle.load(f)
-		meta_list.append((errors, x.shape, em_param, sim_param))
+			x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
+		meta_list.append((ordinary_errors, hermite_errors, x.shape, em_param, sim_param))
 	test_list.append(meta_list)
 
-# wfile = open('tables_results.txt', 'w')
+
 
 # 1) Hermite errors
 print('\n ####################################################################################### \n')

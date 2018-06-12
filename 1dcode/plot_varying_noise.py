@@ -41,6 +41,7 @@ for i in range(parval):
     plt.plot(x_est, f(np.array(meta_error_list[i][1].ordinary), x_est), label='noise = '+str(meta_error_list[i][6].gvec[0]))
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-plt.title('Comparison of true drift function vs estimated drift functions')
+plt.title('Comparison of true drift function vs estimated drift functions in 1D')
 plt.grid()
-plt.savefig('./varying_noise/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.savefig('./varying_noise/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()

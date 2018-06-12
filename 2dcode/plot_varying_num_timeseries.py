@@ -43,7 +43,7 @@ def index(theta, x):
     y = np.zeros((x.shape[1]))
     index = 0
 
-    for d in range(0, 4):
+    for d in range(0, prm.num_hermite_terms):
         for j in range(0, d + 1):
             for i in range(0, d + 1):
                 if (i + j == d):
@@ -71,7 +71,7 @@ for i in range(parval):
     for ax, title, y_true, y_est in zip(axes.flat, titles, y_vals_true, y_vals_est):
         if (i == 0):
             ax.plot(x_true[0, :], y_true, 'bo', label='true drift')
-        ax.plot(x_est[0, :], y_est, label='num time series = '+str(ts_mapping[i])
+        ax.plot(x_est[0, :], y_est, label='num time series = '+str(ts_mapping[i]))
         ax.set_title(title)
         ax.grid(True)
         # ax.set_xticks(np.arange(-5, 5, 1))
@@ -80,5 +80,6 @@ for i in range(parval):
         # ax.set_ylim([-50, 50])
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./varying_num_timeseries/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.suptitle('Comparison of true drift function vs estimated drift functions in 2D')
+plt.savefig('./varying_num_timeseries/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()

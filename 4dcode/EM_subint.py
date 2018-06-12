@@ -27,7 +27,7 @@ print("Theta:", data_param.theta)
 
 # parvalue number of sub intervals
 # Note : numsubinterval = 1 => only observed data points, no intermediate brownian bridges
-em_param = prm.em(tol=0.01*prm.dof*prm.dim, burninpaths=10, mcmcpaths=100, numsubintervals=parvalue, niter=100, dt=(allt[0, 1] - allt[0, 0]))
+em_param = prm.em(tol=0.001*prm.dof*prm.dim, burninpaths=10, mcmcpaths=100, numsubintervals=parvalue, niter=100, dt=(allt[0, 1] - allt[0, 0]))
 
 # call to EM which returns the final error and estimated theta value
 error_list, theta_list, gammavec_list = em(x, t, em_param, data_param)
@@ -49,6 +49,6 @@ for th in threshold:
 print("\n")
 
 # save to file
-with open('./varying_subintervals/tp_51/subint_' + str(parvalue) + '.pkl','wb') as f:
+with open('./varying_subintervals/subint_' + str(parvalue) + '.pkl','wb') as f:
     pickle.dump([x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param], f)
 

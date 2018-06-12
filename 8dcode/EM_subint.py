@@ -49,5 +49,5 @@ for th in threshold:
 print("\n")
 
 # save to file
-with open('./varying_subintervals/tp_51/subint_' + str(parvalue) + '.pkl','wb') as f:
+with open('./varying_subintervals/subint_' + str(parvalue) + '.pkl','wb') as f:
     pickle.dump([x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param], f)

@@ -28,9 +28,10 @@ for i in range(1, 11):
             # ax.set_ylim([-2, 2])
 
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-    plt.title('Observed data used for random time point experiments, number of time steps = ' + str(i*10+1))
+    plt.title('Observed data used for random time point experiments in 6D, number of time steps = ' + str(i*10+1))
     plt.grid()
-    plt.savefig('./random_timepoints/plots/rand_' + str(i*10+1) + '.eps', format = 'eps', bbox_inches='tight')
+    plt.savefig('./random_timepoints/plots/rand_' + str(i*10+1) + '.pdf', format = 'pdf', bbox_inches='tight')
+    plt.close()
 
 ################################################################################################
 
@@ -109,5 +110,6 @@ for i in range(parval):
         # ax.set_ylim([-50, 50])
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./random_timepoints/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.suptitle('Comparison of true drift function vs estimated drift functions in 6D')
+plt.savefig('./random_timepoints/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()

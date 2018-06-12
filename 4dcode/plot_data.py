@@ -27,6 +27,7 @@ for parvalue in range(8):
             # ax.set_xlim([0, 10])
             # ax.set_ylim([-2, 2])
 
-    # plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-    plt.suptitle('Observed data used for experiments, noise = ' + str(noise_mapping[parvalue]))
-    plt.savefig('./data/plots/noise_' + str(parvalue) + '.eps', format = 'eps', bbox_inches='tight')
+    plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
+    plt.suptitle('Observed data used for experiments in 4D, noise = ' + str(noise_mapping[parvalue]))
+    plt.savefig('./data/plots/noise_' + str(parvalue) + '.pdf', format = 'pdf', bbox_inches='tight')
+    plt.close()

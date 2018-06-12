@@ -77,5 +77,6 @@ for i in range(parval):
         ax.set_ylim([-5, 5])
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./varying_noise/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.suptitle('Comparison of true drift function vs estimated drift functions in 3Dl')
+plt.savefig('./varying_noise/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()

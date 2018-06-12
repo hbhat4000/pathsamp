@@ -39,7 +39,7 @@ def index(theta, x):
     y = np.zeros((x.shape[1]))
     index = 0
 
-    for d in range(0, terms):
+    for d in range(0, prm.num_hermite_terms):
         for p in range(0, d + 1):
             for o in range(0, d + 1):
                 for n in range(0, d + 1):
@@ -49,8 +49,8 @@ def index(theta, x):
                                 for j in range(0, d + 1):
                                     for i in range(0, d + 1):
                                         if (i + j + k + l + m + n + o + p == d):
-                                            y += theta[index] * np.power(x[0, :], i) * np.power(x[1, :], j) * np.power(x[2, :], k) * np.power(x[3, :], l) * np.power(x[4, :], m) * np.power(x[5, :], n) * np.power(x[4, :], o) * np.power(x[5, :], p)
-                                    index += 1
+                                            y += theta[index] * np.power(x[0, :], i) * np.power(x[1, :], j) * np.power(x[2, :], k) * np.power(x[3, :], l) * np.power(x[4, :], m) * np.power(x[5, :], n) * np.power(x[6, :], o) * np.power(x[7, :], p)
+                                            index += 1
 
     return y
 
@@ -82,5 +82,6 @@ for i in range(parval):
         # ax.set_ylim([-50, 50])
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./varying_noise/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.suptitle('Comparison of true drift function vs estimated drift functions in 8D')
+plt.savefig('./varying_noise/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()

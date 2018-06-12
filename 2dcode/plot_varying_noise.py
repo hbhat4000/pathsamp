@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 from error_plots import error_plots as ep
 from matplotlib import pyplot as plt
+import parameters as prm
 
 # 1) Error plots
 meta_error_list = []
@@ -75,5 +76,6 @@ for i in range(parval):
         # ax.set_ylim([-50, 50])
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./varying_noise/plots/drift_comparison.eps', format = 'eps', bbox_inches='tight')
+plt.suptitle('Comparison of true drift function vs estimated drift functions in 2D')
+plt.savefig('./varying_noise/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()
