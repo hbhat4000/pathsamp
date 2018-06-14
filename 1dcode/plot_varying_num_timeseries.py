@@ -52,7 +52,7 @@ for i in range(parval):
     plt.plot(x_est, f(np.array(meta_error_list[i][1].ordinary), x_est), label='num timeseries = '+str(ts_mapping[i]))
 
 plt.axis([-2.0, 5.0, -50.0, 50.0])
-# plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
+plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.title('Comparison of true drift function vs estimated drift functions in 1D')
 plt.grid()
 plt.savefig('./varying_num_timeseries/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')

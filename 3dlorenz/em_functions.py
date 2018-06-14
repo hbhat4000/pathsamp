@@ -144,12 +144,12 @@ def em(allx, allt, em_param, d_param):
                 mmat += res[0]
                 rvec += res[1]
                 gammavec += res[2]
-                # print("path index:", res[5], ", step index: ", res[6], ", AR burin:", res[3], ", AR sampling:", res[4])
+                print("path index:", res[5], ", step index: ", res[6], ", AR burin:", res[3], ", AR sampling:", res[4])
 
         newtheta = np.linalg.solve(mmat, rvec).T
 
         # relative error
-        error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
+        error = np.sum(np.abs(newtheta - d_param.theta)) # / np.sum(np.abs(d_param.theta))
 
         # inducing sparsity in the Hermite space
         newtheta[np.abs(newtheta) < 0.01] = 0.
@@ -163,6 +163,8 @@ def em(allx, allt, em_param, d_param):
         if (error < em_param.tol):
             print("Finished successfully!")
             done = True
+
+        # TODO : if 'done == False', then in the plots mark those cases separately
 
         # if number of iterations has crossed an iteration threshold, without
         # successfully redcuing the error below the error tolerance, then 

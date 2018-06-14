@@ -16,8 +16,8 @@ with open('./data/noise_3.pkl','rb') as f:
 # picking 10 timeseries and the coarseness of the observed data
 # 0::100 for 11 time points
 # 0::20 for 51 time points
-x = allx[:, 0::20, :] # picking every 20th term to get a total of 51 time points
-t = allt[:, 0::20] # 51 time points, coarse data
+x = allx[7:8, 0::20, :] # picking every 20th term to get a total of 51 time points
+t = allt[7:8, 0::20] # 51 time points, coarse data
 
 data_param = prm.data(theta = 0.5 * np.random.rand(prm.dof, prm.dim), gvec = sim_param.gvec)
 
@@ -27,7 +27,7 @@ print("Theta:", data_param.theta)
 
 # parvalue number of sub intervals
 # Note : numsubinterval = 1 => only observed data points, no intermediate brownian bridges
-em_param = prm.em(tol=0.001*prm.dof*prm.dim, burninpaths=10, mcmcpaths=100, numsubintervals=parvalue, niter=100, dt=(allt[0, 1] - allt[0, 0]))
+em_param = prm.em(tol=0.01, burninpaths=10, mcmcpaths=100, numsubintervals=parvalue, niter=100, dt=(allt[0, 1] - allt[0, 0]))
 
 # call to EM which returns the final error and estimated theta value
 error_list, theta_list, gammavec_list = em(x, t, em_param, data_param)

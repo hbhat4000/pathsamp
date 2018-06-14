@@ -9,8 +9,8 @@ import os
 # for running the code using a job array on cluster
 parvalue = int(os.environ['SGE_TASK_ID'])
 
-# load data, noise_2 is data with noise = 0.05
-with open('./data/noise_2.pkl','rb') as f:
+# load data, noise_3 is data with noise = 0.01
+with open('./data/noise_3.pkl','rb') as f:
     allx, allt, x_without_noise, euler_param, sim_param = pickle.load(f)
 
 # picking 10 timeseries and the coarseness of the observed data
@@ -27,7 +27,7 @@ print("Theta:", data_param.theta)
 
 # parvalue number of sub intervals
 # Note : numsubinterval = 1 => only observed data points, no intermediate brownian bridges
-em_param = prm.em(tol=0.001*prm.dof*prm.dim, burninpaths=10, mcmcpaths=100, numsubintervals=parvalue, niter=100, dt=(allt[0, 1] - allt[0, 0]))
+em_param = prm.em(tol=0.01, burninpaths=10, mcmcpaths=100, numsubintervals=parvalue, niter=100, dt=(allt[0, 1] - allt[0, 0]))
 
 # call to EM which returns the final error and estimated theta value
 error_list, theta_list, gammavec_list = em(x, t, em_param, data_param)

@@ -11,7 +11,7 @@ with open('./3dl/1.pkl','rb') as f:
     x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
 meta_error_list.append((x.shape, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors))
 
-parval = 1
+parval = 10
 ts_mapping = []
 
 for i in range(parval):

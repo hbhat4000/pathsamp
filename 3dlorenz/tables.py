@@ -9,9 +9,9 @@ def error_tables(exp, hermite_errors, ordinary_errors, estimated_theta, true_the
     for fn in range(len(titles)):
         print('Space:', space[0], ', error:', titles[fn], ', threshold:', threshold[3], ', errors:', errors[0][3][fn][-1])
 
-#    print('true theta: ', true_theta)
-#    print('estimated theta')
-#    for val in range(len(mapping)):
-#        print('estimated theta, val: ', mapping[val], '\n', estimated_theta[val])
-#        print('true theta, val: ', mapping[val], '\n', true_theta[val])
+    print('true theta: ', true_theta)
+    print('estimated theta')
+    for val in range(len(mapping)):
+        print('estimated theta, val: ', mapping[val], '\n', estimated_theta[val])
+        print('true theta, val: ', mapping[val], '\n', true_theta[val])
 

@@ -149,7 +149,7 @@ def em(allx, allt, em_param, d_param):
         newtheta = np.linalg.solve(mmat, rvec).T
 
         # relative error
-        error = np.sum(np.abs(newtheta - d_param.theta)) / np.sum(np.abs(d_param.theta))
+        error = np.sum(np.abs(newtheta - d_param.theta)) #/ np.sum(np.abs(d_param.theta))
 
         # inducing sparsity in the Hermite space
         newtheta[np.abs(newtheta) < 0.01] = 0.

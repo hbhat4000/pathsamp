@@ -85,3 +85,30 @@ plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.suptitle('Comparison of true drift function vs estimated drift functions in 3Dl')
 plt.savefig('./varying_subintervals/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
 plt.close()
+
+#####################################################
+# 3) 3D plot of the data
+import matplotlib
+from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure()
+ax = fig.gca(projection = '3d')
+
+x_sparse = np.arange(-10.0, 20.0, 0.5)
+x_dense = np.arange(-10.0, 20.0, 0.1)
+x_true = np.array((x_sparse, x_sparse, x_sparse))
+x_est = np.array((x_dense, x_dense, x_dense))
+
+f_true = f(np.array(meta_error_list[0][2].ordinary), x_true)
+ax.plot(f_true[0, :], f_true[1, :], f_true[2, :], 'bo--', label='True drift')
+
+for i in range(parval):
+    f_est = f(np.array(meta_error_list[i][1].ordinary), x_est)
+    ax.plot(f_est[0, :], f_est[1, :], f_est[2, :], label='num subintervals = '+str(meta_error_list[i][6].numsubintervals))
+
+ax.set_xlim([-100., 100.])
+ax.set_ylim([-100., 100.])
+ax.set_zlim([0., 100.])
+plt.legend(bbox_to_anchor = (1.05, 1), loc= 2, borderaxespad = 0.)
+plt.suptitle('3D Comparison of true drift function vs estimated drift functions')
+plt.savefig('./varying_subintervals/plots/3D_drift.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()

@@ -64,7 +64,7 @@ x_true = np.array((x_sparse, x_sparse))
 x_est = np.array((x_dense, x_dense))
 
 fig, axes = plt.subplots(nrows=1, ncols=2, sharex=True)
-fig.set_figwidth(20)
+fig.set_figwidth(15)
 fig.set_figheight(5)
 titles = [r'$x_0$', r'$x_1$']
 
@@ -90,7 +90,28 @@ plt.suptitle('Comparison of true drift function vs estimated drift functions in 
 plt.savefig('./varying_num_timeseries/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
 plt.close()
 
-###############################################
-# 3) 2D plot
-fig = plt.figure()
+#####################################################
+# 3) 2D plot of the data
 
+fig = plt.figure()
+ax = fig.gca()
+
+x_sparse = np.arange(-2.0, 2.0, 0.5)
+x_dense = np.arange(-2.0, 2.0, 0.1)
+x_true = np.array((x_sparse, x_sparse))
+x_est = np.array((x_dense, x_dense))
+
+f_true = f(np.array(meta_error_list[0][2].ordinary), x_true)
+ax.plot(f_true[0, :], f_true[1, :], 'bo--', label='True drift')
+
+for i in range(parval):
+    f_est = f(np.array(meta_error_list[i][1].ordinary), x_est)
+    ax.plot(f_est[0, :], f_est[1, :], label='num time series = '+str(meta_error_list[i][0][0]))
+
+ax.set_xlim([-2., 2.])
+ax.set_ylim([-10., 10.])
+plt.grid()
+plt.legend(bbox_to_anchor = (1.05, 1), loc= 2, borderaxespad = 0.)
+plt.suptitle('2D Comparison of true drift function vs estimated drift functions')
+plt.savefig('./varying_num_timeseries/plots/2D_drift.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()

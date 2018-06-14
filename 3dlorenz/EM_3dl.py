@@ -5,20 +5,20 @@ import parameters as prm
 import data_creation as dc
 import pickle
 
-# load data, noise_2 is data with noise = 0.05
-with open('./data/noise_2.pkl','rb') as f:
+# load data, noise_3 is data with noise = 0.01
+with open('./data/noise_3.pkl','rb') as f:
     allx, allt, x_without_noise, euler_param, sim_param = pickle.load(f)
 
-x = allx[:, :, :] # picking every 10th term to get a total of 101 time points
-t = allt[:, :]
+x = allx[:, 0:20, :] # picking every 10th term to get a total of 101 time points
+t = allt[:, 0:20]
 
-data_param = prm.data(theta = 0.01 * np.random.rand(prm.dof, prm.dim), gvec = sim_param.gvec)
+data_param = prm.data(theta = 0.5 * np.random.rand(prm.dof, prm.dim), gvec = sim_param.gvec)
 
 print("Data shape:", x.shape)
 print("Theta shape:", data_param.theta.shape)
 print("Theta:", data_param.theta)
 
-em_param = prm.em(tol=0.001*prm.dof*prm.dim, burninpaths=10, mcmcpaths=100, numsubintervals=5, niter=100, dt=(allt[0, 1] - allt[0, 0]))
+em_param = prm.em(tol=0.1, burninpaths=10, mcmcpaths=100, numsubintervals=5, niter=100, dt=(allt[0, 1] - allt[0, 0]))
 
 # call to EM which returns the final error and estimated theta value
 error_list, theta_list, gammavec_list = em(x, t, em_param, data_param)
