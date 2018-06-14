@@ -14,8 +14,6 @@ with open('./data/noise_2.pkl','rb') as f:
     allx, allt, x_without_noise, euler_param, sim_param = pickle.load(f)
 
 # picking 10 timeseries and the coarseness of the observed data
-# 0::100 for 11 time points
-# 0::20 for 51 time points
 x = allx[:, 0::20, :] # picking every 20th term to get a total of 51 time points
 t = allt[:, 0::20] # 51 time points, coarse data
 

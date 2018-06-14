@@ -30,7 +30,7 @@ for i in range(1, 11):
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
     plt.title('Observed data used for random time point experiments in 4D, number of time steps = ' + str(i*10+1))
     plt.grid()
-    plt.savefig('./random_timepoints/plots/data/rand_' + str(i*10+1) + '.pdf', format = 'pdf', bbox_inches='tight')
+    plt.savefig('./random_timepoints/plots/rand_' + str(i*10+1) + '.pdf', format = 'pdf', bbox_inches='tight')
     plt.close()
 
 ################################################################################################
@@ -109,5 +109,5 @@ for i in range(parval):
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.suptitle('Comparison of true drift function vs estimated drift functions in 4D')
-plt.savefig('./random_timepoints/plots/error/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.savefig('./random_timepoints/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
 plt.close()

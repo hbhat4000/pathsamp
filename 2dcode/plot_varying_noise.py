@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 from error_plots import error_plots as ep
+from tables import error_tables as et
 from matplotlib import pyplot as plt
 import parameters as prm
 
@@ -17,14 +18,19 @@ exp = 'varying_noise'
 threshold = meta_error_list[0][3]
 hermite_errors = np.zeros((threshold.shape[0], 6, parval))
 ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
+estimated_theta = np.zeros((parval, prm.dof, prm.dim))
+true_theta = np.zeros((prm.dof, prm.dim))
 
-for th in range(threshold.shape[0]):
-    for fn in range(6):
-        for val in range(parval):
+for val in range(parval):
+    for th in range(threshold.shape[0]):
+        for fn in range(6):
             hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
             ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
+    estimated_theta[val] = meta_error_list[val][1].hermite
+true_theta = meta_error_list[0][2].hermite
 
 ep(exp, hermite_errors, ordinary_errors, parval, noise_mapping, threshold)
+et(exp, hermite_errors, ordinary_errors, estimated_theta, true_theta, parval, noise_mapping, threshold)
 
 ################################################################################################
 
@@ -70,10 +76,6 @@ for i in range(parval):
         ax.plot(x_est[0, :], y_est, label='noise = '+str(meta_error_list[i][6].gvec[0]))
         ax.set_title(title)
         ax.grid(True)
-        # ax.set_xticks(np.arange(-5, 5, 1))
-        # ax.set_yticks(np.arange(-50.0, 50.0, 10.))
-        # ax.set_xlim([-5, 5])
-        # ax.set_ylim([-50, 50])
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.suptitle('Comparison of true drift function vs estimated drift functions in 2D')

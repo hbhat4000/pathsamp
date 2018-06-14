@@ -9,8 +9,8 @@ import os
 # for running the code using a job array on cluster
 parvalue = int(os.environ['SGE_TASK_ID'])
 
-# load data, noise_2 is data with noise = 0.05
-with open('./data/noise_2.pkl','rb') as f:
+# load data, noise_3 is data with noise = 0.01
+with open('./data/noise_3.pkl','rb') as f:
     allx, allt, x_without_noise, euler_param, sim_param = pickle.load(f)
 
 # picking parvalue number of time series and the coarseness of the observed data

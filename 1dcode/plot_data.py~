@@ -17,9 +17,10 @@ for parvalue in range(8):
     ax.set_yticks(np.arange(-1.0, 3.0, 0.5))
 
     for i in range(10):
-        plt.plot(t[i, :], x[i, :, 0], label='initial condition ' + str(euler_param.ic[i]))
+        ic = ((np.round(euler_param.ic[i], 2)))
+        plt.plot(t[i, :], x[i, :, 0], label='ic:' + str(ic))
 
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-    plt.title('Observed data used for experiments, noise = ' + str(noise_mapping[parvalue]))
+    plt.title('Observed data used for experiments in 1D, noise = ' + str(noise_mapping[parvalue]))
     plt.grid()
     plt.savefig('./data/plots/noise_' + str(parvalue) + '.pdf', format = 'pdf', bbox_inches='tight')

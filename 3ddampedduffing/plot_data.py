@@ -19,15 +19,12 @@ for parvalue in range(8):
     for i in range(10):
         y_vals = [x[i, :, 0], x[i, :, 1], x[i, :, 2]]
         for ax, title, y in zip(axes.flat, titles, y_vals):
-            ax.plot(t[i, :], y, label='initial condition '+str(euler_param.ic[i]))
+            ic = ((np.round(euler_param.ic[i], 2)))
+            ax.plot(t[i, :], y, label='ic:'+str(ic))
             ax.set_title(title)
             ax.grid(True)
-            # ax.set_xticks(np.arange(0, 11, 1))
-            # ax.set_yticks(np.arange(-2.0, 2.0, 0.5))
-            # ax.set_xlim([0, 10])
-            # ax.set_ylim([-2, 2])
 
-    # plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
+    plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
     plt.suptitle('Observed data used for experiments in 3Dd, noise = ' + str(noise_mapping[parvalue]))
     plt.savefig('./data/plots/noise_' + str(parvalue) + '.pdf', format = 'pdf', bbox_inches='tight')
     plt.close()

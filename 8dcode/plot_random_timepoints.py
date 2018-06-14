@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 from error_plots import error_plots as ep
+from tables import error_tables as et
 from matplotlib import pyplot as plt
 import parameters as prm
 

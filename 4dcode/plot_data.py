@@ -19,7 +19,8 @@ for parvalue in range(8):
     for i in range(10):
         y_vals = [x[i, :, 0], x[i, :, 1], x[i, :, 2], x[i, :, 3]]
         for ax, title, y in zip(axes.flat, titles, y_vals):
-            ax.plot(t[i, :], y, label='initial condition '+str(euler_param.ic[i]))
+            ic = ((np.round(euler_param.ic[i], 2)))
+            ax.plot(t[i, :], y, label='ic:'+str(ic))
             ax.set_title(title)
             ax.grid(True)
             # ax.set_xticks(np.arange(0, 11, 1))

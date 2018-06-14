@@ -4,7 +4,7 @@
 #$ -cwd
 #$ -N data_3ddd
 #$ -t 1-8
-#$ -tc 8
+#$ -tc 1
 #$ -j y
 #$ -o ./data/data.qlog
 #$ -l mem_free=64G

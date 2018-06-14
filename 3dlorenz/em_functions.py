@@ -144,7 +144,7 @@ def em(allx, allt, em_param, d_param):
                 mmat += res[0]
                 rvec += res[1]
                 gammavec += res[2]
-                print("path index:", res[5], ", step index: ", res[6], ", AR burin:", res[3], ", AR sampling:", res[4])
+                # print("path index:", res[5], ", step index: ", res[6], ", AR burin:", res[3], ", AR sampling:", res[4])
 
         newtheta = np.linalg.solve(mmat, rvec).T
 

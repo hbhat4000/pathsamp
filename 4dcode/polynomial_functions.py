@@ -51,32 +51,33 @@ def ordinary_to_hermite(theta):
 
 # hard thresholding for theta using a threshold
 def theta_sparsity(theta, threshold):
-    relative_threshold = threshold * np.max(np.abs(theta))
-    theta[np.abs(theta) < relative_threshold] = 0.
-    return theta
+    theta_copy = theta
+    relative_threshold = threshold * np.max(np.abs(theta_copy))
+    theta_copy[np.abs(theta_copy) < relative_threshold] = 0.
+    return theta_copy
 
 # computing regression and classification errors between true and estimated theta
 def compute_errors(true, estimated, threshold):
     errors = []
-    estimated = theta_sparsity(estimated, threshold)
-    true = theta_sparsity(true, threshold)
+    sparse_estimated = estimated.copy()
+    sparse_estimated = theta_sparsity(sparse_estimated, threshold)
 
     # regression metric
     # L1 norm
-    errors.append(np.sum(np.abs(true - estimated)))
+    errors.append(np.sum(np.abs(true - sparse_estimated)))
 
     # L2 norm
-    errors.append(np.sqrt(np.sum(np.power(true - estimated, 2))))
+    errors.append(np.sqrt(np.sum(np.power(true - sparse_estimated, 2))))
 
     # classification metric, P = value is zero, N = value is non-zero
     # true positive => true was zero and estimated was zero
-    TP = np.sum(np.logical_and(true == 0., estimated == 0.))
+    TP = np.sum(np.logical_and(true == 0., sparse_estimated == 0.))
     # true negative => true was non-zero and estimated was non-zero
-    TN = np.sum(np.logical_and(true != 0., estimated != 0.))
+    TN = np.sum(np.logical_and(true != 0., sparse_estimated != 0.))
     # false positive => true was non-zero and estimated was zero
-    FP = np.sum(np.logical_and(true != 0., estimated == 0.))
+    FP = np.sum(np.logical_and(true != 0., sparse_estimated == 0.))
     # false negative => true was zero and estimated was non-zero
-    FN = np.sum(np.logical_and(true == 0., estimated != 0.))
+    FN = np.sum(np.logical_and(true == 0., sparse_estimated != 0.))
 
     # precision = true positives / total estimated positives {TP / (TP + FP)}
     errors.append(TP / (TP + FP))

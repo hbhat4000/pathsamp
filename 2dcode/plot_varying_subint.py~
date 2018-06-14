@@ -1,13 +1,14 @@
 import numpy as np
 import pickle
 from error_plots import error_plots as ep
+from tables import error_tables as et
 from matplotlib import pyplot as plt
 import parameters as prm
 
 # 1) Error plots
 meta_error_list = []
 for i in range(1, 11):
-    with open('./varying_subintervals/tp_11/subint_' + str(i) + '.pkl','rb') as f:
+    with open('./varying_subintervals/subint_' + str(i) + '.pkl','rb') as f:
         x, t, error_list, theta_list, gammavec_list, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param, data_param, euler_param, sim_param = pickle.load(f)
     meta_error_list.append((x.shape, estimated_theta, true_theta, threshold, ordinary_errors, hermite_errors, em_param))
 
@@ -26,7 +27,7 @@ for th in range(threshold.shape[0]):
             hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
             ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
 
-exp = 'varying_subintervals/tp_11'
+exp = 'varying_subintervals'
 threshold = meta_error_list[0][3]
 ep(exp, hermite_errors, ordinary_errors, parval, int_mapping, threshold)
 
@@ -80,6 +81,6 @@ for i in range(parval):
         ax.set_ylim([-5, 5])
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-plt.suptitle('Comparison of true drift function vs estimated drift functions')
-plt.savefig('./varying_subintervals/tp_11/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.suptitle('Comparison of true drift function vs estimated drift functions in 2D')
+plt.savefig('./varying_subintervals/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
 plt.close()

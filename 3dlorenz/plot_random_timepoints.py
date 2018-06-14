@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 from error_plots import error_plots as ep
+from tables import error_tables as et
 from matplotlib import pyplot as plt
 import parameters as prm
 
@@ -19,13 +20,10 @@ for i in range(1, 11):
     for j in range(10):
         y_vals = [x[j, :, 0], x[j, :, 1], x[j, :, 2]]
         for ax, title, y in zip(axes.flat, titles, y_vals):
-            ax.plot(t[j, :], y, label='initial condition '+str(euler_param.ic[j]))
+            ic = ((np.round(euler_param.ic[i], 2)))
+            ax.plot(t[j, :], y, label='ic:'+str(ic))
             ax.set_title(title)
             ax.grid(True)
-            # ax.set_xticks(np.arange(0, 11, 1))
-            # ax.set_yticks(np.arange(-2.0, 2.0, 0.5))
-            # ax.set_xlim([0, 10])
-            # ax.set_ylim([-2, 2])
 
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
     plt.suptitle('Observed data used for random time point experiments in 3Dl, number of time steps = ' + str(i*10+1))
@@ -43,17 +41,22 @@ for i in range(parval):
 
 hermite_errors = np.zeros((threshold.shape[0], 6, parval))
 ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
+estimated_theta = np.zeros((parval, prm.dof, prm.dim))
+true_theta = np.zeros((prm.dof, prm.dim))
 
-for th in range(threshold.shape[0]):
-    for fn in range(6):
-        for val in range(parval):
+for val in range(parval):
+    for th in range(threshold.shape[0]):
+        for fn in range(6):
             hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
             ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
+    estimated_theta[val] = meta_error_list[val][1].hermite
+true_theta = meta_error_list[0][2].hermite
 
 exp = 'random_timepoints'
 threshold = meta_error_list[0][3]
 
 ep(exp, hermite_errors, ordinary_errors, parval, tp_mapping, threshold)
+et(exp, hermite_errors, ordinary_errors, estimated_theta, true_theta, parval, tp_mapping, threshold)
 
 ###################################################################################################
 

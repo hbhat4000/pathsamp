@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 from error_plots import error_plots as ep
 from matplotlib import pyplot as plt
+from tables import error_tables as et
 import parameters as prm
 
 # 1) Error plots

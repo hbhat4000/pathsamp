@@ -14,12 +14,13 @@ for parvalue in range(8):
     fig, axes = plt.subplots(nrows=1, ncols=2, sharex=True)
     fig.set_figwidth(15)
     fig.set_figheight(5)
-    titles = [r'$x_0$', r'$\dot{x_0}$']
+    titles = [r'$x_0$', r'$x_1$']
 
     for i in range(10):
         y_vals = [x[i, :, 0], x[i, :, 1]]
         for ax, title, y in zip(axes.flat, titles, y_vals):
-            ax.plot(t[i, :], y, label='initial condition '+str(euler_param.ic[i]))
+            ic = ((np.round(euler_param.ic[i], 2)))
+            ax.plot(t[i, :], y, label='ic:'+str(*ic, sep = ', '))
             ax.set_title(title)
             ax.grid(True)
             ax.set_xticks(np.arange(0, 11, 1))
@@ -28,6 +29,6 @@ for parvalue in range(8):
             ax.set_ylim([-2, 2])
 
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
-    plt.suptitle('Observed data used for experiments, noise = ' + str(noise_mapping[parvalue]))
+    plt.suptitle('Observed data used for experiments in 2D, noise = ' + str(noise_mapping[parvalue]))
     plt.savefig('./data/plots/noise_' + str(parvalue) + '.pdf', format = 'pdf', bbox_inches='tight')
     plt.close()
