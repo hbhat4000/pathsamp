@@ -18,10 +18,6 @@ def error_plots(exp, hermite_errors, ordinary_errors, parval, mapping, threshold
                     plt.plot(points, errors[sp][th][fn], 'bo--', label = 'No threshold')
                 else:
                     plt.plot(points, errors[sp][th][fn], label='threshold ' + str(threshold[th]))
-
-                if (sp == 0 and th == 3):
-                    print('Space: ', sp, ', error: ', fn, ', threshold: ', threshold[th], ', errors: ', errors[sp][th][fn][-1])
-
             plt.title(titles[fn] + ' in ' + space[sp] + ' space in 4D')
             plt.grid()
             ax.set_xticks(points)

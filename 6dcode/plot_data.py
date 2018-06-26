@@ -11,9 +11,9 @@ for parvalue in range(8):
     x = xout[:, 0::10, :]
     t = tout[:, 0::10]
 
-    fig, axes = plt.subplots(nrows=3, ncols=2, sharex=True)
-    fig.set_figwidth(15)
-    fig.set_figheight(15)
+    fig, axes = plt.subplots(nrows=2, ncols=3, sharex=True)
+    fig.set_figwidth(20)
+    fig.set_figheight(10)
     titles = [r'$x_0$', r'$x_1$', r'$x_2$', r'$x_3$', r'$x_4$', r'$x_5$']
 
     for i in range(10):
@@ -23,10 +23,6 @@ for parvalue in range(8):
             ax.plot(t[i, :], y, label='ic:'+str(ic))
             ax.set_title(title)
             ax.grid(True)
-            # ax.set_xticks(np.arange(0, 11, 1))
-            # ax.set_yticks(np.arange(-2.0, 2.0, 0.5))
-            # ax.set_xlim([0, 10])
-            # ax.set_ylim([-2, 2])
 
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
     plt.suptitle('Observed data used for experiments in 6D, noise = ' + str(noise_mapping[parvalue]))

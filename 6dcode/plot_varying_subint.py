@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 from error_plots import error_plots as ep
+from tables import error_tables as et
 from matplotlib import pyplot as plt
 import parameters as prm
 
@@ -19,16 +20,21 @@ for i in range(parval):
 
 hermite_errors = np.zeros((threshold.shape[0], 6, parval))
 ordinary_errors = np.zeros((threshold.shape[0], 6, parval))
+estimated_theta = np.zeros((parval, prm.dof, prm.dim))
+true_theta = np.zeros((prm.dof, prm.dim))
 
-for th in range(threshold.shape[0]):
-    for fn in range(6):
-        for val in range(parval):
+for val in range(parval):
+    for th in range(threshold.shape[0]):
+        for fn in range(6):
             hermite_errors[th][fn][val] = meta_error_list[val][5][th][fn]
             ordinary_errors[th][fn][val] = meta_error_list[val][4][th][fn]
+    estimated_theta[val] = meta_error_list[val][1].hermite
+true_theta = meta_error_list[0][2].hermite
 
 exp = 'varying_subintervals'
 threshold = meta_error_list[0][3]
 ep(exp, hermite_errors, ordinary_errors, parval, int_mapping, threshold)
+et(exp, hermite_errors, ordinary_errors, estimated_theta, true_theta, parval, int_mapping, threshold)
 
 ###################################################################################################
 
@@ -78,12 +84,38 @@ for i in range(parval):
         ax.plot(x_est[0, :], y_est, label='num subintervals = '+str(meta_error_list[i][6].numsubintervals))
         ax.set_title(title)
         ax.grid(True)
-        # ax.set_xticks(np.arange(-5, 5, 1))
-        # ax.set_yticks(np.arange(-50.0, 50.0, 10.))
-        # ax.set_xlim([-5, 5])
-        # ax.set_ylim([-50, 50])
 
 plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
 plt.suptitle('Comparison of true drift function vs estimated drift functions in 6D')
 plt.savefig('./varying_subintervals/plots/drift_comparison.pdf', format = 'pdf', bbox_inches='tight')
+plt.close()
+
+#####################################################
+# 4) 3D drift comparison
+
+from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure()
+ax = fig.gca(projection = '3d')
+
+x_sparse = np.arange(-2.0, 2.0, 0.5)
+x_dense = np.arange(-2.0, 2.0, 0.1)
+x_true = np.array((x_sparse, x_sparse, x_sparse, x_sparse, x_sparse, x_sparse))
+x_est = np.array((x_dense, x_dense, x_dense, x_dense, x_dense, x_dense))
+
+f_true = f(np.array(meta_error_list[0][2].ordinary), x_true)
+ax.plot(f_true[1, :], f_true[3, :], f_true[5, :], 'bo--', label='True drift')
+
+for i in range(parval):
+    f_est = f(np.array(meta_error_list[i][1].ordinary), x_est)
+    ax.plot(f_est[1, :], f_est[3, :], f_est[5, :], label='num subintervals = '+str(meta_error_list[i][6].numsubintervals))
+
+ax.set_xlim([-5., 5.])
+ax.set_ylim([-5., 5.])
+ax.set_zlim([-5., 5.])
+plt.xlabel('x')
+plt.ylabel('y')
+# plt.zlabel('z')
+plt.legend(bbox_to_anchor = (1.05, 1), loc= 2, borderaxespad = 0.)
+plt.suptitle('3D comparison of true drift function vs estimated drift functions in 6D system')
+plt.savefig('./varying_subintervals/plots/3D_drift.pdf', format = 'pdf', bbox_inches='tight')
 plt.close()

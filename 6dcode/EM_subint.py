@@ -16,8 +16,8 @@ with open('./data/noise_2.pkl','rb') as f:
 # picking 10 timeseries and the coarseness of the observed data
 # 0::100 for 11 time points
 # 0::20 for 51 time points
-x = allx[:, 0::20, :] # picking every 20th term to get a total of 51 time points
-t = allt[:, 0::20] # 51 time points, coarse data
+x = allx[:, 0::10, :] # picking every 20th term to get a total of 51 time points
+t = allt[:, 0::10] # 51 time points, coarse data
 
 data_param = prm.data(theta = 0.5 * np.random.rand(prm.dof, prm.dim), gvec = sim_param.gvec)
 

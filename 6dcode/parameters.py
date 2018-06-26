@@ -29,8 +29,8 @@ def h2o_simple_transformation(terms):
     mat[1, 1] = 0.63161877774606470129
     mat[2, 2] = 0.44662192086900116570
     mat[0, 2] = -mat[2, 2]
-#    mat[3, 3] = 0.25785728623970555997
-#    mat[1, 3] = -3 * mat[3, 3]
+    mat[3, 3] = 0.25785728623970555997
+    mat[1, 3] = -3 * mat[3, 3]
 
     return mat
 
@@ -46,7 +46,7 @@ def h2o_transformation_matrix(dim, dof, index_map, h2o_mat):
                 
     return transformation
 
-num_hermite_terms = 3
+num_hermite_terms = 4
 dim = 6
 dof = find_dof(num_hermite_terms, dim)
 index_map = index_mapping(num_hermite_terms)

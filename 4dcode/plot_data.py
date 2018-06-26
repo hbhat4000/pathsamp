@@ -23,10 +23,6 @@ for parvalue in range(8):
             ax.plot(t[i, :], y, label='ic:'+str(ic))
             ax.set_title(title)
             ax.grid(True)
-            # ax.set_xticks(np.arange(0, 11, 1))
-            # ax.set_yticks(np.arange(-2.0, 2.0, 0.5))
-            # ax.set_xlim([0, 10])
-            # ax.set_ylim([-2, 2])
 
     plt.legend(bbox_to_anchor = (1.05, 1), loc = 2, borderaxespad = 0.)
     plt.suptitle('Observed data used for experiments in 4D, noise = ' + str(noise_mapping[parvalue]))
