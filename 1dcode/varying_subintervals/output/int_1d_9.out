@@ -1,0 +1,36 @@
+My SLURM_ARRAY_TASK_ID:  9
+Data shape: (1, 51, 1)
+Theta shape: (4, 1)
+Theta: [[ 0.1742186 ]
+ [ 0.29801235]
+ [ 0.24757883]
+ [ 0.25782822]]
+1
+4.20905944234
+[[ 0.        ]
+ [ 1.61475609]
+ [-2.27255635]
+ [ 0.06040431]]
+2
+0.367888810417
+[[ 0.06229224]
+ [ 1.48397757]
+ [-2.15725315]
+ [ 0.        ]]
+3
+Finished successfully! number of iterations:  3
+0.000946252528948
+[[ 0.06228367]
+ [ 1.48399698]
+ [-2.15726678]
+ [ 0.        ]]
+Time taken for 1D intervals exp:  2.5495471954345703 , number of intervals:  9
+Avg AR burnin:  0.588666666667 , Avg AR sampling:  0.5258
+
+ Estimated ordinary:  [[ 1.00282216  0.93732036 -0.96348263  0.        ]] 
+ True ordinary:  [[ 1.  1. -1.  0.]]
+
+ Estimated hermite:  [[ 0.06228367  1.48399698 -2.15726678  0.        ]] 
+ True hermite:  [[ 0.          1.58323349 -2.23903027  0.        ]]
+
+

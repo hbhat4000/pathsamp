@@ -1,0 +1,4 @@
+/home/data/srawat2/pathsamp/4dcode/polynomial_functions.py:83: RuntimeWarning: invalid value encountered in long_scalars
+  errors.append(TP / (TP + FP))
+/home/data/srawat2/pathsamp/4dcode/polynomial_functions.py:92: RuntimeWarning: invalid value encountered in long_scalars
+  precision = TP / (TP + FP)

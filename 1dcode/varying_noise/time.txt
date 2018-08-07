@@ -1,0 +1,6 @@
+Time taken for 1D noise exp:  21.818748712539673 , noise strength:  [ 0.5]
+Time taken for 1D noise exp:  20.89362096786499 , noise strength:  [ 0.1]
+Time taken for 1D noise exp:  28.246400356292725 , noise strength:  [ 0.05]
+Time taken for 1D noise exp:  15.848344087600708 , noise strength:  [ 0.01]
+Time taken for 1D noise exp:  16.347451210021973 , noise strength:  [ 0.005]
+
