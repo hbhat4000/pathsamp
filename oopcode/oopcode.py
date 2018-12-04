@@ -2,15 +2,8 @@ import numpy as np
 import multiprocessing
 import scipy.special
 import scipy.integrate
-from autograd import elementwise_grad, jacobian
+# from autograd import elementwise_grad, jacobian
 # import matplotlib.pyplot as plt
-
-def call_it(instance, name, args=(), kwargs=None):
-    "indirect caller for instance methods and multiprocessing"
-    if kwargs is None:
-        kwargs = {}
-    return getattr(instance, name)(*args, **kwargs)
-
 
 # tensor product of Hermite polynomials
 class Hermite:
@@ -256,8 +249,7 @@ class Bridge:
         Kt[self.numsubintervals - 1] = h * atilde
 
         def Kvf(j):
-            return (-1) * (np.dot(B[self.numsubintervals - j, :], Kt[self.numsubintervals - j, :]) + np.dot(Kt[self.numsubintervals - j, :],
-                                                                                    B[self.numsubintervals - j, :]) - atilde)
+            return (-1) * (np.dot(B[self.numsubintervals - j, :], Kt[self.numsubintervals - j, :]) + np.dot(Kt[self.numsubintervals - j, :], B[self.numsubintervals - j, :]) - atilde)
 
         # take an AB2 step
         part1 = (3 / 2) * Kvf(1)
@@ -388,7 +380,6 @@ class Bridge:
                     arburn[j] = 1
                 else:
                     arsamp[j - self.burninpaths] = 1
-                print(ind, j, "accept")
                 curtraj = proptraj
             else:
                 curtraj = oldtraj
@@ -521,45 +512,54 @@ if __name__ == "__main__":
         return np.matmul(hermdrift.gradient(x), hbeta)
 
     myherm = Hermite(3,2)
-    mybridge = Bridge(100,100,10,method="naive",ncores=2,wantpaths=False)
+    mybridge = Bridge(100,100,10,method="guided",ncores=24,wantpaths=True)
     mybridge.drift = hdrift
     mybridge.grad = gradhdrift
-    mybridge.gvec = np.array([0.05, 0.05])
+    mybridge.gvec = np.array([0.01, 0.01])
     mybridge.approx = myherm
 
     # print(np.transpose(gradhdrift(np.array([[2.0, -5.0]])),[1,2,0]))
 
-    npts = 50
+    npts = 100
     ndim = 2
-    x = np.zeros((npts+1, ndim))
-    x[0,:] = np.array([-1., 0.])
     dt = 0.001
     gnumsteps = 25000
-    saveint = gnumsteps/npts
-    y = x[0,:].copy()
-    for i in range(gnumsteps+1):
-        y += mydrift(y)*dt + mybridge.gvec*np.random.randn(ndim)*np.sqrt(dt)
-        if (i % saveint) == 0:
-            x[int(i//saveint), :] = y.copy()
-
+    numreps = 10
     t = np.linspace(0, dt*gnumsteps, npts+1)
 
-    samples1 = mybridge.diffbridge(x, t)
+    # mmat = np.zeros((myherm.dof, myherm.dof))
+    # rvec = np.zeros((myherm.dof, myherm.dim))
 
-    x = np.zeros((npts+1, ndim))
-    x[0,:] = np.array([1., 0.])
-    y = x[0,:].copy()
-    for i in range(gnumsteps+1):
-        y += mydrift(y)*dt + mybridge.gvec*np.random.randn(ndim)*np.sqrt(dt)
-        if (i % saveint) == 0:
-            x[int(i//saveint), :] = y.copy()
+    for iii in range(numreps):
+        print(iii)
+        """
+        x = np.zeros((npts+1, ndim))
+        x[0,:] = np.random.randn(ndim)
+        saveint = gnumsteps/npts
+        y = x[[0],:].copy()
+        for i in range(gnumsteps+1):
+            y += hdrift(y)*dt + mybridge.gvec*np.random.randn(ndim)*np.sqrt(dt)
+            if (i % saveint) == 0:
+                x[int(i//saveint), :] = y.copy()
 
-    samples2 = mybridge.diffbridge(x, t)
+        
+        fname = "data" + str(iii).rjust(3,"0")
+        np.save(fname, x)
+        """
+        fname = "data" + str(iii).rjust(3,"0") + ".npy"
+        x = np.load(fname)
 
-    mmat = samples1[0] + samples2[0]
-    rvec = samples1[1] + samples2[1]
-    beta = np.linalg.solve(mmat, rvec)
-    print(np.dot(myherm.transmat, beta))
+        samples = mybridge.diffbridge(x, t)
+
+        fname = "samples" + str(iii).rjust(3,"0")
+        np.save(fname, samples)
+        # mmat += samples[0]
+        # rvec += samples[1]
+
+    # beta = np.linalg.solve(mmat, rvec)
+    # np.save("beta", beta)
+    # print(beta)
+    # print(np.dot(myherm.transmat, beta))
 
 
 """"
