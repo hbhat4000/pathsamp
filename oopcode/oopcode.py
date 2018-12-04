@@ -1,4 +1,4 @@
-import autograd.numpy as np
+import numpy as np
 import multiprocessing
 import scipy.special
 import scipy.integrate
@@ -329,7 +329,7 @@ class Bridge:
                 x = np.expand_dims(xin, axis=0)
             else:
                 x = xin
-            return self.drift(x) + self.gvec * r(j, xin)
+            return self.drift(x) + (self.gvec**2) * r(j, xin)
 
         def proposal(start, end):
             doneFlag = 0
@@ -393,10 +393,10 @@ class Bridge:
             else:
                 curtraj = oldtraj
 
-            if j > self.burninpaths:
+            if j >= self.burninpaths:
                 # either save this path or save statistics from path
                 if self.wp:
-                    samples[j, :, :] = curtraj
+                    samples[j - self.burninpaths, :, :] = curtraj.T
                 else:
                     # FIX THIS!!!
                     pp = self.approx.basis(curtraj.T[:-1]).T
@@ -521,20 +521,20 @@ if __name__ == "__main__":
         return np.matmul(hermdrift.gradient(x), hbeta)
 
     myherm = Hermite(3,2)
-    mybridge = Bridge(100,100,10,method="guided",ncores=2,wantpaths=False)
+    mybridge = Bridge(100,100,10,method="naive",ncores=2,wantpaths=False)
     mybridge.drift = hdrift
     mybridge.grad = gradhdrift
-    mybridge.gvec = np.array([0.2, 0.2])
+    mybridge.gvec = np.array([0.05, 0.05])
     mybridge.approx = myherm
 
     # print(np.transpose(gradhdrift(np.array([[2.0, -5.0]])),[1,2,0]))
 
-    npts = 100
+    npts = 50
     ndim = 2
     x = np.zeros((npts+1, ndim))
-    x[0,:] = np.array([4., 4.])
-    dt = 0.0001
-    gnumsteps = 10000
+    x[0,:] = np.array([-1., 0.])
+    dt = 0.001
+    gnumsteps = 25000
     saveint = gnumsteps/npts
     y = x[0,:].copy()
     for i in range(gnumsteps+1):
@@ -547,7 +547,7 @@ if __name__ == "__main__":
     samples1 = mybridge.diffbridge(x, t)
 
     x = np.zeros((npts+1, ndim))
-    x[0,:] = np.array([-4., 4.])
+    x[0,:] = np.array([1., 0.])
     y = x[0,:].copy()
     for i in range(gnumsteps+1):
         y += mydrift(y)*dt + mybridge.gvec*np.random.randn(ndim)*np.sqrt(dt)
