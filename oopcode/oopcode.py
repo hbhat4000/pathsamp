@@ -308,7 +308,11 @@ class Bridge:
         # b^0(t,x) = b(x) + a*r(t,x)
         Ktinv = np.zeros((self.numsubintervals, self.dim, self.dim))
         for j in range(self.numsubintervals):
-            Ktinv[j] = np.linalg.inv(Kt[j])
+            try:
+                Ktinv[j] = np.linalg.inv(Kt[j])  
+            except np.linalg.LinAlgError:
+                print("using pseudoinverse")
+                Ktinv[j] = np.linalg.pinv(Kt[j]) # slight modification
 
         def r(j, x):
             if (j >= 0) or (j < self.numsubintervals):
@@ -390,7 +394,7 @@ class Bridge:
                     samples[j - self.burninpaths, :, :] = curtraj.T
                 else:
                     # FIX THIS!!!
-                    pp = self.approx.basis(curtraj.T[:-1]).T
+                    pp = self.approx.basis(curtraj.T[:-1])
                     pp2 = pp.copy()
                     for ii in range(pp.shape[1]):
                         pp2[:, ii] *= np.diff(tvec)
@@ -477,13 +481,16 @@ class Bridge:
         p = multiprocessing.Pool(self.ncores)
         if (self.method == "naive"):
             allouts = p.map(self.naive, allinds)
+            p.close()
+            p.join()
         elif (self.method == "guided"):
             allouts = p.map(self.guided, allinds)
+            p.close()
+            p.join()
 
         # process everything we got from the map
         if (self.wp):
             allbridges, allburnaccepts, allsampaccepts = zip(*allouts)
-            allbridges = np.stack(allbridges)
         else:
             allmmat, allrvec, allburnaccepts, allsampaccepts = zip(*allouts)
             allmmat = np.sum(np.stack(allmmat),axis=0)
@@ -512,27 +519,26 @@ if __name__ == "__main__":
         return np.matmul(hermdrift.gradient(x), hbeta)
 
     myherm = Hermite(3,2)
-    mybridge = Bridge(100,100,10,method="guided",ncores=24,wantpaths=True)
+    mybridge = Bridge(20,1000,100,method="guided",ncores=24,wantpaths=False)
     mybridge.drift = hdrift
     mybridge.grad = gradhdrift
-    mybridge.gvec = np.array([0.01, 0.01])
+    mybridge.gvec = np.array([0.25, 0.25])
     mybridge.approx = myherm
 
     # print(np.transpose(gradhdrift(np.array([[2.0, -5.0]])),[1,2,0]))
 
-    npts = 100
+    npts = 24
     ndim = 2
     dt = 0.001
-    gnumsteps = 25000
-    numreps = 10
+    gnumsteps = 4800
+    numreps = 100
     t = np.linspace(0, dt*gnumsteps, npts+1)
 
-    # mmat = np.zeros((myherm.dof, myherm.dof))
-    # rvec = np.zeros((myherm.dof, myherm.dim))
+    mmat = np.zeros((myherm.dof, myherm.dof))
+    rvec = np.zeros((myherm.dof, myherm.dim))
 
     for iii in range(numreps):
         print(iii)
-        """
         x = np.zeros((npts+1, ndim))
         x[0,:] = np.random.randn(ndim)
         saveint = gnumsteps/npts
@@ -545,21 +551,25 @@ if __name__ == "__main__":
         
         fname = "data" + str(iii).rjust(3,"0")
         np.save(fname, x)
+
         """
         fname = "data" + str(iii).rjust(3,"0") + ".npy"
         x = np.load(fname)
+        """
 
         samples = mybridge.diffbridge(x, t)
 
-        fname = "samples" + str(iii).rjust(3,"0")
-        np.save(fname, samples)
-        # mmat += samples[0]
-        # rvec += samples[1]
+        fname = "mmat" + str(iii).rjust(3,"0")
+        np.save(fname, samples[0])
+        fname = "rvec" + str(iii).rjust(3,"0")
+        np.save(fname, samples[1])
+        mmat += samples[0]
+        rvec += samples[1]
 
-    # beta = np.linalg.solve(mmat, rvec)
-    # np.save("beta", beta)
-    # print(beta)
-    # print(np.dot(myherm.transmat, beta))
+    beta = np.linalg.solve(mmat, rvec)
+    np.save("beta", beta)
+    print(beta)
+    print(np.dot(myherm.transmat, beta))
 
 
 """"
@@ -576,9 +586,6 @@ if __name__ == "__main__":
     plt.show()
 """
 
-
-# PART 2:
-# incorporate new diffusion bridge generator
 
 # PART 4:
 # create a new class to generate data for all our different models
