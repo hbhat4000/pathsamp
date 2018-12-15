@@ -510,14 +510,14 @@ if __name__ == "__main__":
     ndim = 2
     dt = 0.001
     gnumsteps = 4800
-    numreps = 100
+    numreps = 10
     saveint = gnumsteps//npts
     t = np.arange(npts+1, dtype='int64')*dt*saveint
-    hermdrift = Hermite(3,2)
     
-    emmaxiter = 100
-
+    hermdrift = Hermite(3,2)
     hbeta = np.random.randn(hermdrift.dof, ndim)
+
+    emmaxiter = 100
 
     for jjj in range(emmaxiter):
         def hdrift(x):
@@ -527,7 +527,7 @@ if __name__ == "__main__":
             return np.matmul(hermdrift.gradient(x), hbeta)
 
         myherm = Hermite(3,2)
-        mybridge = Bridge(20,80,10,method="guided",ncores=96,wantpaths=False)
+        mybridge = Bridge(20,80,100,method="guided",ncores=96,wantpaths=False)
         mybridge.drift = hdrift
         mybridge.grad = gradhdrift
         mybridge.gvec = np.array([0.25, 0.25])

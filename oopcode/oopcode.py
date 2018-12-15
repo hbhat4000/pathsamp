@@ -512,6 +512,8 @@ if __name__ == "__main__":
     hermdrift = Hermite(3,2)
     # hbeta = np.expand_dims(np.linalg.solve(hermdrift.h2omat, np.array([0,1,0,-1])),axis=1)
     hbeta = np.linalg.solve(hermdrift.transmat, np.array([[0,0,0,0,0,0,-0.1,0,0,2.0],[0,0,0,0,0,0,-2.0,0,0,-0.1]]).T)
+    print(hbeta)
+    exit(0)
     def hdrift(x):
         return np.matmul(hermdrift.basis(x), hbeta)
 
