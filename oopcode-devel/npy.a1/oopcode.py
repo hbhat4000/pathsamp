@@ -519,7 +519,7 @@ if __name__ == "__main__":
         return np.matmul(hermdrift.gradient(x), hbeta)
 
     myherm = Hermite(3,2)
-    mybridge = Bridge(20,1000,100,method="guided",ncores=24,wantpaths=False)
+    mybridge = Bridge(20,80,100,method="guided",ncores=96,wantpaths=False)
     mybridge.drift = hdrift
     mybridge.grad = gradhdrift
     mybridge.gvec = np.array([0.25, 0.25])
@@ -527,12 +527,13 @@ if __name__ == "__main__":
 
     # print(np.transpose(gradhdrift(np.array([[2.0, -5.0]])),[1,2,0]))
 
-    npts = 24
+    npts = 192
     ndim = 2
     dt = 0.001
     gnumsteps = 4800
     numreps = 100
-    t = np.linspace(0, dt*gnumsteps, npts+1)
+    saveint = gnumsteps//npts
+    t = np.arange(npts+1, dtype='int64')*dt*saveint
 
     mmat = np.zeros((myherm.dof, myherm.dof))
     rvec = np.zeros((myherm.dof, myherm.dim))
@@ -541,7 +542,6 @@ if __name__ == "__main__":
         print(iii)
         x = np.zeros((npts+1, ndim))
         x[0,:] = np.random.randn(ndim)
-        saveint = gnumsteps/npts
         y = x[[0],:].copy()
         for i in range(gnumsteps+1):
             y += hdrift(y)*dt + mybridge.gvec*np.random.randn(ndim)*np.sqrt(dt)
