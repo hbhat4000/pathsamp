@@ -527,10 +527,10 @@ if __name__ == "__main__":
             return np.matmul(hermdrift.gradient(x), hbeta)
 
         myherm = Hermite(3,2)
-        mybridge = Bridge(20,80,100,method="naive",ncores=96,wantpaths=False)
+        mybridge = Bridge(20,80,100,method="guided",ncores=96,wantpaths=False)
         mybridge.drift = hdrift
         mybridge.grad = gradhdrift
-        mybridge.gvec = np.array([0.25, 0.25])
+        mybridge.gvec = np.array([0.75, 0.75])
         mybridge.approx = myherm
 
         mmat = np.zeros((myherm.dof, myherm.dof))
@@ -538,9 +538,11 @@ if __name__ == "__main__":
 
         for iii in range(numreps):
             print(jjj, iii)
-            fname = "./npy.a1/data" + str(iii).rjust(3,"0") + ".npy"
+            fname = "./npy.a3/data" + str(iii).rjust(3,"0") + ".npy"
             x = np.load(fname)
             samples = mybridge.diffbridge(x, t)
+            print(mybridge.meanBurn)
+            print(mybridge.meanSamp)
             mmat += samples[0]
             rvec += samples[1]
 
@@ -554,7 +556,7 @@ if __name__ == "__main__":
         change = np.linalg.norm(hbeta - hbetanew)
         print(hbetanew, change)
         hbeta = hbetanew
-        if change < 1.0e-4:
+        if change < 5.0e-4:
             break
 
 
