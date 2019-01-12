@@ -2,6 +2,7 @@ import numpy as np
 import multiprocessing
 import scipy.special
 import scipy.integrate
+import hermite
 # from autograd import elementwise_grad, jacobian
 # import matplotlib.pyplot as plt
 
@@ -121,7 +122,7 @@ class Hermite:
 
         Hcached = np.zeros((x.shape[0], self.dim, self.maxdeg))
         for d in range(self.maxdeg):
-            Hcached[:, :, d] = self.H(x, d)
+            Hcached[:, :, d] = hermite.hermite(x, d)
 
         for index in self.index_map:
             for d in range(self.dim):
@@ -150,7 +151,7 @@ class Hermite:
         # Hcached[i, j, k] = self.H(x[i, j], k)
         Hcached = np.zeros((x.shape[0], self.dim, self.maxdeg))
         for d in range(self.maxdeg):
-            Hcached[:, :, d] = self.H(x, d)
+            Hcached[:, :, d] = hermite.hermite(x, d)
 
         for derivdim in range(self.dim):
             for index in self.index_map:
@@ -527,7 +528,7 @@ if __name__ == "__main__":
             return np.matmul(hermdrift.gradient(x), hbeta)
 
         myherm = Hermite(3,2)
-        mybridge = Bridge(20,80,100,method="guided",ncores=96,wantpaths=False)
+        mybridge = Bridge(20,80,100,method="guided",ncores=4,wantpaths=False)
         mybridge.drift = hdrift
         mybridge.grad = gradhdrift
         mybridge.gvec = np.array([0.75, 0.75])
@@ -538,7 +539,7 @@ if __name__ == "__main__":
 
         for iii in range(numreps):
             print(jjj, iii)
-            fname = "./npy.a3/data" + str(iii).rjust(3,"0") + ".npy"
+            fname = "/Users/hbhat/Documents/pathsamp/oopcode-devel/npy.a3/data" + str(iii).rjust(3,"0") + ".npy"
             x = np.load(fname)
             samples = mybridge.diffbridge(x, t)
             print(mybridge.meanBurn)

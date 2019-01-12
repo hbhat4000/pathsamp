@@ -2,6 +2,7 @@ import numpy as np
 import multiprocessing
 import scipy.special
 import scipy.integrate
+import hermite
 # from autograd import elementwise_grad, jacobian
 # import matplotlib.pyplot as plt
 
@@ -121,7 +122,7 @@ class Hermite:
 
         Hcached = np.zeros((x.shape[0], self.dim, self.maxdeg))
         for d in range(self.maxdeg):
-            Hcached[:, :, d] = self.H(x, d)
+            Hcached[:, :, d] = hermite.hermite(x, d)
 
         for index in self.index_map:
             for d in range(self.dim):
@@ -150,7 +151,7 @@ class Hermite:
         # Hcached[i, j, k] = self.H(x[i, j], k)
         Hcached = np.zeros((x.shape[0], self.dim, self.maxdeg))
         for d in range(self.maxdeg):
-            Hcached[:, :, d] = self.H(x, d)
+            Hcached[:, :, d] = hermite.hermite(x, d)
 
         for derivdim in range(self.dim):
             for index in self.index_map:
