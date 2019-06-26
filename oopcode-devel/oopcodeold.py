@@ -5,7 +5,6 @@ import scipy.integrate
 import hermite
 # from autograd import elementwise_grad, jacobian
 # import matplotlib.pyplot as plt
-from functools import lru_cache
 
 # tensor product of Hermite polynomials
 class Hermite:
@@ -323,37 +322,40 @@ class Bridge:
                 print("using pseudoinverse")
                 Ktinv[j] = np.linalg.pinv(Kt[j]) # slight modification
 
-        @lru_cache(maxsize=None)
-        def r(j):
+        def r(j, x):
             if (j >= 0) or (j < self.numsubintervals):
-                return np.dot(Ktinv[j], (vt[:, j] - self.traj[:,j]))
+                return np.dot(Ktinv[j], (vt[:, j] - x))
             else:
                 print("Index out of range")
 
-        @lru_cache(maxsize=None)
-        def bcirc(j):
-            return self.drift(self.traj[:,[j]].T) + (self.gvec**2) * r(j)
+        def bcirc(j, xin):
+            if len(xin.shape) == 1:
+                x = np.expand_dims(xin, axis=0)
+            else:
+                x = xin
+            return self.drift(x) + (self.gvec**2) * r(j, xin)
 
         def proposal(start, end):
             doneFlag = 0
             while (doneFlag == 0):
                 doneFlag = 1
-                self.traj = np.zeros((self.dim, self.numsubintervals + 1))
-                self.traj[:, 0] = start
-                self.traj[:, self.numsubintervals] = end
+                traj = np.zeros((self.dim, self.numsubintervals + 1))
+                traj[:, 0] = start
+                traj[:, self.numsubintervals] = end
                 h12 = np.sqrt(h)
                 for j in range(self.numsubintervals - 1):
-                    self.traj[:, j + 1] = self.traj[:, j] + h * bcirc(j) + h12 * self.gvec * np.random.randn(self.dim)
-                    if np.linalg.norm(self.traj[:, j + 1]) > 10:
+                    traj[:, j + 1] = traj[:, j] + h * bcirc(j, traj[:, j]) + h12 * self.gvec * np.random.randn(self.dim)
+                    if np.linalg.norm(traj[:, j + 1]) > 10:
                         doneFlag = 0
                         break
 
-        # compute MCMC accept/reject likelihood
-        @lru_cache(maxsize=None)
-        def vode(j):
-            return np.dot(B[j], self.traj[:,j]) + beta[:, j]
+            return traj
 
-        def loglik():
+        # compute MCMC accept/reject likelihood
+        def vode(j, vin):
+            return np.dot(B[j], vin) + beta[:, j]
+
+        def loglik(traj):
             # compute G and int0T using Simpson's rule
             int0T = 0
             for i in range(self.numsubintervals):
@@ -364,8 +366,8 @@ class Bridge:
                 else:
                     w = 4 / 3
 
-                term1 = (self.drift(self.traj[:, [i]].T) - vode(i))
-                term2 = r(i)
+                term1 = (self.drift(traj[:, [i]].T) - vode(i, traj[:, i]))
+                term2 = r(i, traj[:, i])
                 int0T += h * w * np.dot(term1, term2)
 
             return np.asscalar(int0T)
@@ -376,15 +378,13 @@ class Bridge:
             mmat = np.zeros((self.approx.dof, self.approx.dof))
             rvec = np.zeros((self.approx.dof, self.approx.dim))
 
-        proposal(self.xin[ind], self.xin[ind+1])
-        oldtraj = self.traj.copy()
-        oldlik = loglik()
+        oldtraj = proposal(self.xin[ind], self.xin[ind+1])
+        oldlik = loglik(oldtraj)
         arburn = np.zeros(self.burninpaths, dtype='int32')
         arsamp = np.zeros(self.mcmcpaths, dtype='int32')
         for j in range(self.burninpaths + self.mcmcpaths):
-            proposal(self.xin[ind], self.xin[ind+1])
-            proptraj = self.traj.copy()
-            thislik = loglik()
+            proptraj = proposal(self.xin[ind], self.xin[ind+1])
+            thislik = loglik(proptraj)
             rho = thislik - oldlik
             if rho > np.log(np.random.uniform(size=1)[0]):
                 oldlik = thislik
@@ -401,6 +401,7 @@ class Bridge:
                 if self.wp:
                     samples[j - self.burninpaths, :, :] = curtraj.T
                 else:
+                    # FIX THIS!!!
                     pp = self.approx.basis(curtraj.T[:-1])
                     pp2 = pp.copy()
                     for ii in range(pp.shape[1]):
@@ -485,17 +486,21 @@ class Bridge:
         # create pool and assign tasks
         # one index per path
         allinds = np.arange((self.numpts-1), dtype='int32')
-        # p = multiprocessing.Pool(self.ncores)
+        """
+        p = multiprocessing.Pool(self.ncores)
         if (self.method == "naive"):
-            # allouts = p.map(self.naive, allinds)
-            allouts = map(self.naive, allinds)
-            # p.close()
-            # p.join()
+            allouts = p.map(self.naive, allinds)
+            p.close()
+            p.join()
         elif (self.method == "guided"):
-            # allouts = p.map(self.guided, allinds)
-            allouts = map(self.guided, allinds)
-            # p.close()
-            # p.join()
+            allouts = p.map(self.guided, allinds)
+            p.close()
+            p.join()
+        """
+
+        allouts = []
+        for jjj in allinds:
+            allouts.append(self.guided(jjj))
 
         # process everything we got from the map
         if (self.wp):
@@ -536,7 +541,7 @@ if __name__ == "__main__":
             return np.matmul(hermdrift.gradient(x), hbeta)
 
         myherm = Hermite(3,2)
-        mybridge = Bridge(20,80,10,method="guided",ncores=1,wantpaths=False)
+        mybridge = Bridge(20,80,10,method="guided",ncores=96,wantpaths=False)
         mybridge.drift = hdrift
         mybridge.grad = gradhdrift
         mybridge.gvec = np.array([0.75, 0.75])
