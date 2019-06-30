@@ -1,0 +1,10 @@
+NEW CODE:
+real    45m1.583s
+user    245m17.075s
+sys     0m11.343s
+
+OLD CODE:
+real    66m25.713s
+user    367m20.783s
+sys     0m13.838s
+
